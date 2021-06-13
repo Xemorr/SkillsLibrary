@@ -2,7 +2,7 @@
 My skills library for Superheroes2 and EnchantedBosses
 
 
-##How do you install and use this library?
+## How do you install and use this library?
 ```bash
 In a directory of your pleasing do,
 git clone https://github.com/Xemorr/SkillsLibrary.git
@@ -21,7 +21,7 @@ You can depend on it in your own plugins like so
         </dependency>
 ```
 
-##How do you update the library?
+## How do you update the library?
 ```bash
 Navigate back to where you initially installed the library (if you have forgotten, follow initial installation again)
 Now execute git pull
