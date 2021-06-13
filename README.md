@@ -22,7 +22,8 @@ You can depend on it in your own plugins like so
 ```
 
 ## How do you update the library?
-```bash
 Navigate back to where you initially installed the library (if you have forgotten, follow initial installation again)
-Now execute git pull
+Now execute 
+```git
+git pull
 ```
