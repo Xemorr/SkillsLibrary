@@ -3,6 +3,10 @@ My skills library for Superheroes2 and EnchantedBosses
 
 
 ## How do you install and use this library?
+
+This library depends on ConfigurationData, so if you haven't installed it already, then go to this repository and follow the instructions.
+https://github.com/Xemorr/ConfigurationData
+
 ```bash
 In a directory of your pleasing do,
 git clone https://github.com/Xemorr/SkillsLibrary.git
