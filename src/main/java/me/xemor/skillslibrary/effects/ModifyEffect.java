@@ -35,4 +35,8 @@ public abstract class ModifyEffect extends Effect {
     public enum Operation {
         ADD, SUBTRACT, MULTIPLY, DIVIDE, SET;
     }
+
+    public Operation getOperation() {
+        return operation;
+    }
 }

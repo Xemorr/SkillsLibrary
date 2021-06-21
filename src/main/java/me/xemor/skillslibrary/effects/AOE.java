@@ -18,9 +18,9 @@ public class AOE extends WrapperEffect implements EntityEffect {
     @Override
     public boolean useEffect(LivingEntity skillEntity) {
         boolean shouldCancel = false;
-        for (me.xemor.skillslibrary.effects.Effect effect : getNextEffects()) {
-            if (effect instanceof me.xemor.skillslibrary.effects.TargetEffect) {
-                me.xemor.skillslibrary.effects.TargetEffect nextEffect = (me.xemor.skillslibrary.effects.TargetEffect) effect;
+        for (Effect effect : getNextEffects()) {
+            if (effect instanceof TargetEffect) {
+                TargetEffect nextEffect = (TargetEffect) effect;
                 List<Entity> entities = skillEntity.getNearbyEntities(radius, radius, radius);
                 for (Entity entity : entities) {
                     if (areConditionsTrue(skillEntity, entity)) {

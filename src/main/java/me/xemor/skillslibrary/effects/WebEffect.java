@@ -10,7 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class WebEffect extends me.xemor.skillslibrary.effects.Effect implements me.xemor.skillslibrary.effects.TargetEffect {
+public class WebEffect extends Effect implements TargetEffect {
 
     private final int duration;
 

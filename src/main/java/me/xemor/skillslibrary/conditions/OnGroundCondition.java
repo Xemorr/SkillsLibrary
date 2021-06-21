@@ -6,6 +6,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 public class OnGroundCondition extends Condition implements EntityCondition, TargetCondition {
 
@@ -29,6 +30,6 @@ public class OnGroundCondition extends Condition implements EntityCondition, Tar
     public boolean isOnGround(Entity entity) {
         Location location = entity.getLocation();
         Block block = location.getBlock();
-        return !block.getRelative(BlockFace.DOWN).isPassable();
+        return entity instanceof Player ? !block.getRelative(BlockFace.DOWN).isPassable() : entity.isOnGround();
     }
 }

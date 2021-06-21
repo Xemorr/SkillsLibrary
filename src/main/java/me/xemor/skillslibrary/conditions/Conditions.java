@@ -19,6 +19,8 @@ public class Conditions {
         register("TIME", TimeCondition.class);
         register("ONGROUND", OnGroundCondition.class);
         register("GLIDING", GlidingCondition.class);
+        register("BIOME", BiomeCondition.class);
+        register("METADATA", MetadataCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

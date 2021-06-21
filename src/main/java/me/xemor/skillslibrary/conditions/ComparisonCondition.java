@@ -30,8 +30,9 @@ public abstract class ComparisonCondition extends Condition {
         public static Comparison fromString(String string) {
             string = string.toUpperCase();
             switch (string) {
-                case "=":
-                case "EQUAL": //drop down
+                case "=": //drop down
+                case "==": //drop down
+                case "EQUAL":
                     return EQUAL;
                 case "<": //drop down
                 case "LESS":

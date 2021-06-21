@@ -17,7 +17,7 @@ public class ArrowEffect extends Effect implements TargetEffect {
         super(effect, configurationSection);
         velocity = configurationSection.getDouble("velocity", 1.0);
         damage = configurationSection.getInt("damage", 4);
-        entityType = EntityType.valueOf(configurationSection.getString("entity", "arrow"));
+        entityType = EntityType.valueOf(configurationSection.getString("entity", "arrow").toUpperCase());
     }
 
     @Override
