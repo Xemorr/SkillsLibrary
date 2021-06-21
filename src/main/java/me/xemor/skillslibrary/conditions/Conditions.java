@@ -21,6 +21,7 @@ public class Conditions {
         register("GLIDING", GlidingCondition.class);
         register("BIOME", BiomeCondition.class);
         register("METADATA", MetadataCondition.class);
+        register("NPC", NPCCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

@@ -9,7 +9,7 @@ public class NPCCondition extends Condition implements EntityCondition, TargetCo
 
     public NPCCondition(int condition, ConfigurationSection configurationSection) {
         super(condition, configurationSection);
-        npc = configurationSection.getBoolean("npc", false);
+        npc = configurationSection.getBoolean("isNPC", false);
     }
 
     @Override
@@ -19,7 +19,7 @@ public class NPCCondition extends Condition implements EntityCondition, TargetCo
 
     @Override
     public boolean isTrue(LivingEntity skillEntity, Entity target) {
-        return false;
+        return target.hasMetadata("NPC") == npc;
     }
 }
 
