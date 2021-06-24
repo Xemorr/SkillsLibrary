@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary.effects;
 
 import com.google.common.collect.HashBiMap;
+import org.bukkit.entity.Projectile;
 
 import java.util.HashMap;
 
@@ -34,6 +35,7 @@ public class Effects {
         registerEffect("GIVEITEM", GiveItemEffect.class);
         registerEffect("SCRAMBLEINVENTORY", ScrambleInventoryEffect.class);
         registerEffect("RANDOMTELEPORT", RandomTeleportEffect.class);
+        registerEffect("PROJECTILE", ProjectileEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
