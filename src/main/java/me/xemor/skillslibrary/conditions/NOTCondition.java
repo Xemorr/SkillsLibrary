@@ -27,7 +27,7 @@ public class NOTCondition extends Condition implements EntityCondition, TargetCo
     public boolean isTrue(LivingEntity boss) {
         if (condition instanceof EntityCondition) {
             EntityCondition entityCondition = (EntityCondition) condition;
-            return entityCondition.isTrue(boss);
+            return !entityCondition.isTrue(boss);
         }
         return true;
     }
@@ -36,7 +36,7 @@ public class NOTCondition extends Condition implements EntityCondition, TargetCo
     public boolean isTrue(LivingEntity skillEntity, Entity target) {
         if (condition instanceof TargetCondition) {
             TargetCondition targetCondition = (TargetCondition) condition;
-            return targetCondition.isTrue(skillEntity, target);
+            return !targetCondition.isTrue(skillEntity, target);
         }
         return true;
     }

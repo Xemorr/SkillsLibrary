@@ -22,6 +22,9 @@ public class Conditions {
         register("BIOME", BiomeCondition.class);
         register("METADATA", MetadataCondition.class);
         register("NPC", NPCCondition.class);
+        register("WEATHER", WeatherCondition.class);
+        register("INBLOCK", InBlockCondition.class);
+        register("WORLD", WorldCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {
