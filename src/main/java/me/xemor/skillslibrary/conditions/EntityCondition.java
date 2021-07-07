@@ -4,6 +4,6 @@ import org.bukkit.entity.LivingEntity;
 
 public interface EntityCondition {
 
-    boolean isTrue(LivingEntity boss);
+    boolean isTrue(LivingEntity entity);
 
 }

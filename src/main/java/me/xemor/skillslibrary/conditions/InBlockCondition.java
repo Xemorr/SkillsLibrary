@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class InBlockCondition extends Condition implements EntityCondition, TargetCondition {
 
-    private List<Material> blocks;
+    private final List<Material> blocks;
 
     public InBlockCondition(int condition, ConfigurationSection configurationSection) {
         super(condition, configurationSection);
