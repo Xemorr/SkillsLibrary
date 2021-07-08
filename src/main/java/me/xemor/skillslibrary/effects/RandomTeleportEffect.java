@@ -8,8 +8,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import java.util.Random;
-
 public class RandomTeleportEffect extends Effect implements EntityEffect, TargetEffect {
 
     private final double maxDistance;
@@ -43,7 +41,7 @@ public class RandomTeleportEffect extends Effect implements EntityEffect, Target
             return initialLocation.add(direction.multiply(randomDistance));
         }
         else {
-            return rayTraceResult.getHitPosition().toLocation(world, initialLocation.getYaw(), initialLocation.getPitch());
+            return rayTraceResult.getHitPosition().toLocation(world, initialLocation.getYaw(), initialLocation.getPitch()).subtract(direction);
         }
     }
 }
