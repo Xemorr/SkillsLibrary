@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary.effects;
 
+import me.xemor.skillslibrary.Mode;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,15 +36,8 @@ public abstract class Effect {
         return null;
     }
 
-    public enum Mode {
-        SELF, OTHER, BLOCK, ALL;
-
-        public boolean runs(Mode target) {
-            return this == Mode.ALL || this == target;
-        }
-    }
-
     public Mode getMode() {
         return mode;
     }
+
 }
