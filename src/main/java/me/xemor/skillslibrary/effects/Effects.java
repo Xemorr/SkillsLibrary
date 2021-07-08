@@ -36,6 +36,7 @@ public class Effects {
         registerEffect("SCRAMBLEINVENTORY", ScrambleInventoryEffect.class);
         registerEffect("RANDOMTELEPORT", RandomTeleportEffect.class);
         registerEffect("PROJECTILE", ProjectileEffect.class);
+        registerEffect("SOUND", SoundEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
