@@ -1,12 +1,13 @@
 package me.xemor.skillslibrary.effects;
 
 import me.xemor.skillslibrary.SkillsLibrary;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEffect {
+public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEffect, BlockEffect {
 
     long ticksDelay;
 
@@ -44,6 +45,11 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
                 }
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
+        return false;
+    }
+
+    @Override
+    public boolean useEffect(LivingEntity entity, Block block) {
         return false;
     }
 }

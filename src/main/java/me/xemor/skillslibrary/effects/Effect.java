@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary.effects;
 
 import me.xemor.skillslibrary.Mode;
+import me.xemor.skillslibrary.SkillsLibrary;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,12 +11,16 @@ public abstract class Effect {
 
     private final int effect;
     private final ConfigurationSection configurationSection;
-    private final Mode mode;
+    private Mode mode = null;
 
     public Effect(int effect, ConfigurationSection configurationSection) {
         this.effect = effect;
         this.configurationSection = configurationSection;
-        mode = Mode.valueOf(configurationSection.getString("mode", "ALL"));
+        try {
+            mode = Mode.valueOf(configurationSection.getString("mode", "ALL"));
+        } catch (IllegalArgumentException e) {
+            SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid mode! " + configurationSection.getCurrentPath() + ".mode");
+        }
     }
 
     public ConfigurationSection getData() {
