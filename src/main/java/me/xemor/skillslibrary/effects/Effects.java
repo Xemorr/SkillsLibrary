@@ -37,6 +37,8 @@ public class Effects {
         registerEffect("RANDOMTELEPORT", RandomTeleportEffect.class);
         registerEffect("PROJECTILE", ProjectileEffect.class);
         registerEffect("SOUND", SoundEffect.class);
+        registerEffect("COMMAND", CommandEffect.class);
+        registerEffect("LUNGE", LungeEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {

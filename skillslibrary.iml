@@ -43,6 +43,6 @@
     <orderEntry type="library" name="Maven: net.kyori:adventure-text-serializer-gson:4.8.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.kyori:adventure-platform-facet:4.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.kyori:adventure-platform-viaversion:4.0.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: me.xemor:configurationdata:1.8-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: me.xemor:configurationdata:1.9-SNAPSHOT" level="project" />
   </component>
 </module>
