@@ -21,6 +21,9 @@ public abstract class Effect {
         } catch (IllegalArgumentException e) {
             SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid mode! " + configurationSection.getCurrentPath() + ".mode");
         }
+        if (!supports(mode)) {
+            SkillsLibrary.getInstance().getLogger().severe(Effects.getName(effect) + " does not support " + mode.name() + ". Please change the mode at " + configurationSection.getCurrentPath() + ".mode");
+        }
     }
 
     public ConfigurationSection getData() {
@@ -29,6 +32,16 @@ public abstract class Effect {
 
     public int getEffect() {
         return effect;
+    }
+
+    private boolean supports(Mode mode) {
+        switch (mode) {
+            case ALL: return true;
+            case SELF: return this instanceof EntityEffect;
+            case OTHER: return this instanceof TargetEffect;
+            case BLOCK: return this instanceof BlockEffect;
+        }
+        return false;
     }
 
     @Nullable

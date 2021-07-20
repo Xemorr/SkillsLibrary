@@ -21,7 +21,7 @@ public class RandomTeleportEffect extends Effect implements EntityEffect, Target
 
     @Override
     public boolean useEffect(LivingEntity entity) {
-        entity.teleport(findLocation(entity.getLocation()));
+        entity.teleport(findLocation(entity.getEyeLocation()));
         return false;
     }
 

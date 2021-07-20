@@ -32,6 +32,7 @@ public class ItemCondition extends Condition implements EntityCondition, TargetC
     @Override
     public boolean isTrue(LivingEntity boss) {
         ItemStack item = boss.getEquipment().getItem(equipmentSlot);
+
         return false;
     }
 

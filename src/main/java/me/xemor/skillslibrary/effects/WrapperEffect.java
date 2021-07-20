@@ -1,10 +1,9 @@
 package me.xemor.skillslibrary.effects;
 
-import me.xemor.skillslibrary.conditions.Condition;
-import me.xemor.skillslibrary.conditions.Conditions;
-import me.xemor.skillslibrary.conditions.EntityCondition;
-import me.xemor.skillslibrary.conditions.TargetCondition;
+import me.xemor.skillslibrary.Mode;
+import me.xemor.skillslibrary.conditions.*;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -81,18 +80,40 @@ public abstract class WrapperEffect extends Effect {
 
     protected boolean areConditionsTrue(LivingEntity skillEntity, Object... objects) {
         for (Condition condition : conditions) {
-            if (condition instanceof EntityCondition) {
+            boolean result = true;
+            if (condition instanceof EntityCondition && condition.getMode().runs(Mode.SELF)) {
                 EntityCondition entityCondition = (EntityCondition) condition;
-                boolean result = entityCondition.isTrue(skillEntity);
-                if (!result) return false;
+                result = entityCondition.isTrue(skillEntity);
             }
-            if (condition instanceof TargetCondition && objects[0] instanceof Entity) {
+            if (condition instanceof TargetCondition && objects[0] instanceof Entity && condition.getMode().runs(Mode.OTHER)) {
                 TargetCondition targetCondition = (TargetCondition) condition;
-                boolean result = targetCondition.isTrue(skillEntity, (Entity) objects[0]);
-                if (!result) return false;
+                result = targetCondition.isTrue(skillEntity, (Entity) objects[0]);
             }
+            if (condition instanceof BlockCondition && objects[0] instanceof Block && condition.getMode().runs(Mode.BLOCK)) {
+                BlockCondition blockCondition = (BlockCondition) condition;
+                result = blockCondition.isTrue(skillEntity, (Block) objects[0]);
+            }
+            if (!result) return false;
         }
         return true;
+    }
+
+    protected boolean executeEffects(LivingEntity entity, Object... objects) {
+        for (Effect effect : nextEffects) {
+            if (effect.getMode().runs(Mode.SELF)) {
+                EntityEffect entityEffect = (EntityEffect) effect;
+                return entityEffect.useEffect(entity);
+            }
+            else if (effect.getMode().runs(Mode.OTHER) && objects[0] instanceof Entity) {
+                TargetEffect targetEffect = (TargetEffect) effect;
+                return targetEffect.useEffect(entity, (Entity) objects[0]);
+            }
+            else if (effect.getMode().runs(Mode.BLOCK) && objects[0] instanceof Block) {
+                BlockEffect blockEffect = (BlockEffect) effect;
+                return blockEffect.useEffect(entity, (Block) objects[0]);
+            }
+        }
+        return false;
     }
 
 }
