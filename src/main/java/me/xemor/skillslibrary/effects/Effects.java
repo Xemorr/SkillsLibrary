@@ -39,6 +39,7 @@ public class Effects {
         registerEffect("SOUND", SoundEffect.class);
         registerEffect("COMMAND", CommandEffect.class);
         registerEffect("LUNGE", LungeEffect.class);
+        registerEffect("NEAREST", NearestEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {

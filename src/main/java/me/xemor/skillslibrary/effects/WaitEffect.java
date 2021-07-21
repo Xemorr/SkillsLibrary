@@ -9,7 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEffect, BlockEffect {
 
-    long ticksDelay;
+    private final long ticksDelay;
 
     public WaitEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
@@ -21,12 +21,7 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Effect effect : getNextEffects()) {
-                    if (effect instanceof EntityEffect) {
-                        EntityEffect entityEffect = (EntityEffect) effect;
-                        entityEffect.useEffect(livingEntity);
-                    }
-                }
+                handleEffects(livingEntity);
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
         return false;
@@ -37,12 +32,7 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Effect effect : getNextEffects()) {
-                    if (effect instanceof TargetEffect) {
-                        TargetEffect targetEffect = (TargetEffect) effect;
-                        targetEffect.useEffect(livingEntity, entity);
-                    }
-                }
+                handleEffects(livingEntity, entity);
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
         return false;

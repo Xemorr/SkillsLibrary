@@ -8,11 +8,13 @@ public final class SkillsLibrary extends JavaPlugin {
 
     private static SkillsLibrary skillsLibrary;
     private static BukkitAudiences bukkitAudiences;
+    private static SkillsManager skillsManager;
 
     @Override
     public void onEnable() {
         skillsLibrary = this;
         bukkitAudiences = BukkitAudiences.create(this);
+        skillsManager = new SkillsManager();
     }
 
     public static SkillsLibrary getInstance() {
@@ -21,6 +23,10 @@ public final class SkillsLibrary extends JavaPlugin {
 
     public static BukkitAudiences getBukkitAudiences() {
         return bukkitAudiences;
+    }
+
+    public static SkillsManager getSkillsManager() {
+        return skillsManager;
     }
 
 }
