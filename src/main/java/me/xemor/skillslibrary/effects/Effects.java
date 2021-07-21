@@ -40,6 +40,7 @@ public class Effects {
         registerEffect("COMMAND", CommandEffect.class);
         registerEffect("LUNGE", LungeEffect.class);
         registerEffect("NEAREST", NearestEffect.class);
+        registerEffect("SHOOTER", ShooterEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
