@@ -8,9 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -101,7 +99,7 @@ public class Triggers implements Listener {
         if (e.getEntity() instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) e.getEntity();
             boolean cancel = handleSkills(Trigger.getTrigger("DAMAGEDBYENTITY"), livingEntity, e.getDamager());
-            cancel |= handleSkills(Trigger.getTrigger("COMBAT"), livingEntity, e.getEntity());
+            cancel |= handleSkills(Trigger.getTrigger("COMBAT"), livingEntity, e.getDamager());
             if (cancel) e.setCancelled(true);
         }
     }
@@ -125,6 +123,20 @@ public class Triggers implements Listener {
     public void onVehicleEnter(VehicleEnterEvent e) {
         if (e.getEntered() instanceof LivingEntity) {
             e.setCancelled(handleSkills(Trigger.getTrigger("VEHICLE"), (LivingEntity) e.getEntered(), e.getVehicle()));
+        }
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent e) {
+        handleSkills(Trigger.getTrigger("DEATH"), e.getEntity(), e.getEntity().getKiller());
+    }
+
+    @EventHandler
+    public void onEntitySpawn(EntitySpawnEvent e) {
+        Entity entity = e.getEntity();
+        if (entity instanceof LivingEntity) {
+            LivingEntity lEntity = (LivingEntity) entity;
+            e.setCancelled(handleSkills(Trigger.getTrigger("SPAWN"), lEntity));
         }
     }
 

@@ -39,7 +39,7 @@ public class EffectList implements Iterable<Effect> {
 
     public boolean handleEffects(LivingEntity entity, Object... objects) {
         boolean result = false;
-        Object otherObject = objects[0];
+        Object otherObject = objects.length == 0 ? null : objects[0];
         for (Effect effect : effects) {
             if (effect instanceof EntityEffect && effect.getMode().runs(Mode.SELF)) {
                 EntityEffect entityEffect = (EntityEffect) effect;
@@ -47,11 +47,11 @@ public class EffectList implements Iterable<Effect> {
             }
             if (effect instanceof TargetEffect && effect.getMode().runs(Mode.OTHER) && otherObject instanceof Entity) {
                 TargetEffect targetEffect = (TargetEffect) effect;
-                result = targetEffect.useEffect(entity, (Entity) otherObject);
+                result |= targetEffect.useEffect(entity, (Entity) otherObject);
             }
             else if (effect instanceof BlockEffect && effect.getMode().runs(Mode.BLOCK) && otherObject instanceof Block) {
                 BlockEffect blockEffect = (BlockEffect) effect;
-                result = blockEffect.useEffect(entity, (Block) otherObject);
+                result |= blockEffect.useEffect(entity, (Block) otherObject);
             }
         }
         return result;

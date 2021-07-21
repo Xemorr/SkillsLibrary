@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary;
 
 import me.xemor.skillslibrary.effects.*;
+import me.xemor.skillslibrary.triggers.Trigger;
 import me.xemor.skillslibrary.triggers.TriggerData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
@@ -15,7 +16,10 @@ public class Skill {
         if (triggerSection == null) {
             SkillsLibrary.getInstance().getLogger().severe("You have not added a trigger section to your skill at " + skillSection.getCurrentPath());
         }
-        int triggerType = triggerSection.getInt("type");
+        int triggerType = Trigger.getTrigger(triggerSection.getString("type", "COMBAT"));
+        if (triggerType == -1) {
+            SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid trigger for your skill at " + skillSection.getCurrentPath() + ".trigger.type");
+        }
         trigger = TriggerData.create(triggerType, triggerSection);
         ConfigurationSection effectsSection = skillSection.getConfigurationSection("effects");
         effects = new EffectList(effectsSection);

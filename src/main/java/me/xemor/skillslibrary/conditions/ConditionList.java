@@ -40,18 +40,19 @@ public class ConditionList implements Iterable<Condition> {
     }
 
     public boolean areConditionsTrue(LivingEntity skillEntity, Object... objects) {
+        Object otherObject = objects.length == 0 ? null : objects[0];
         for (Condition condition : conditions) {
             if (condition instanceof EntityCondition && condition.getMode().runs(Mode.SELF)) {
                 EntityCondition entityCondition = (EntityCondition) condition;
                 boolean result = entityCondition.isTrue(skillEntity);
                 if (!result) return false;
             }
-            if (condition instanceof TargetCondition && objects[0] instanceof Entity && condition.getMode().runs(Mode.OTHER)) {
+            if (condition instanceof TargetCondition && otherObject instanceof Entity && condition.getMode().runs(Mode.OTHER)) {
                 TargetCondition targetCondition = (TargetCondition) condition;
                 boolean result = targetCondition.isTrue(skillEntity, (Entity) objects[0]);
                 if (!result) return false;
             }
-            else if (condition instanceof BlockCondition && objects[0] instanceof Block && condition.getMode().runs(Mode.BLOCK)) {
+            else if (condition instanceof BlockCondition && otherObject instanceof Block && condition.getMode().runs(Mode.BLOCK)) {
                 BlockCondition blockCondition = (BlockCondition) condition;
                 boolean result = blockCondition.isTrue(skillEntity, (Block) objects[0]);
                 if (!result) return false;
