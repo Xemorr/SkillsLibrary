@@ -95,11 +95,13 @@ public class Triggers implements Listener {
         if (e.getDamager() instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) e.getDamager();
             boolean cancel = handleSkills(Trigger.getTrigger("DAMAGEDENTITY"), livingEntity, e.getEntity());
+            cancel |= handleSkills(Trigger.getTrigger("COMBAT"), livingEntity, e.getEntity());
             if (cancel) e.setCancelled(true);
         }
         if (e.getEntity() instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) e.getEntity();
             boolean cancel = handleSkills(Trigger.getTrigger("DAMAGEDBYENTITY"), livingEntity, e.getDamager());
+            cancel |= handleSkills(Trigger.getTrigger("COMBAT"), livingEntity, e.getEntity());
             if (cancel) e.setCancelled(true);
         }
     }

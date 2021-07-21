@@ -1,7 +1,6 @@
 package me.xemor.skillslibrary.effects;
 
 import me.xemor.skillslibrary.Mode;
-import me.xemor.skillslibrary.conditions.*;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;

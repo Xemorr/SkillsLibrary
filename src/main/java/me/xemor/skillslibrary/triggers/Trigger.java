@@ -22,6 +22,7 @@ public class Trigger {
         registerTrigger("VEHICLE", TriggerData.class);
         registerTrigger("PLAYERJOIN", TriggerData.class);
         registerTrigger("PLAYERQUIT", TriggerData.class);
+        registerTrigger("COMBAT", TriggerData.class);
     }
 
     public static void registerTrigger(String name, Class<? extends TriggerData> effectDataClass) {
