@@ -11,19 +11,21 @@ import java.lang.reflect.InvocationTargetException;
 public abstract class Condition {
 
     private final int condition;
-    private final ConfigurationSection configurationSection;
     private Mode mode;
 
     public Condition(int condition, ConfigurationSection configurationSection) {
         this.condition = condition;
-        this.configurationSection = configurationSection;
         String targetStr = configurationSection.getString("mode", "ALL").toUpperCase();
         try {
             mode = Mode.valueOf(targetStr);
         } catch (IllegalArgumentException e) {
             SkillsLibrary.getInstance().getLogger().severe("Invalid target specified at " + configurationSection.getCurrentPath() + ".mode");
         }
+    }
 
+    public Condition(int condition, Mode mode) {
+        this.condition = condition;
+        this.mode = mode;
     }
 
     @Nullable
@@ -34,10 +36,6 @@ public abstract class Condition {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public ConfigurationSection getData() {
-        return configurationSection;
     }
 
     public int getCondition() {
