@@ -12,13 +12,10 @@ public class TriggerData {
     private final ConditionList conditions;
     private final int trigger;
 
-    public TriggerData(ConfigurationSection configurationSection) {
+    public TriggerData(int trigger, ConfigurationSection configurationSection) {
         ConfigurationSection conditionsSection = configurationSection.getConfigurationSection("conditions");
         conditions = new ConditionList(conditionsSection);
-        this.trigger = Trigger.getTrigger(configurationSection.getString("trigger"));
-        if (trigger == -1) {
-            SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid trigger type at " + configurationSection.getCurrentPath() + ".trigger");
-        }
+        this.trigger = trigger;
     }
 
     @Nullable

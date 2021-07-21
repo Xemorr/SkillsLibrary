@@ -15,7 +15,8 @@ public class Skill {
         if (triggerSection == null) {
             SkillsLibrary.getInstance().getLogger().severe("You have not added a trigger section to your skill at " + skillSection.getCurrentPath());
         }
-        trigger = new TriggerData(triggerSection);
+        int triggerType = triggerSection.getInt("type");
+        trigger = TriggerData.create(triggerType, triggerSection);
         ConfigurationSection effectsSection = skillSection.getConfigurationSection("effects");
         effects = new EffectList(effectsSection);
     }

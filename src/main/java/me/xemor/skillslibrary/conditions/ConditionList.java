@@ -60,6 +60,10 @@ public class ConditionList implements Iterable<Condition> {
         return true;
     }
 
+    public void addCondition(Condition condition) {
+        conditions.add(condition);
+    }
+
     @NotNull
     @Override
     public Iterator<Condition> iterator() {
