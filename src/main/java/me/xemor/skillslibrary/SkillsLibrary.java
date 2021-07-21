@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary;
 
+import me.xemor.skillslibrary.triggers.Triggers;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +16,7 @@ public final class SkillsLibrary extends JavaPlugin {
         skillsLibrary = this;
         bukkitAudiences = BukkitAudiences.create(this);
         skillsManager = new SkillsManager();
+        this.getServer().getPluginManager().registerEvents(new Triggers(), this);
     }
 
     public static SkillsLibrary getInstance() {
