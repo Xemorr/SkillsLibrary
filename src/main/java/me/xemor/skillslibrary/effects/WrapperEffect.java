@@ -20,7 +20,7 @@ public abstract class WrapperEffect extends Effect {
 
     public boolean handleEffects(LivingEntity entity, Object... objects) {
         if (conditions.areConditionsTrue(entity, objects)) {
-            return effects.handleEffects(entity, objects);
+            return effects.handleExactEffects(entity, objects);
         }
         return false;
     }

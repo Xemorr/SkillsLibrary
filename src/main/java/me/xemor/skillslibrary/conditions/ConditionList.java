@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class ConditionList implements Iterable<Condition> {
 
-    List<Condition> conditions = new ArrayList<>();
+    ArrayList<Condition> conditions = new ArrayList<>();
 
     public ConditionList(ConfigurationSection conditionsSection) {
         loadConditions(conditionsSection);
@@ -62,7 +62,7 @@ public class ConditionList implements Iterable<Condition> {
     }
 
     public void addCondition(Condition condition) {
-        conditions.add(condition);
+        conditions.add(0, condition);
     }
 
     @NotNull

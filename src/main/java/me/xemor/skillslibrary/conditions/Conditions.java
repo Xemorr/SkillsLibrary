@@ -25,6 +25,7 @@ public class Conditions {
         register("WEATHER", WeatherCondition.class);
         register("INBLOCK", InBlockCondition.class);
         register("WORLD", WorldCondition.class);
+        register("TAMED", TamedCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

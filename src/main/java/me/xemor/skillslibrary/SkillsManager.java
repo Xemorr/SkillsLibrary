@@ -1,24 +1,30 @@
 package me.xemor.skillslibrary;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.plugin.Plugin;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SkillsManager {
 
     private final Set<UUID> loopEntities = new HashSet<>();
+    private final HashMap<String, RegisteredSkills> map = new HashMap<>();
 
-    private final Multimap<Integer, Skill> triggerToSkill = HashMultimap.create();
+    public void registerSkill(Skill skill, Plugin plugin) {
+        RegisteredSkills registeredSkills = map.get(plugin.getName());
+        if (registeredSkills == null) {
+            registeredSkills = new RegisteredSkills();
+            map.put(plugin.getName(), registeredSkills);
+        }
+        registeredSkills.registerSkill(skill);
+    }
 
-    public void registerSkill(Skill skill) {
-        triggerToSkill.put(skill.getTriggerData().getTrigger(), skill);
+    public void unregisterAllSkills(Plugin plugin) {
+        map.remove(plugin.getName());
     }
 
     public Collection<Skill> getSkills(int triggerID) {
-        return triggerToSkill.get(triggerID);
+        return map.values().stream().flatMap(registeredSkills -> registeredSkills.getSkills(triggerID).stream()).collect(Collectors.toList());
     }
 
     public Set<UUID> getLoopEntities() {
