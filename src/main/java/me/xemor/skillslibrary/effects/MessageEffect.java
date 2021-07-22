@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class MessageEffect extends Effect implements TargetEffect {
+public class MessageEffect extends Effect implements EntityEffect, TargetEffect {
 
     private final String message;
 
@@ -19,13 +19,23 @@ public class MessageEffect extends Effect implements TargetEffect {
     }
 
     @Override
-    public boolean useEffect(LivingEntity boss, Entity target) {
-        if (target instanceof Player) {
-            Player player = (Player) target;
+    public boolean useEffect(LivingEntity entity, Entity target) {
+        sendMessage(entity);
+        return false;
+    }
+
+    @Override
+    public boolean useEffect(LivingEntity entity) {
+        sendMessage(entity);
+        return false;
+    }
+
+    public void sendMessage(Entity entity) {
+        if (entity instanceof Player) {
+            Player player = (Player) entity;
             Audience audience = SkillsLibrary.getBukkitAudiences().player(player);
             Component component = new MineDown(message).replaceFirst(true).replace("player", player.getName()).toComponent();
             audience.sendMessage(component);
         }
-        return false;
     }
 }
