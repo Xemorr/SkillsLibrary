@@ -140,6 +140,13 @@ public class Triggers implements Listener {
         }
     }
 
+    @EventHandler
+    public void onTame(EntityTameEvent e) {
+        if (e.getOwner() instanceof LivingEntity) {
+            handleSkills(Trigger.getTrigger("TAME"), (LivingEntity) e.getOwner(), e.getEntity());
+        }
+    }
+
     public boolean handleSkills(int trigger, @Nullable LivingEntity entity, Object... objects) {
         Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(trigger);
         boolean cancel = false;
