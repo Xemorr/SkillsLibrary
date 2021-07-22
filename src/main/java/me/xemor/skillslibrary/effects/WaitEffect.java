@@ -40,6 +40,12 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
 
     @Override
     public boolean useEffect(LivingEntity entity, Block block) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                handleEffects(entity, block);
+            }
+        };
         return false;
     }
 }

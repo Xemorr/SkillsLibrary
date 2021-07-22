@@ -21,6 +21,7 @@ public class AOE extends WrapperEffect implements EntityEffect {
         List<Entity> entities = skillEntity.getNearbyEntities(radius, radius, radius);
         for (Entity entity : entities) {
             shouldCancel |= handleEffects(skillEntity, entity);
+            shouldCancel |= handleEffects(skillEntity, entity);
         }
         return shouldCancel;
     }

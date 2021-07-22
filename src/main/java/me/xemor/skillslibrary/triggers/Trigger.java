@@ -1,5 +1,7 @@
 package me.xemor.skillslibrary.triggers;
 
+import me.xemor.skillslibrary.SkillsLibrary;
+
 import java.util.HashMap;
 
 public class Trigger {
@@ -24,6 +26,7 @@ public class Trigger {
         registerTrigger("PLAYERQUIT", TriggerData.class);
         registerTrigger("COMBAT", TriggerData.class);
         registerTrigger("TAME", TriggerData.class);
+        registerTrigger("INTERACT", InteractData.class);
     }
 
     public static void registerTrigger(String name, Class<? extends TriggerData> effectDataClass) {
@@ -35,7 +38,11 @@ public class Trigger {
     public static Class<? extends TriggerData> getClass(int trigger) { return triggerToData.getOrDefault(trigger, TriggerData.class); }
 
     public static int getTrigger(String name) {
-        return nameToTrigger.getOrDefault(name, -1);
+        int trigger = nameToTrigger.getOrDefault(name, -1);
+        if (trigger == -1) {
+            SkillsLibrary.getInstance().getLogger().severe(name + " has not been registered as a trigger!");
+        }
+        return trigger;
     }
 
 }

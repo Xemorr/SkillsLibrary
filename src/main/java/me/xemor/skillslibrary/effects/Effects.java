@@ -41,6 +41,7 @@ public class Effects {
         registerEffect("LUNGE", LungeEffect.class);
         registerEffect("NEAREST", NearestEffect.class);
         registerEffect("SHOOTER", ShooterEffect.class);
+        registerEffect("KNOCKBACK", KnockbackEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {

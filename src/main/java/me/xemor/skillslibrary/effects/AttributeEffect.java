@@ -2,12 +2,14 @@ package me.xemor.skillslibrary.effects;
 
 import me.xemor.configurationdata.ConfigurationData;
 import me.xemor.skillslibrary.SkillsLibrary;
+import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
-public class AttributeEffect extends ModifyEffect implements EntityEffect {
+public class AttributeEffect extends ModifyEffect implements EntityEffect, TargetEffect {
 
     private Attribute attribute = null;
 
@@ -27,9 +29,21 @@ public class AttributeEffect extends ModifyEffect implements EntityEffect {
 
 
     @Override
-    public boolean useEffect(LivingEntity boss) {
-        AttributeInstance attributeInstance = boss.getAttribute(attribute);
+    public boolean useEffect(LivingEntity entity) {
+        applyAttributes(entity);
+        return false;
+    }
+
+    public void applyAttributes(LivingEntity entity) {
+        AttributeInstance attributeInstance = entity.getAttribute(attribute);
         attributeInstance.setBaseValue(changeValue(attributeInstance.getBaseValue()));
+    }
+
+    @Override
+    public boolean useEffect(LivingEntity livingEntity, Entity entity) {
+        if (entity instanceof LivingEntity) {
+            applyAttributes((LivingEntity) entity);
+        }
         return false;
     }
 }
