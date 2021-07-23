@@ -13,6 +13,7 @@ public class Trigger {
     static {
         registerTrigger("DAMAGEDENTITY", TriggerData.class);
         registerTrigger("DAMAGEDBYENTITY", TriggerData.class);
+        registerTrigger("DAMAGED", DamageData.class);
         registerTrigger("SNEAK", TriggerData.class);
         registerTrigger("TOGGLEGLIDE", TriggerData.class);
         registerTrigger("PLAYERJUMP", TriggerData.class);

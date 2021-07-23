@@ -20,9 +20,11 @@ public class ShooterEffect extends WrapperEffect implements TargetEffect {
         if (entity instanceof Projectile) {
             Projectile projectile = (Projectile) entity;
             ProjectileSource shooter = projectile.getShooter();
+            handleEffects(livingEntity);
             handleEffects(livingEntity, shooter);
         }
         else if (!onlyProjectiles) {
+            handleEffects(livingEntity);
             handleEffects(livingEntity, entity);
         }
         return false;

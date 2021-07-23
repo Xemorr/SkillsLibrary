@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
+import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
@@ -104,6 +105,22 @@ public class Triggers implements Listener {
         }
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onDamage(EntityDamageEvent e) {
+        boolean cancel = false;
+        if (e.getEntity() instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) e.getEntity();
+            Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(Trigger.getTrigger("DAMAGED"));
+            for (Skill skill : skills) {
+                DamageData damageData = (DamageData) skill.getTriggerData();
+                if (damageData.getDamageCauses().size() == 0 || damageData.getDamageCauses().contains(e.getCause())) {
+                    if (skill.handleEffects(livingEntity)) cancel = true;
+                }
+            }
+        }
+        e.setCancelled(cancel);
+    }
+
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent e) {
         if (e.isSneaking()) {
@@ -122,8 +139,15 @@ public class Triggers implements Listener {
     @EventHandler
     public void onVehicleEnter(VehicleEnterEvent e) {
         if (e.getEntered() instanceof LivingEntity) {
-            e.setCancelled(handleSkills(Trigger.getTrigger("VEHICLE"), (LivingEntity) e.getEntered(), e.getVehicle()));
+            boolean cancel = handleSkills(Trigger.getTrigger("ENTERVEHICLE"), (LivingEntity) e.getEntered(), e.getVehicle());
+            cancel |= handleSkills(Trigger.getTrigger("VEHICLE"), (LivingEntity) e.getEntered(), e.getVehicle());
+            e.setCancelled(cancel);
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onVehicleExit(VehicleExitEvent e) {
+        e.setCancelled(handleSkills(Trigger.getTrigger("EXITVEHICLE"), e.getExited(), e.getVehicle()));
     }
 
     @EventHandler
