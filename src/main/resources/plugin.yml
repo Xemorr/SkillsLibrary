@@ -1,6 +1,6 @@
-name: SkillsLibrary
+name: SkillsLibrary2
 version: ${project.version}
-main: me.xemor.skillslibrary.SkillsLibrary
+main: me.xemor.skillslibrary2.SkillsLibrary
 api-version: 1.16
 authors: [ Xemor_ ]
 description: The skills library required for many of Xemor's plugins to function

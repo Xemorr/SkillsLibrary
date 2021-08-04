@@ -6,7 +6,7 @@
 
     <groupId>me.xemor</groupId>
     <artifactId>skillslibrary</artifactId>
-    <version>2.0.4</version>
+    <version>2.1.0</version>
     <packaging>jar</packaging>
 
     <name>SkillsLibrary</name>
@@ -57,15 +57,15 @@
                             <relocations>
                                 <relocation>
                                     <pattern>me.xemor.configurationdata</pattern>
-                                    <shadedPattern>me.xemor.skillslibrary.configurationdata</shadedPattern>
+                                    <shadedPattern>me.xemor.skillslibrary2.configurationdata</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>net.kyori.adventure</pattern>
-                                    <shadedPattern>me.xemor.skillslibrary.adventure</shadedPattern>
+                                    <shadedPattern>me.xemor.skillslibrary2.adventure</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>de.themoep.minedown</pattern>
-                                    <shadedPattern>me.xemor.skillslibrary.minedown</shadedPattern>
+                                    <shadedPattern>me.xemor.skillslibrary2.minedown</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -118,7 +118,7 @@
         <dependency>
             <groupId>me.xemor</groupId>
             <artifactId>configurationdata</artifactId>
-            <version>1.10-SNAPSHOT</version>
+            <version>1.12-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
