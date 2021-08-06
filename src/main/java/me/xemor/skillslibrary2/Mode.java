@@ -1,7 +1,7 @@
 package me.xemor.skillslibrary2;
 
 public enum Mode {
-    SELF, OTHER, BLOCK, ALL;
+    SELF, OTHER, LOCATION, ALL;
 
     public boolean runs(Mode target) {
         return this == Mode.ALL || this == target;

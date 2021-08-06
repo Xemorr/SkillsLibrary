@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class NearestEffect extends WrapperEffect implements EntityEffect, TargetEffect, BlockEffect {
+public class NearestEffect extends WrapperEffect implements EntityEffect, TargetEffect, LocationEffect {
 
     private final double radius;
 
@@ -22,8 +22,8 @@ public class NearestEffect extends WrapperEffect implements EntityEffect, Target
     }
 
     @Override
-    public boolean useEffect(Entity entity, Block block) {
-        LivingEntity nearest = getNearest(entity, block.getLocation());
+    public boolean useEffect(Entity entity, Location location) {
+        LivingEntity nearest = getNearest(entity, location);
         return handleEffects(entity, nearest);
     }
 

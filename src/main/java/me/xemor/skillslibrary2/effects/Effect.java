@@ -39,7 +39,7 @@ public abstract class Effect {
             case ALL: return true;
             case SELF: return this instanceof EntityEffect;
             case OTHER: return this instanceof TargetEffect;
-            case BLOCK: return this instanceof BlockEffect;
+            case LOCATION: return this instanceof LocationEffect;
         }
         return false;
     }

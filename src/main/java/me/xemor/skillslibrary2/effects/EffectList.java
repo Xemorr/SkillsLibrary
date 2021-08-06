@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.effects;
 
 import me.xemor.skillslibrary2.Mode;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -50,9 +51,9 @@ public class EffectList implements Iterable<Effect> {
                 TargetEffect targetEffect = (TargetEffect) effect;
                 result |= targetEffect.useEffect(entity, (Entity) otherObject);
             }
-            else if (effect instanceof BlockEffect && effect.getMode().runs(Mode.BLOCK) && otherObject instanceof Block) {
-                BlockEffect blockEffect = (BlockEffect) effect;
-                result |= blockEffect.useEffect(entity, (Block) otherObject);
+            else if (effect instanceof LocationEffect && effect.getMode().runs(Mode.LOCATION) && otherObject instanceof Location) {
+                LocationEffect locationEffect = (LocationEffect) effect;
+                result |= locationEffect.useEffect(entity, (Location) otherObject);
             }
         }
         return result;
@@ -70,9 +71,9 @@ public class EffectList implements Iterable<Effect> {
                 TargetEffect targetEffect = (TargetEffect) effect;
                 result |= targetEffect.useEffect(entity, (Entity) otherObject);
             }
-            else if (effect instanceof BlockEffect && effect.getMode().runs(Mode.BLOCK) && otherObject instanceof Block) {
-                BlockEffect blockEffect = (BlockEffect) effect;
-                result |= blockEffect.useEffect(entity, (Block) otherObject);
+            else if (effect instanceof LocationEffect && effect.getMode().runs(Mode.LOCATION) && otherObject instanceof Block) {
+                LocationEffect locationEffect = (LocationEffect) effect;
+                result |= locationEffect.useEffect(entity, (Location) otherObject);
             }
         }
         return result;

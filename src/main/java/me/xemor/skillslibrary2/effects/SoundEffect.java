@@ -6,7 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
-public class SoundEffect extends Effect implements EntityEffect, TargetEffect, BlockEffect {
+public class SoundEffect extends Effect implements EntityEffect, TargetEffect, LocationEffect {
     private final SoundData soundData;
 
     public SoundEffect(int effect, ConfigurationSection configurationSection) {
@@ -28,8 +28,8 @@ public class SoundEffect extends Effect implements EntityEffect, TargetEffect, B
     }
 
     @Override
-    public boolean useEffect(Entity entity, Block block) {
-        playSound(block.getLocation());
+    public boolean useEffect(Entity entity, Location location) {
+        playSound(location);
         return false;
     }
 

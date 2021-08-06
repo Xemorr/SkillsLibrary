@@ -1,7 +1,6 @@
 package me.xemor.skillslibrary2.conditions;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,7 +9,7 @@ import org.bukkit.entity.Entity;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class BiomeCondition extends Condition implements EntityCondition, TargetCondition, BlockCondition {
+public class BiomeCondition extends Condition implements EntityCondition, TargetCondition, LocationCondition {
 
     Set<Biome> biomes;
 
@@ -21,8 +20,8 @@ public class BiomeCondition extends Condition implements EntityCondition, Target
     }
 
     @Override
-    public boolean isTrue(Entity entity, Block block) {
-        return biomes.contains(block.getBiome());
+    public boolean isTrue(Entity entity, Location location) {
+        return biomes.contains(location.getWorld().getBiome(location.getBlockX(), location.getBlockY(), location.getBlockZ()));
     }
 
     @Override

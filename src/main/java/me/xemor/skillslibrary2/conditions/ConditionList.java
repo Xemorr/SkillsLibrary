@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.skillslibrary2.Mode;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -52,9 +53,9 @@ public class ConditionList implements Iterable<Condition> {
                 boolean result = targetCondition.isTrue(entity, (Entity) objects[0]);
                 if (!result) return false;
             }
-            else if (condition instanceof BlockCondition && otherObject instanceof Block && condition.getMode().runs(Mode.BLOCK)) {
-                BlockCondition blockCondition = (BlockCondition) condition;
-                boolean result = blockCondition.isTrue(entity, (Block) objects[0]);
+            else if (condition instanceof LocationCondition && otherObject instanceof Block && condition.getMode().runs(Mode.LOCATION)) {
+                LocationCondition locationCondition = (LocationCondition) condition;
+                boolean result = locationCondition.isTrue(entity, (Location) objects[0]);
                 if (!result) return false;
             }
         }

@@ -1,12 +1,13 @@
 package me.xemor.skillslibrary2.conditions;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.util.List;
 
-public class WorldCondition extends Condition implements EntityCondition, TargetCondition, BlockCondition {
+public class WorldCondition extends Condition implements EntityCondition, TargetCondition, LocationCondition {
 
     List<String> worlds;
 
@@ -16,8 +17,8 @@ public class WorldCondition extends Condition implements EntityCondition, Target
     }
 
     @Override
-    public boolean isTrue(Entity entity, Block block) {
-        return worlds.contains(block.getWorld().getName());
+    public boolean isTrue(Entity entity, Location location) {
+        return worlds.contains(location.getWorld().getName());
     }
 
     @Override

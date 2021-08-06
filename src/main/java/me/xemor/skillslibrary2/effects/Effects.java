@@ -1,13 +1,14 @@
 package me.xemor.skillslibrary2.effects;
 
 import com.google.common.collect.HashBiMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 import java.util.HashMap;
 
 public class Effects {
 
     private static final HashBiMap<String, Integer> nameToEffect = HashBiMap.create();
-    private static final HashMap<Integer, Class<? extends Effect>> effectToData = new HashMap<>();
+    private static final Int2ObjectOpenHashMap<Class<? extends Effect>> effectToData = new Int2ObjectOpenHashMap<>();
     private static int counter = 0;
 
     static {
@@ -45,6 +46,8 @@ public class Effects {
         registerEffect("IGNITE", IgniteEffect.class);
         registerEffect("TARGET", TargetEntityEffect.class);
         registerEffect("SWAP", SwapEffect.class);
+        registerEffect("LOCATIONCUBE", LocationCubeEffect.class);
+        registerEffect("PLACEBLOCK", PlaceBlockEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {

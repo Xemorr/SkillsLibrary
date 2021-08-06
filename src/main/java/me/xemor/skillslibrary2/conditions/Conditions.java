@@ -1,11 +1,13 @@
 package me.xemor.skillslibrary2.conditions;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+
 import java.util.HashMap;
 
 public class Conditions {
 
     private static final HashMap<String, Integer> nameToCondition = new HashMap<>();
-    private static final HashMap<Integer, Class<? extends Condition>> conditionToClass = new HashMap<>();
+    private static final Int2ObjectOpenHashMap<Class<? extends Condition>> conditionToClass = new Int2ObjectOpenHashMap<>();
     private static int counter;
 
     static {

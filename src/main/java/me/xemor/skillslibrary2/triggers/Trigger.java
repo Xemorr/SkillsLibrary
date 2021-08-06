@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.triggers;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import me.xemor.skillslibrary2.SkillsLibrary;
 
 import java.util.HashMap;
@@ -7,7 +8,7 @@ import java.util.HashMap;
 public class Trigger {
 
     private static final HashMap<String, Integer> nameToTrigger = new HashMap<>();
-    private static final HashMap<Integer, Class<? extends TriggerData>> triggerToData = new HashMap<>();
+    private static final Int2ObjectOpenHashMap<Class<? extends TriggerData>> triggerToData = new Int2ObjectOpenHashMap<>();
     private static int counter = 0;
 
     static {
