@@ -71,7 +71,7 @@ public class EffectList implements Iterable<Effect> {
                 TargetEffect targetEffect = (TargetEffect) effect;
                 result |= targetEffect.useEffect(entity, (Entity) otherObject);
             }
-            else if (effect instanceof LocationEffect && effect.getMode().runs(Mode.LOCATION) && otherObject instanceof Block) {
+            else if (effect instanceof LocationEffect && effect.getMode().runs(Mode.LOCATION) && otherObject instanceof Location) {
                 LocationEffect locationEffect = (LocationEffect) effect;
                 result |= locationEffect.useEffect(entity, (Location) otherObject);
             }

@@ -53,7 +53,7 @@ public class ConditionList implements Iterable<Condition> {
                 boolean result = targetCondition.isTrue(entity, (Entity) objects[0]);
                 if (!result) return false;
             }
-            else if (condition instanceof LocationCondition && otherObject instanceof Block && condition.getMode().runs(Mode.LOCATION)) {
+            else if (condition instanceof LocationCondition && otherObject instanceof Location && condition.getMode().runs(Mode.LOCATION)) {
                 LocationCondition locationCondition = (LocationCondition) condition;
                 boolean result = locationCondition.isTrue(entity, (Location) objects[0]);
                 if (!result) return false;

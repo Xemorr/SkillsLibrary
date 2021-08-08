@@ -30,6 +30,7 @@ public class Conditions {
         register("TAMED", TamedCondition.class);
         register("FLYING", FlyingCondition.class);
         register("HEIGHT", HeightCondition.class);
+        register("BLOCK", BlockCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

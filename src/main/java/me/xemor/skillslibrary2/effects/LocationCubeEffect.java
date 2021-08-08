@@ -7,7 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-public class LocationCubeEffect extends WrapperEffect implements LocationEffect {
+public class LocationCubeEffect extends WrapperEffect implements EntityEffect, LocationEffect, TargetEffect {
 
     private final int verticalRadius;
     private final int horizontalRadius;
@@ -39,4 +39,15 @@ public class LocationCubeEffect extends WrapperEffect implements LocationEffect 
         return false;
     }
 
+    @Override
+    public boolean useEffect(Entity entity) {
+        useEffect(entity, entity.getLocation());
+        return false;
+    }
+
+    @Override
+    public boolean useEffect(Entity entity, Entity target) {
+        useEffect(entity, entity.getLocation());
+        return false;
+    }
 }
