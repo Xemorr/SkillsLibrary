@@ -214,6 +214,15 @@ public class Triggers implements Listener {
     }
 
     @EventHandler
+    public void onProjectileHit(ProjectileHitEvent e) {
+        Projectile projectile = e.getEntity();
+        if (projectile.getShooter() instanceof LivingEntity) {
+            LivingEntity shooter = (LivingEntity) projectile.getShooter();
+            e.setCancelled(handleSkills(Trigger.getTrigger("PROJECTILEHIT"), shooter, projectile));
+        }
+    }
+
+    @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
         handleSkills(Trigger.getTrigger("DEATH"), e.getEntity(), e.getEntity().getKiller());
     }
