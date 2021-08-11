@@ -49,6 +49,7 @@ public class Effects {
         registerEffect("LOCATIONCUBE", LocationCubeEffect.class);
         registerEffect("PLACEBLOCK", PlaceBlockEffect.class);
         registerEffect("SPAWNENTITY", SpawnEffect.class);
+        registerEffect("REMOVEPOTION", RemovePotionEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
