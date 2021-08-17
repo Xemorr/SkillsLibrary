@@ -31,6 +31,7 @@ public class Conditions {
         register("FLYING", FlyingCondition.class);
         register("HEIGHT", HeightCondition.class);
         register("BLOCK", BlockCondition.class);
+        register("ITEM", ItemCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

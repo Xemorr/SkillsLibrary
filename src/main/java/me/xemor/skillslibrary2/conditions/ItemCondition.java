@@ -1,6 +1,6 @@
 package me.xemor.skillslibrary2.conditions;
 
-import me.xemor.configurationdata.ItemStackData;
+import me.xemor.configurationdata.comparison.ItemComparisonData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -11,7 +11,8 @@ import org.bukkit.inventory.ItemStack;
 public class ItemCondition extends Condition implements EntityCondition, TargetCondition {
 
     private EquipmentSlot equipmentSlot;
-    private ItemStack item;
+    private int slot;
+    private ItemComparisonData itemComparison;
 
     public ItemCondition(int condition, ConfigurationSection configurationSection) {
         super(condition, configurationSection);
@@ -19,26 +20,36 @@ public class ItemCondition extends Condition implements EntityCondition, TargetC
         try {
             equipmentSlot = EquipmentSlot.valueOf(equipmentSlotStr);
         } catch (IllegalArgumentException e) {
-            SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid equipment slot! " + configurationSection.getCurrentPath() + ".slot");
+            try {
+                slot = Integer.parseInt(equipmentSlotStr);
+            } catch (NumberFormatException ignored) {
+                SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid equipment slot! " + configurationSection.getCurrentPath() + ".slot");
+
+            }
             return;
         }
         ConfigurationSection itemSection = configurationSection.getConfigurationSection("item");
         if (itemSection != null) {
-            item = new ItemStackData(itemSection).getItem();
+            itemComparison = new ItemComparisonData(itemSection);
         }
     }
 
     @Override
     public boolean isTrue(Entity entity) {
-        if (entity instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) entity;
-            ItemStack item = livingEntity.getEquipment().getItem(equipmentSlot);
-        }
-        return false;
+        return matches(entity);
     }
 
     @Override
     public boolean isTrue(Entity entity, Entity target) {
+        return matches(target);
+    }
+
+    public boolean matches(Entity entity) {
+        if (entity instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            ItemStack item = livingEntity.getEquipment().getItem(equipmentSlot);
+            return itemComparison.matches(item);
+        }
         return false;
     }
 }

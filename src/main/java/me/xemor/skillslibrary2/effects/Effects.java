@@ -50,6 +50,7 @@ public class Effects {
         registerEffect("PLACEBLOCK", PlaceBlockEffect.class);
         registerEffect("SPAWNENTITY", SpawnEffect.class);
         registerEffect("REMOVEPOTION", RemovePotionEffect.class);
+        registerEffect("TELEPORT", TeleportEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
