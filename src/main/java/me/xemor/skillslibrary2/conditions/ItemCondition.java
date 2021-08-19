@@ -5,8 +5,10 @@ import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public class ItemCondition extends Condition implements EntityCondition, TargetCondition {
 
@@ -47,9 +49,16 @@ public class ItemCondition extends Condition implements EntityCondition, TargetC
     public boolean matches(Entity entity) {
         if (entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) entity;
-            ItemStack item = livingEntity.getEquipment().getItem(equipmentSlot);
+            ItemStack item = null;
+            if (equipmentSlot != null) item = livingEntity.getEquipment().getItem(equipmentSlot);
+            else if (entity instanceof Player) {
+                Player player = (Player) entity;
+                PlayerInventory inventory = player.getInventory();
+                item = inventory.getItem(slot);
+            }
             return itemComparison.matches(item);
         }
         return false;
     }
+
 }

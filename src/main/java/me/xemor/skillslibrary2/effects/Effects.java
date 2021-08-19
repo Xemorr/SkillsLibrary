@@ -51,6 +51,7 @@ public class Effects {
         registerEffect("SPAWNENTITY", SpawnEffect.class);
         registerEffect("REMOVEPOTION", RemovePotionEffect.class);
         registerEffect("TELEPORT", TeleportEffect.class);
+        registerEffect("RAYTRACE", RaytraceEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
