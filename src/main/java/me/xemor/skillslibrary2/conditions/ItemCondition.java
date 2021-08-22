@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.configurationdata.comparison.ItemComparisonData;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -26,7 +27,6 @@ public class ItemCondition extends Condition implements EntityCondition, TargetC
                 slot = Integer.parseInt(equipmentSlotStr);
             } catch (NumberFormatException ignored) {
                 SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid equipment slot! " + configurationSection.getCurrentPath() + ".slot");
-
             }
             return;
         }
@@ -56,6 +56,7 @@ public class ItemCondition extends Condition implements EntityCondition, TargetC
                 PlayerInventory inventory = player.getInventory();
                 item = inventory.getItem(slot);
             }
+            if (item == null) item = new ItemStack(Material.AIR);
             return itemComparison.matches(item);
         }
         return false;

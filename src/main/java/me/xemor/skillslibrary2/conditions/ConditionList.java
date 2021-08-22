@@ -10,11 +10,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class ConditionList implements Iterable<Condition> {
 
-    ArrayList<Condition> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
 
     public ConditionList(ConfigurationSection conditionsSection) {
         loadConditions(conditionsSection);
