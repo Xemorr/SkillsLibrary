@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
@@ -60,7 +61,7 @@ public class Triggers implements Listener {
         handleSkills(Trigger.getTrigger("PLAYERQUIT"), e.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(Trigger.getTrigger("INTERACT"));
@@ -75,7 +76,7 @@ public class Triggers implements Listener {
         if (cancel) e.setCancelled(cancel);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onJump(PlayerMoveEvent e) {
         if (e.getTo() == null) return;
         double difference = e.getTo().clone().subtract(e.getFrom()).getY();
@@ -84,7 +85,7 @@ public class Triggers implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onGlide(EntityToggleGlideEvent e) {
         if (e.getEntity() instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) e.getEntity();
@@ -93,7 +94,7 @@ public class Triggers implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageByEntityEvent e) {
         if (e.getDamager() instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) e.getDamager();
@@ -109,7 +110,7 @@ public class Triggers implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void damagedByProjectile(EntityDamageByEntityEvent e) {
         Collection<Skill> damagedByProjectileSkills = SkillsLibrary.getSkillsManager().getSkills(Trigger.getTrigger("DAMAGEDBYPROJECTILE"));
         Collection<Skill> projectileCombatSkills = SkillsLibrary.getSkillsManager().getSkills(Trigger.getTrigger("PROJECTILECOMBAT"));
@@ -134,7 +135,7 @@ public class Triggers implements Listener {
         e.setCancelled(cancel);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void damagedWithProjectile(EntityDamageByEntityEvent e) {
         Collection<Skill> damagedByProjectileSkills = SkillsLibrary.getSkillsManager().getSkills(Trigger.getTrigger("DAMAGEDENTITYWITHPROJECTILE"));
         Collection<Skill> projectileCombatSkills = SkillsLibrary.getSkillsManager().getSkills(Trigger.getTrigger("PROJECTILECOMBAT"));
@@ -159,7 +160,7 @@ public class Triggers implements Listener {
         e.setCancelled(cancel);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageEvent e) {
         boolean cancel = false;
         if (e.getEntity() instanceof LivingEntity) {
@@ -175,7 +176,7 @@ public class Triggers implements Listener {
         e.setCancelled(cancel);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onSneak(PlayerToggleSneakEvent e) {
         if (e.isSneaking()) {
             Player player = e.getPlayer();
@@ -183,14 +184,14 @@ public class Triggers implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onTarget(EntityTargetLivingEntityEvent e) {
         if (e.getTarget() != null) {
             e.setCancelled(handleSkills(Trigger.getTrigger("TARGET"), e.getEntity(), e.getTarget()));
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onVehicleEnter(VehicleEnterEvent e) {
         if (e.getEntered() instanceof LivingEntity) {
             boolean cancel = handleSkills(Trigger.getTrigger("ENTERVEHICLE"), e.getEntered(), e.getVehicle());
@@ -204,7 +205,7 @@ public class Triggers implements Listener {
         e.setCancelled(handleSkills(Trigger.getTrigger("EXITVEHICLE"), e.getExited(), e.getVehicle()));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onProjectileLaunch(ProjectileLaunchEvent e) {
         Projectile projectile = e.getEntity();
         if (projectile.getShooter() instanceof LivingEntity) {
@@ -213,7 +214,7 @@ public class Triggers implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onProjectileHit(ProjectileHitEvent e) {
         Projectile projectile = e.getEntity();
         if (projectile.getShooter() instanceof LivingEntity) {
@@ -222,18 +223,18 @@ public class Triggers implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent e) {
         handleSkills(Trigger.getTrigger("DEATH"), e.getEntity(), e.getEntity().getKiller());
     }
 
-/*
+
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent e) {
         Entity entity = e.getEntity();
         e.setCancelled(handleSkills(Trigger.getTrigger("SPAWN"), entity));
     }
-*/
+
 
     @EventHandler
     public void onTame(EntityTameEvent e) {

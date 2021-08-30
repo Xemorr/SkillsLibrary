@@ -10,12 +10,10 @@ import java.lang.reflect.InvocationTargetException;
 public abstract class Effect {
 
     private final int effect;
-    private final ConfigurationSection configurationSection;
     private Mode mode = null;
 
     public Effect(int effect, ConfigurationSection configurationSection) {
         this.effect = effect;
-        this.configurationSection = configurationSection;
         try {
             mode = Mode.valueOf(configurationSection.getString("mode", "ALL"));
         } catch (IllegalArgumentException e) {
@@ -24,10 +22,6 @@ public abstract class Effect {
         if (!supports(mode)) {
             SkillsLibrary.getInstance().getLogger().severe(Effects.getName(effect) + " does not support " + mode.name() + ". Please change the mode at " + configurationSection.getCurrentPath() + ".mode");
         }
-    }
-
-    public ConfigurationSection getData() {
-        return configurationSection;
     }
 
     public int getEffect() {
