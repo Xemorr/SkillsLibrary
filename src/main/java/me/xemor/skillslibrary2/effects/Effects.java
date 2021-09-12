@@ -3,8 +3,6 @@ package me.xemor.skillslibrary2.effects;
 import com.google.common.collect.HashBiMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
-import java.util.HashMap;
-
 public class Effects {
 
     private static final HashBiMap<String, Integer> nameToEffect = HashBiMap.create();
@@ -52,6 +50,7 @@ public class Effects {
         registerEffect("REMOVEPOTION", RemovePotionEffect.class);
         registerEffect("TELEPORT", TeleportEffect.class);
         registerEffect("RAYTRACE", RaytraceEffect.class);
+        registerEffect("TIMER", TimerEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {

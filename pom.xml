@@ -131,5 +131,11 @@
             <artifactId>annotations</artifactId>
             <version>20.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>4.9.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>
