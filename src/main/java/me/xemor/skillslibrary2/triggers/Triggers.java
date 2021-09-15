@@ -226,6 +226,7 @@ public class Triggers implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent e) {
         handleSkills(Trigger.getTrigger("DEATH"), e.getEntity(), e.getEntity().getKiller());
+        handleSkills(Trigger.getTrigger("KILL"), e.getEntity().getKiller(), e.getEntity());
     }
 
 

@@ -36,7 +36,7 @@ public class Trigger {
         registerTrigger("PROJECTILECOMBAT", ProjectileData.class);
         registerTrigger("TAME", TriggerData.class);
         registerTrigger("INTERACT", InteractData.class);
-        registerTrigger("PROJECTILEHIT", TriggerData.class);
+        registerTrigger("KILL", TriggerData.class);
     }
 
     public static void registerTrigger(String name, Class<? extends TriggerData> effectDataClass) {
