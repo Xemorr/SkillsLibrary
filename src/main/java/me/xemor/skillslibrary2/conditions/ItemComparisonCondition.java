@@ -28,7 +28,6 @@ public class ItemComparisonCondition extends Condition implements EntityConditio
             } catch (NumberFormatException ignored) {
                 SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid equipment slot! " + configurationSection.getCurrentPath() + ".slot");
             }
-            return;
         }
         ConfigurationSection itemSection = configurationSection.getConfigurationSection("item");
         if (itemSection != null) {

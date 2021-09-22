@@ -50,4 +50,5 @@ public class NearestEffect extends WrapperEffect implements EntityEffect, Target
         }
         return (LivingEntity) Collections.min(entities, Comparator.comparingDouble(entity -> entity.getLocation().distanceSquared(location)));
     }
+
 }

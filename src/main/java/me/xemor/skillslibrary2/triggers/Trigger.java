@@ -37,6 +37,7 @@ public class Trigger {
         registerTrigger("TAME", TriggerData.class);
         registerTrigger("INTERACT", InteractData.class);
         registerTrigger("KILL", TriggerData.class);
+        registerTrigger("POTIONEFFECT", PotionEffectTriggerData.class);
     }
 
     public static void registerTrigger(String name, Class<? extends TriggerData> effectDataClass) {

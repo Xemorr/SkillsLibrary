@@ -61,7 +61,12 @@ public class Triggers implements Listener {
         handleSkills(Trigger.getTrigger("PLAYERQUIT"), e.getPlayer());
     }
 
-    @EventHandler()
+    @EventHandler
+    public void onPotionEffect(EntityPotionEffectEvent e) {
+
+    }
+
+    @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(Trigger.getTrigger("INTERACT"));

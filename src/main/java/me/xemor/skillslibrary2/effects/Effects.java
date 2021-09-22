@@ -52,6 +52,9 @@ public class Effects {
         registerEffect("RAYTRACE", RaytraceEffect.class);
         registerEffect("TIMER", TimerEffect.class);
         registerEffect("REMOVEENTITY", RemoveEntityEffect.class);
+        registerEffect("ITEMSTACK", ItemStackWrapperEffect.class);
+        registerEffect("ITEMAMOUNT", ItemAmountEffect.class);
+        registerEffect("SWITCHEROO", SwitcherooWrapperEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
