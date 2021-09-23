@@ -11,8 +11,9 @@ public class ItemAmountEffect extends ModifyEffect implements ItemStackEffect {
     }
 
     @Override
-    public void useEffect(Entity entity, ItemStack item) {
+    public boolean useEffect(Entity entity, ItemStack item) {
         item.setAmount((int) Math.round(changeValue(item.getAmount())));
+        return false;
     }
 
 }

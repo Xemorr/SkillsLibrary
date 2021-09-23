@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -55,6 +56,10 @@ public class EffectList implements Iterable<Effect> {
                 LocationEffect locationEffect = (LocationEffect) effect;
                 result |= locationEffect.useEffect(entity, (Location) otherObject);
             }
+            else if (effect instanceof ItemStackEffect && effect.getMode().runs(Mode.ITEM) && otherObject instanceof ItemStack) {
+                ItemStackEffect itemStackEffect = (ItemStackEffect) effect;
+                result |= itemStackEffect.useEffect(entity, (ItemStack) otherObject);
+            }
         }
         return result;
     }
@@ -74,6 +79,10 @@ public class EffectList implements Iterable<Effect> {
             else if (effect instanceof LocationEffect && effect.getMode().runs(Mode.LOCATION) && otherObject instanceof Location) {
                 LocationEffect locationEffect = (LocationEffect) effect;
                 result |= locationEffect.useEffect(entity, (Location) otherObject);
+            }
+            else if (effect instanceof ItemStackEffect && effect.getMode().runs(Mode.ITEM) && otherObject instanceof ItemStack) {
+                ItemStackEffect itemStackEffect = (ItemStackEffect) effect;
+                result |= itemStackEffect.useEffect(entity, (ItemStack) otherObject);
             }
         }
         return result;

@@ -5,6 +5,6 @@ import org.bukkit.inventory.ItemStack;
 
 public interface ItemStackEffect {
 
-    void useEffect(Entity entity, ItemStack item);
+    boolean useEffect(Entity entity, ItemStack item);
 
 }
