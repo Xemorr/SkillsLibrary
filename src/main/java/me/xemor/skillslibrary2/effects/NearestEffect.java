@@ -36,6 +36,7 @@ public class NearestEffect extends WrapperEffect implements EntityEffect, Target
     @Override
     public boolean useEffect(Entity livingEntity, Entity target) {
         LivingEntity nearest = getNearest(livingEntity, target.getLocation());
+        if (nearest == null) return false;
         return handleEffects(livingEntity, nearest);
     }
 

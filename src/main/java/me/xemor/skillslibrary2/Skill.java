@@ -31,7 +31,7 @@ public class Skill {
     }
 
     public boolean handleEffects(Entity entity, Object... objects) {
-        if (trigger.getConditions().areConditionsTrue(entity, objects)) {
+        if (trigger.getConditions().ANDConditions(entity, false, objects)) {
             return effects.handleEffects(entity, objects);
         }
         return false;

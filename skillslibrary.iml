@@ -38,7 +38,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.kyori:adventure-text-serializer-gson-legacy-impl:4.9.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.kyori:adventure-platform-facet:4.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.kyori:adventure-platform-viaversion:4.0.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: me.xemor:configurationdata:1.17-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: me.xemor:configurationdata:1.17.2-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: it.unimi.dsi:fastutil:8.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:20.1.0" level="project" />
     <orderEntry type="library" name="Maven: net.kyori:adventure-api:4.9.1" level="project" />

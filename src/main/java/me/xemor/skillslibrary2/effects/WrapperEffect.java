@@ -25,13 +25,10 @@ public abstract class WrapperEffect extends Effect {
         else {
             effects = new EffectList();
         }
-
-
-
     }
 
     public boolean handleEffects(Entity entity, Object... objects) {
-        if (conditions.areConditionsTrue(entity, objects)) {
+        if (conditions.ANDConditions(entity, false, objects)) {
             return effects.handleExactEffects(entity, objects);
         }
         return false;

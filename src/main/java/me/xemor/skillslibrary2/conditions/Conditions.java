@@ -32,6 +32,7 @@ public class Conditions {
         register("HEIGHT", HeightCondition.class);
         register("BLOCK", BlockCondition.class);
         register("ITEM", ItemComparisonCondition.class);
+        register("OR", ORCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

@@ -41,10 +41,15 @@ public class ConditionList implements Iterable<Condition> {
         }
     }
 
+    @Deprecated
     public boolean areConditionsTrue(Entity entity, Object... objects) {
+        return ANDConditions(entity, false, objects);
+    }
+
+    public boolean ANDConditions(Entity entity, boolean exact, Object... objects) {
         Object otherObject = objects.length == 0 ? null : objects[0];
         for (Condition condition : conditions) {
-            if (condition instanceof EntityCondition && condition.getMode().runs(Mode.SELF)) {
+            if (condition instanceof EntityCondition && condition.getMode().runs(Mode.SELF) && (!exact || otherObject == null)) {
                 EntityCondition entityCondition = (EntityCondition) condition;
                 boolean result = entityCondition.isTrue(entity);
                 if (!result) return false;
@@ -61,6 +66,28 @@ public class ConditionList implements Iterable<Condition> {
             }
         }
         return true;
+    }
+
+    public boolean ORConditions(Entity entity, boolean exact, Object... objects) {
+        Object otherObject = objects.length == 0 ? null : objects[0];
+        for (Condition condition : conditions) {
+            if (condition instanceof EntityCondition && condition.getMode().runs(Mode.SELF) && (!exact || otherObject == null)) {
+                EntityCondition entityCondition = (EntityCondition) condition;
+                boolean result = entityCondition.isTrue(entity);
+                if (result) return true;
+            }
+            if (condition instanceof TargetCondition && otherObject instanceof Entity && condition.getMode().runs(Mode.OTHER)) {
+                TargetCondition targetCondition = (TargetCondition) condition;
+                boolean result = targetCondition.isTrue(entity, (Entity) objects[0]);
+                if (result) return true;
+            }
+            else if (condition instanceof LocationCondition && otherObject instanceof Location && condition.getMode().runs(Mode.LOCATION)) {
+                LocationCondition locationCondition = (LocationCondition) condition;
+                boolean result = locationCondition.isTrue(entity, (Location) objects[0]);
+                if (!result) return true;
+            }
+        }
+        return false;
     }
 
     public void addCondition(Condition condition) {
