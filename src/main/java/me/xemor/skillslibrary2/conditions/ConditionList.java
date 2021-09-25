@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -64,6 +65,11 @@ public class ConditionList implements Iterable<Condition> {
                 boolean result = locationCondition.isTrue(entity, (Location) objects[0]);
                 if (!result) return false;
             }
+            else if (condition instanceof ItemStackCondition && otherObject instanceof ItemStackCondition && condition.getMode().runs(Mode.ITEM)) {
+                ItemStackCondition itemStackCondition = (ItemStackCondition) condition;
+                boolean result = itemStackCondition.isTrue(entity, (ItemStack) objects[0]);
+                if (!result) return false;
+            }
         }
         return true;
     }
@@ -84,7 +90,12 @@ public class ConditionList implements Iterable<Condition> {
             else if (condition instanceof LocationCondition && otherObject instanceof Location && condition.getMode().runs(Mode.LOCATION)) {
                 LocationCondition locationCondition = (LocationCondition) condition;
                 boolean result = locationCondition.isTrue(entity, (Location) objects[0]);
-                if (!result) return true;
+                if (result) return true;
+            }
+            else if (condition instanceof ItemStackCondition && otherObject instanceof ItemStackCondition && condition.getMode().runs(Mode.ITEM)) {
+                ItemStackCondition itemStackCondition = (ItemStackCondition) condition;
+                boolean result = itemStackCondition.isTrue(entity, (ItemStack) objects[0]);
+                if (result) return true;
             }
         }
         return false;

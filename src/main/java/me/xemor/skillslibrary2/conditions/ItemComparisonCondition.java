@@ -11,7 +11,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public class ItemComparisonCondition extends Condition implements EntityCondition, TargetCondition {
+public class ItemComparisonCondition extends Condition implements EntityCondition, TargetCondition, ItemStackCondition {
 
     private EquipmentSlot equipmentSlot;
     private int slot;
@@ -61,4 +61,8 @@ public class ItemComparisonCondition extends Condition implements EntityConditio
         return false;
     }
 
+    @Override
+    public boolean isTrue(Entity entity, ItemStack itemStack) {
+        return itemComparison.matches(itemStack);
+    }
 }
