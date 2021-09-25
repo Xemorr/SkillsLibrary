@@ -29,6 +29,7 @@ public class Trigger {
         registerTrigger("TARGET", TriggerData.class);
         registerTrigger("VEHICLE", TriggerData.class);
         registerTrigger("ENTERVEHICLE", TriggerData.class);
+        registerTrigger("BECOMEVEHICLE", TriggerData.class);
         registerTrigger("EXITVEHICLE", TriggerData.class);
         registerTrigger("PLAYERJOIN", TriggerData.class);
         registerTrigger("PLAYERQUIT", TriggerData.class);

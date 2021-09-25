@@ -201,6 +201,7 @@ public class Triggers implements Listener {
         if (e.getEntered() instanceof LivingEntity) {
             boolean cancel = handleSkills(Trigger.getTrigger("ENTERVEHICLE"), e.getEntered(), e.getVehicle());
             cancel |= handleSkills(Trigger.getTrigger("VEHICLE"), e.getEntered(), e.getVehicle());
+            cancel |= handleSkills(Trigger.getTrigger("BECOMEVEHICLE"), e.getVehicle(), e.getEntered());
             e.setCancelled(cancel);
         }
     }
@@ -253,10 +254,7 @@ public class Triggers implements Listener {
         Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(trigger);
         boolean cancel = false;
         for (Skill skill : skills) {
-            boolean cancelled = skill.handleEffects(entity, objects);
-            if (cancelled) {
-                cancel = true;
-            }
+            cancel |= skill.handleEffects(entity, objects);
         }
         return cancel;
     }
