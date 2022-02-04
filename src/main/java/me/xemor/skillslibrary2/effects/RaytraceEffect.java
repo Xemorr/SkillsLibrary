@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -34,7 +35,13 @@ public class RaytraceEffect extends WrapperEffect implements EntityEffect, Targe
     @Override
     public boolean useEffect(Entity entity) {
         World world = entity.getWorld();
-        Location location = entity.getLocation();
+        Location location;
+        if (entity instanceof Player) {
+            location = ((Player) entity).getEyeLocation();
+        }
+        else {
+            location = entity.getLocation();
+        }
         Vector direction = location.getDirection();
         RayTraceResult rayTraceResult = world.rayTrace(entity.getLocation(),
                 entity.getLocation().getDirection(),
@@ -42,16 +49,17 @@ public class RaytraceEffect extends WrapperEffect implements EntityEffect, Targe
                 FluidCollisionMode.NEVER,
                 ignorePassables,
                 raySize,
-                null);
-        Object result = null;
+                (other) -> other != entity);
+        Object result;
         if (rayTraceResult == null && alwaysHit) {
             result = location.add(direction.multiply(maxDistance));
         } else if (rayTraceResult == null) {
             return false;
         } else if (rayTraceResult.getHitEntity() != null) {
             result = rayTraceResult.getHitEntity();
-        } else if (rayTraceResult.getHitBlock() != null) {
-            result = rayTraceResult.getHitBlock().getLocation();
+        } else {
+            Vector position = rayTraceResult.getHitPosition();
+            result = new Location(world, position.getX(), position.getY(), position.getZ());
         }
         handleEffects(entity, result);
         return false;

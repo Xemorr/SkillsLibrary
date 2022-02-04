@@ -33,6 +33,7 @@ public class Conditions {
         register("BLOCK", BlockCondition.class);
         register("ITEM", ItemComparisonCondition.class);
         register("OR", ORCondition.class);
+        register("VISIBILITY", VisibilityCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

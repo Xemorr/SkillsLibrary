@@ -23,6 +23,7 @@ public class HealthCondition extends Condition implements EntityCondition, Targe
             double healthPercentage = livingEntity.getHealth() / livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
             return healthPercentage >= minimumHealth && healthPercentage <= maximumHealth;
         }
+
         return false;
     }
 
