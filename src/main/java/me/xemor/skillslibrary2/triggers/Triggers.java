@@ -63,7 +63,17 @@ public class Triggers implements Listener {
 
     @EventHandler
     public void onPotionEffect(EntityPotionEffectEvent e) {
-
+        Entity entity = e.getEntity();
+        Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(Trigger.getTrigger("POTIONEFFECT"));
+        boolean cancel = false;
+        for (Skill skill : skills) {
+            TriggerData triggerData = skill.getTriggerData();
+            if (triggerData instanceof PotionEffectTriggerData) {
+                PotionEffectTriggerData potionEffectTriggerData = (PotionEffectTriggerData) triggerData;
+                if (potionEffectTriggerData.inSet(e.getModifiedType())) cancel |= skill.handleEffects(entity);
+            }
+        }
+        e.setCancelled(cancel);
     }
 
     @EventHandler

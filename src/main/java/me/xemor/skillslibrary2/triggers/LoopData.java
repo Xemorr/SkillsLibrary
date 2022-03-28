@@ -8,7 +8,7 @@ public class LoopData extends TriggerData {
 
     public LoopData(int trigger, ConfigurationSection configurationSection) {
         super(trigger, configurationSection);
-        period = (int) Math.round(configurationSection.getDouble("period", 1) * 20);
+        period = Math.max((int) Math.round(configurationSection.getDouble("period", 1) * 20), 1);
     }
 
     public int getPeriod() {

@@ -34,6 +34,7 @@ public class Conditions {
         register("ITEM", ItemComparisonCondition.class);
         register("OR", ORCondition.class);
         register("VISIBILITY", VisibilityCondition.class);
+        register("LIGHT", LightCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {
