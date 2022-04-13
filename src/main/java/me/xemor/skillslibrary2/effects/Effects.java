@@ -55,6 +55,7 @@ public class Effects {
         registerEffect("ITEMSTACK", ItemStackWrapperEffect.class);
         registerEffect("ITEMAMOUNT", ItemAmountEffect.class);
         registerEffect("SWITCHEROO", SwitcherooWrapperEffect.class);
+        registerEffect("LOCATIONOFFSET", LocationOffsetEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
