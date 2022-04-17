@@ -7,7 +7,7 @@ import org.bukkit.util.Vector;
 
 import me.xemor.configurationdata.VectorData;
 
-public class LocationOffsetEffect extends WrapperEffect implements LocationEffect {
+public class LocationOffsetEffect extends WrapperEffect implements EntityEffect, LocationEffect, TargetEffect {
 
     private final Vector offset;
 
@@ -25,4 +25,17 @@ public class LocationOffsetEffect extends WrapperEffect implements LocationEffec
     public boolean useEffect(Entity entity, Location location) {
         return handleEffects(entity, location.add(offset));
     }
+
+    @Override
+    public boolean useEffect(Entity entity) {
+        handleEffects(entity, entity.getLocation());
+        return false;
+    }
+
+    @Override
+    public boolean useEffect(Entity entity, Entity target) {
+        useEffect(entity, target.getLocation());
+        return false;
+    }
+
 }
