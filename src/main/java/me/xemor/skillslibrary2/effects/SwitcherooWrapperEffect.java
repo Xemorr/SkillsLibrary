@@ -11,7 +11,7 @@ public class SwitcherooWrapperEffect extends WrapperEffect implements TargetEffe
 
     @Override
     public boolean useEffect(Entity entity, Entity target) {
-        return handleEffects(target, entity);
+        return handleEffects(target, entity) || handleEffects(target);
     }
 
 }
