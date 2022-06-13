@@ -40,6 +40,7 @@ public class Trigger {
         registerTrigger("INTERACT", InteractData.class);
         registerTrigger("KILL", TriggerData.class);
         registerTrigger("POTIONEFFECT", PotionEffectTriggerData.class);
+        registerTrigger("INTERACTENTITY", TriggerData.class);
     }
 
     public static void registerTrigger(String name, Class<? extends TriggerData> effectDataClass) {

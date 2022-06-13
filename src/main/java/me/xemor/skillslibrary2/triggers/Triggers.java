@@ -91,11 +91,18 @@ public class Triggers implements Listener {
         if (cancel) e.setCancelled(cancel);
     }
 
+    @EventHandler
+    public void onInteractEntity(PlayerInteractEntityEvent e) {
+        if (e.getRightClicked() instanceof LivingEntity) {
+            handleSkills(Trigger.getTrigger("INTERACTENTITY"), e.getPlayer(), e.getRightClicked());
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onJump(PlayerMoveEvent e) {
         if (e.getTo() == null) return;
         double difference = e.getTo().clone().subtract(e.getFrom()).getY();
-        if (difference >= 0.33319999363422426 && difference <= 0.3332) { //the second statement must be there to support geyser bedrock players
+        if (difference >= 0.33319999363422426 && difference <= 0.3332) { //the second condition must be there to support geyser bedrock players
             handleSkills(Trigger.getTrigger("PLAYERJUMP"), e.getPlayer());
         }
     }
