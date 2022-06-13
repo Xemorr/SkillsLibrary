@@ -5,7 +5,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 
-public class TargetEntityEffect extends Effect implements TargetEffect{
+public class TargetEntityEffect extends Effect implements TargetEffect {
+
     public TargetEntityEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
     }

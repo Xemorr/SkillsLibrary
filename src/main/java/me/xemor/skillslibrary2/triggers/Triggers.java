@@ -202,8 +202,7 @@ public class Triggers implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onTarget(EntityTargetLivingEntityEvent e) {
         if (e.getTarget() != null) {
-            e.setCancelled(handleSkills(Trigger.getTrigger("TARGET"), e.getEntity(), e.getTarget()));
-            e.setCancelled(handleSkills(Trigger.getTrigger("TARGETED"), e.getTarget(), e.getEntity()));
+            e.setCancelled(handleSkills(Trigger.getTrigger("TARGET"), e.getEntity(), e.getTarget()) || handleSkills(Trigger.getTrigger("TARGETED"), e.getTarget(), e.getEntity()));
         }
     }
 

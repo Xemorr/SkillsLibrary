@@ -42,6 +42,7 @@ public class Effects {
         registerEffect("SHOOTER", ShooterEffect.class);
         registerEffect("KNOCKBACK", KnockbackEffect.class);
         registerEffect("IGNITE", IgniteEffect.class);
+        registerEffect("LOSETARGET", LoseTargetEffect.class);
         registerEffect("TARGET", TargetEntityEffect.class);
         registerEffect("SWAP", SwapEffect.class);
         registerEffect("LOCATIONCUBE", LocationCubeEffect.class);
