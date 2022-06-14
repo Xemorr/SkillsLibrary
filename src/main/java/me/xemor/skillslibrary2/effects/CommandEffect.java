@@ -22,10 +22,6 @@ public class CommandEffect extends Effect implements EntityEffect, TargetEffect 
         } catch (IllegalArgumentException e) {
             SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid command executor! " + configurationSection.getCurrentPath() + ".executor");
         }
-        command = configurationSection.getString("command");
-        if (command == null) {
-            SkillsLibrary.getInstance().getLogger().severe("You have not specified a command for the COMMAND effect! " + configurationSection.getCurrentPath() + ".command");
-        }
     }
 
     @Override
