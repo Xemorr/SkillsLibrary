@@ -27,6 +27,7 @@ public class Trigger {
         registerTrigger("DEATH", TriggerData.class);
         registerTrigger("SPAWN", TriggerData.class);
         registerTrigger("TARGET", TriggerData.class);
+        registerTrigger("TARGETED", TriggerData.class);
         registerTrigger("VEHICLE", TriggerData.class);
         registerTrigger("ENTERVEHICLE", TriggerData.class);
         registerTrigger("BECOMEVEHICLE", TriggerData.class);

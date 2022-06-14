@@ -6,14 +6,17 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class CommandEffect extends Effect implements EntityEffect, TargetEffect {
 
     private Executor executor;
-    private String command;
+    private List<String> commands;
 
     public CommandEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
         String executorStr = configurationSection.getString("executor", "CONSOLE").toUpperCase();
+        commands = configurationSection.getStringList("commands");
         try {
             executor = Executor.valueOf(executorStr);
         } catch (IllegalArgumentException e) {
@@ -27,15 +30,19 @@ public class CommandEffect extends Effect implements EntityEffect, TargetEffect 
 
     @Override
     public boolean useEffect(Entity entity) {
-        String command = parse(entity, null);
-        execute(command, entity);
+        for (String command : commands) {
+            command = parse(command, entity, null);
+            execute(command, entity);
+        }
         return false;
     }
 
     @Override
-    public boolean useEffect(Entity livingEntity, Entity target) {
-        String command = parse(livingEntity, target);
-        execute(command, livingEntity);
+    public boolean useEffect(Entity entity, Entity target) {
+        for (String command : commands) {
+            command = parse(command, entity, target);
+            execute(command, entity);
+        }
         return false;
     }
 
@@ -51,16 +58,15 @@ public class CommandEffect extends Effect implements EntityEffect, TargetEffect 
         }
     }
 
-    public String parse(Entity entity1, Entity entity2) {
-        String copy = command;
+    public String parse(String command, Entity entity1, Entity entity2) {
         if (entity1 instanceof Player) {
             Player player = (Player) entity1;
-            copy.replaceAll("%self_name%", player.getName());
+            command.replaceAll("%self_name%", player.getName());
         }
         else if (entity2 instanceof Player) {
-            copy.replace("%target_name%", entity2.getName());
+            command.replace("%target_name%", entity2.getName());
         }
-        return copy;
+        return command;
     }
 
     /**
