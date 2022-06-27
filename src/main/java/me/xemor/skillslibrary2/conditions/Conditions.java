@@ -35,7 +35,7 @@ public class Conditions {
         register("OR", ORCondition.class);
         register("VISIBILITY", VisibilityCondition.class);
         register("LIGHT", LightCondition.class);
-        register("DISTANCE", DistanceCondition.class);
+        register("TEMPERATURE", TemperatureCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {
