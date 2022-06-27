@@ -1,13 +1,13 @@
 package me.xemor.skillslibrary2.conditions;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Conditions {
 
     private static final HashMap<String, Integer> nameToCondition = new HashMap<>();
-    private static final Int2ObjectOpenHashMap<Class<? extends Condition>> conditionToClass = new Int2ObjectOpenHashMap<>();
+    private static final List<Class<? extends Condition>> conditionToClass = new ArrayList<>();
     private static int counter;
 
     static {
@@ -35,16 +35,18 @@ public class Conditions {
         register("OR", ORCondition.class);
         register("VISIBILITY", VisibilityCondition.class);
         register("LIGHT", LightCondition.class);
+        register("DISTANCE", DistanceCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {
         nameToCondition.put(name, counter);
-        conditionToClass.put(counter, triggerDataClass);
+        conditionToClass.add(triggerDataClass);
         counter++;
     }
 
     public static Class<? extends Condition> getClass(int condition) {
-        return conditionToClass.getOrDefault(condition, HealthCondition.class);
+        Class<? extends Condition> effectClass = conditionToClass.get(condition);
+        return effectClass == null ? Condition.class : effectClass;
     }
 
     public static int getCondition(String name) {

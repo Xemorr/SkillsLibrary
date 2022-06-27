@@ -1,14 +1,15 @@
 package me.xemor.skillslibrary2.triggers;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import me.xemor.skillslibrary2.SkillsLibrary;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Trigger {
 
     private static final HashMap<String, Integer> nameToTrigger = new HashMap<>();
-    private static final Int2ObjectOpenHashMap<Class<? extends TriggerData>> triggerToData = new Int2ObjectOpenHashMap<>();
+    private static final List<Class<? extends TriggerData>> triggerToData = new ArrayList<>();
     private static int counter = 0;
 
     static {
@@ -45,11 +46,14 @@ public class Trigger {
 
     public static void registerTrigger(String name, Class<? extends TriggerData> effectDataClass) {
         nameToTrigger.put(name, counter);
-        triggerToData.put(counter, effectDataClass);
+        triggerToData.add(effectDataClass);
         counter++;
     }
 
-    public static Class<? extends TriggerData> getClass(int trigger) { return triggerToData.getOrDefault(trigger, TriggerData.class); }
+    public static Class<? extends TriggerData> getClass(int trigger) {
+        Class<? extends TriggerData> triggerClass = triggerToData.get(trigger);
+        return triggerClass == null ? TriggerData.class : triggerClass;
+    }
 
     public static int getTrigger(String name) {
         int trigger = nameToTrigger.getOrDefault(name, -1);

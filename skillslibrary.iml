@@ -10,7 +10,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_17">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -45,7 +45,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.kyori:adventure-platform-facet:4.1.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.kyori:adventure-platform-viaversion:4.1.0" level="project" />
     <orderEntry type="library" name="Maven: me.xemor:configurationdata:1.17.2-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: it.unimi.dsi:fastutil:8.5.8" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:23.0.0" level="project" />
     <orderEntry type="library" name="Maven: net.kyori:adventure-api:4.10.1" level="project" />
     <orderEntry type="library" name="Maven: net.kyori:adventure-key:4.10.1" level="project" />

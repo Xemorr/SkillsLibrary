@@ -1,12 +1,15 @@
 package me.xemor.skillslibrary2.effects;
 
 import com.google.common.collect.HashBiMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import me.xemor.skillslibrary2.triggers.TriggerData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Effects {
 
     private static final HashBiMap<String, Integer> nameToEffect = HashBiMap.create();
-    private static final Int2ObjectOpenHashMap<Class<? extends Effect>> effectToData = new Int2ObjectOpenHashMap<>();
+    private static final List<Class<? extends Effect>> effectToData = new ArrayList<>();
     private static int counter = 0;
 
     static {
@@ -60,11 +63,14 @@ public class Effects {
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
         nameToEffect.put(name, counter);
-        effectToData.put(counter, effectDataClass);
+        effectToData.add(effectDataClass);
         counter++;
     }
 
-    public static Class<? extends Effect> getClass(int effect) { return effectToData.getOrDefault(effect, Effect.class); }
+    public static Class<? extends Effect> getClass(int effect) {
+        Class<? extends Effect> effectClass = effectToData.get(effect);
+        return effectClass == null ? Effect.class : effectClass;
+    }
 
     public static int getEffect(String name) {
         return nameToEffect.getOrDefault(name, -1);

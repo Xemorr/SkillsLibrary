@@ -43,7 +43,7 @@ public class RaytraceEffect extends WrapperEffect implements EntityEffect, Targe
             location = entity.getLocation();
         }
         Vector direction = location.getDirection();
-        RayTraceResult rayTraceResult = world.rayTrace(entity.getLocation(),
+        RayTraceResult rayTraceResult = world.rayTrace(location,
                 entity.getLocation().getDirection(),
                 maxDistance,
                 FluidCollisionMode.NEVER,

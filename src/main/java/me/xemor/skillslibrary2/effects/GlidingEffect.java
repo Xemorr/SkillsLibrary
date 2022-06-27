@@ -10,7 +10,7 @@ public class GlidingEffect extends Effect implements EntityEffect, TargetEffect 
 
     public GlidingEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
-        glide = configurationSection.getBoolean("glide");
+        glide = configurationSection.getBoolean("glide", true);
     }
 
     @Override
