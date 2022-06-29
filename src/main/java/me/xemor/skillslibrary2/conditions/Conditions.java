@@ -36,6 +36,7 @@ public class Conditions {
         register("VISIBILITY", VisibilityCondition.class);
         register("LIGHT", LightCondition.class);
         register("TEMPERATURE", TemperatureCondition.class);
+        register("SHIELDED", ShieldedCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

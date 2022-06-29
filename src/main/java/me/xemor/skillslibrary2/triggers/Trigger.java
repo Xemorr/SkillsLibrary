@@ -42,6 +42,11 @@ public class Trigger {
         registerTrigger("KILL", TriggerData.class);
         registerTrigger("POTIONEFFECT", PotionEffectTriggerData.class);
         registerTrigger("INTERACTENTITY", TriggerData.class);
+        registerTrigger("RIPTIDE", TriggerData.class);
+        registerTrigger("TOGGLESPRINT", TriggerData.class);
+        registerTrigger("CHANGEMAINHAND", TriggerData.class);
+        registerTrigger("EQUIPARMOR", TriggerData.class);
+        registerTrigger("SPRINT", TriggerData.class);
     }
 
     public static void registerTrigger(String name, Class<? extends TriggerData> effectDataClass) {

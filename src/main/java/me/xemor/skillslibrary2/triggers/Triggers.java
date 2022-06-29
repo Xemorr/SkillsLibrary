@@ -4,6 +4,7 @@ import com.google.common.collect.Iterators;
 import me.xemor.skillslibrary2.Skill;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -11,7 +12,12 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
@@ -19,12 +25,18 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Triggers implements Listener {
+
+    private final Set<Material> armour = EnumSet.of(Material.TURTLE_HELMET,
+            Material.NETHERITE_HELMET, Material.NETHERITE_CHESTPLATE, Material.NETHERITE_LEGGINGS, Material.NETHERITE_BOOTS,
+            Material.IRON_HELMET, Material.IRON_CHESTPLATE, Material.IRON_LEGGINGS, Material.IRON_BOOTS,
+            Material.DIAMOND_HELMET, Material.DIAMOND_CHESTPLATE, Material.DIAMOND_LEGGINGS, Material.DIAMOND_BOOTS,
+            Material.GOLDEN_HELMET, Material.GOLDEN_CHESTPLATE, Material.GOLDEN_LEGGINGS, Material.GOLDEN_BOOTS,
+            Material.CHAINMAIL_HELMET, Material.CHAINMAIL_CHESTPLATE, Material.CHAINMAIL_LEGGINGS, Material.CHAINMAIL_BOOTS,
+            Material.LEATHER_HELMET, Material.LEATHER_CHESTPLATE, Material.LEATHER_LEGGINGS, Material.LEATHER_BOOTS);
 
     public Triggers() {
         AtomicInteger tick = new AtomicInteger();
@@ -259,6 +271,39 @@ public class Triggers implements Listener {
         e.setCancelled(handleSkills(Trigger.getTrigger("SPAWN"), entity));
     }
 
+    @EventHandler
+    public void changeMainHand(PlayerItemHeldEvent e) {
+        handleSkills(Trigger.getTrigger("CHANGEMAINHAND"), e.getPlayer(), e.getPlayer().getInventory().getItem(e.getNewSlot()));
+    }
+
+    @EventHandler
+    public void equip(InventoryClickEvent e) {
+        if (e.getClick() == ClickType.LEFT || e.getClick() == ClickType.RIGHT) {
+            if (e.getSlotType() == InventoryType.SlotType.ARMOR) {
+                e.setCancelled(handleSkills(Trigger.getTrigger("EQUIPARMOR"), e.getWhoClicked(), e.getCurrentItem()));
+            }
+        }
+    }
+
+    @EventHandler
+    public void equip(PlayerInteractEvent e) {
+        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (armour.contains(e.getItem().getType())) {
+                e.setCancelled(handleSkills(Trigger.getTrigger("EQUIPARMOR"), e.getPlayer(), e.getItem()));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onSprint(PlayerToggleSprintEvent e) {
+        if (e.isSprinting()) handleSkills(Trigger.getTrigger("SPRINT"), e.getPlayer());
+    }
+
+    @EventHandler
+    public void riptide(PlayerRiptideEvent e) {
+        Entity entity = e.getPlayer();
+        handleSkills(Trigger.getTrigger("RIPTIDE"), entity);
+    }
 
     @EventHandler
     public void onTame(EntityTameEvent e) {
