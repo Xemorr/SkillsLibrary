@@ -16,8 +16,7 @@ public class ShooterEffect extends WrapperEffect implements TargetEffect {
 
     @Override
     public boolean useEffect(Entity entity, Entity target) {
-        if (entity instanceof Projectile) {
-            Projectile projectile = (Projectile) entity;
+        if (target instanceof Projectile projectile) {
             ProjectileSource shooter = projectile.getShooter();
             handleEffects(entity);
             handleEffects(entity, shooter);

@@ -33,8 +33,12 @@ public abstract class Condition {
         try {
             return Conditions.getClass(condition).getConstructor(int.class, ConfigurationSection.class).newInstance(condition, configurationSection);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            Throwable result = e;
+            if (e instanceof InvocationTargetException c) {
+                result = c.getCause();
+            }
             Bukkit.getLogger().severe("Exception for " + Conditions.getClass(condition).getName());
-            e.printStackTrace();
+            result.printStackTrace();
         }
         return null;
     }

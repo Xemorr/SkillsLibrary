@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.entity.EntityData;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,6 +12,7 @@ public class ArrowEffect extends Effect implements TargetEffect {
     private final double velocity;
     private final int damage;
     private final EntityType entityType;
+    private final int fireTicks;
     private static final double log099 = Math.log(0.99);
 
     public ArrowEffect(int effect, ConfigurationSection configurationSection) {
@@ -18,6 +20,7 @@ public class ArrowEffect extends Effect implements TargetEffect {
         velocity = configurationSection.getDouble("velocity", 1.0);
         damage = configurationSection.getInt("damage", 4);
         entityType = EntityType.valueOf(configurationSection.getString("entity", "arrow").toUpperCase());
+        fireTicks = configurationSection.getInt("fireTicks", 0);
     }
 
     @Override
@@ -38,15 +41,14 @@ public class ArrowEffect extends Effect implements TargetEffect {
             double initialZVelocity = solveForInitialHorizontalVelocity(zDifference, time);
             Vector vector = new Vector(initialXVelocity, initialYVelocity, initialZVelocity);
             Entity spawnedEntity = world.spawnEntity(startPoint, entityType);
-            if (spawnedEntity instanceof Arrow) {
-                Arrow arrow = (Arrow) spawnedEntity;
+            if (spawnedEntity instanceof Arrow arrow) {
                 arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                 arrow.setDamage(damage);
             }
-            if (spawnedEntity instanceof Projectile) {
-                Projectile projectile = (Projectile) spawnedEntity;
+            if (spawnedEntity instanceof Projectile projectile) {
                 projectile.setShooter(livingEntity);
             }
+            spawnedEntity.setFireTicks(fireTicks);
             startPoint = startPoint.add(vector.clone().normalize());
             spawnedEntity.teleport(startPoint);
             spawnedEntity.setVelocity(vector);

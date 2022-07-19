@@ -1,6 +1,8 @@
 package me.xemor.skillslibrary2.triggers;
 
 import me.xemor.skillslibrary2.conditions.ConditionList;
+import me.xemor.skillslibrary2.effects.Effects;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,7 +28,12 @@ public class TriggerData {
         try {
             return Trigger.getClass(trigger).getConstructor(int.class, ConfigurationSection.class).newInstance(trigger, configurationSection);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
+            Throwable result = e;
+            if (e instanceof InvocationTargetException c) {
+                result = c.getCause();
+            }
+            Bukkit.getLogger().severe("Exception for " + Trigger.getClass(trigger).getName());
+            result.printStackTrace();
         }
         return null;
     }

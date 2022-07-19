@@ -2,6 +2,8 @@ package me.xemor.skillslibrary2.effects;
 
 import me.xemor.skillslibrary2.Mode;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.conditions.Conditions;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +45,12 @@ public abstract class Effect {
         try {
             return Effects.getClass(effect).getConstructor(int.class, ConfigurationSection.class).newInstance(effect, configurationSection);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
+            Throwable result = e;
+            if (e instanceof InvocationTargetException c) {
+                result = c.getCause();
+            }
+            Bukkit.getLogger().severe("Exception for " + Effects.getClass(effect).getName());
+            result.printStackTrace();
         }
         return null;
     }
