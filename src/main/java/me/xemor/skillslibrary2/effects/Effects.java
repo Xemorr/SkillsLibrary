@@ -62,6 +62,7 @@ public class Effects {
         registerEffect("LOCATIONOFFSET", LocationOffsetEffect.class);
         registerEffect("BONEMEAL", BonemealEffect.class);
         registerEffect("HUNGER", HungerEffect.class);
+        registerEffect("VEINMINER",VeinMinerEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {

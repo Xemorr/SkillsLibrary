@@ -5,6 +5,7 @@ import me.xemor.skillslibrary2.Skill;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -310,6 +312,13 @@ public class Triggers implements Listener {
         if (e.getOwner() instanceof Entity) {
             handleSkills(Trigger.getTrigger("TAME"), (Entity) e.getOwner(), e.getEntity());
         }
+    }
+
+    @EventHandler
+    public void blockBreak(BlockBreakEvent e) {
+        Entity entity = e.getPlayer();
+        Block block = e.getBlock();
+        handleSkills(Trigger.getTrigger("BLOCKBREAK"), entity, block.getLocation());
     }
 
     public boolean handleSkills(int trigger, @Nullable Entity entity, Object... objects) {
