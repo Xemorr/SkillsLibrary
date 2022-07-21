@@ -27,8 +27,7 @@ public class ScrambleInventoryEffect extends Effect implements EntityEffect, Tar
     }
 
     public void scrambleInventory(Entity entity) {
-        if (entity instanceof InventoryHolder) {
-            InventoryHolder inventoryHolder = (InventoryHolder) entity;
+        if (entity instanceof InventoryHolder inventoryHolder) {
             Inventory inventory = inventoryHolder.getInventory();
             ItemStack[] contents = inventory.getStorageContents();
             Collections.shuffle(Arrays.asList(contents));

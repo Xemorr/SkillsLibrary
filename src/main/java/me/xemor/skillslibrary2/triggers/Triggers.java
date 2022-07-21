@@ -290,6 +290,7 @@ public class Triggers implements Listener {
     @EventHandler
     public void equip(PlayerInteractEvent e) {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (e.getItem() == null) return;
             if (armour.contains(e.getItem().getType())) {
                 e.setCancelled(handleSkills(Trigger.getTrigger("EQUIPARMOR"), e.getPlayer(), e.getItem()));
             }
