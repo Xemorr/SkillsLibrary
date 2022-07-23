@@ -48,6 +48,7 @@ public class Trigger {
         registerTrigger("EQUIPARMOR", TriggerData.class);
         registerTrigger("SPRINT", TriggerData.class);
         registerTrigger("BLOCKBREAK",TriggerData.class);
+        registerTrigger("TOTEM", TriggerData.class);
     }
 
     public static void registerTrigger(String name, Class<? extends TriggerData> effectDataClass) {

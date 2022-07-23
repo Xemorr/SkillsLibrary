@@ -266,6 +266,12 @@ public class Triggers implements Listener {
         handleSkills(Trigger.getTrigger("KILL"), e.getEntity().getKiller(), e.getEntity());
     }
 
+    @EventHandler
+    public void onTotem(EntityResurrectEvent e) {
+        if (e.isCancelled()) return;
+        e.setCancelled(handleSkills(Trigger.getTrigger("TOTEM"), e.getEntity(), e.getEntity().getKiller()));
+    }
+
 
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent e) {
