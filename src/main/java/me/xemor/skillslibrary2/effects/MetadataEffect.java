@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -34,7 +35,6 @@ public class MetadataEffect extends ModifyEffect implements EntityEffect, Target
         return false;
     }
 
-
     public void setVariable(PersistentDataContainer container) {
         Double value;
         value = container.get(variable, PersistentDataType.DOUBLE);
@@ -43,6 +43,7 @@ public class MetadataEffect extends ModifyEffect implements EntityEffect, Target
         }
         container.set(variable, PersistentDataType.DOUBLE, changeValue(value));
     }
+
 
 }
 

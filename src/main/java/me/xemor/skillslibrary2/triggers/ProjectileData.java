@@ -8,7 +8,7 @@ public class ProjectileData extends TriggerData {
 
     public ProjectileData(int trigger, ConfigurationSection configurationSection) {
         super(trigger, configurationSection);
-        onlyProjectiles = configurationSection.getBoolean("onlyProjectiles");
+        onlyProjectiles = configurationSection.getBoolean("onlyProjectiles", false);
     }
 
     public boolean onlyProjectiles() {

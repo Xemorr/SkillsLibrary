@@ -2,8 +2,10 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.skillslibrary2.Mode;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.effects.EffectList;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -13,14 +15,26 @@ public abstract class Condition {
     private final int condition;
     private Mode mode;
 
+    private EffectList otherwise;
+
     public Condition(int condition, ConfigurationSection configurationSection) {
         this.condition = condition;
+        ConfigurationSection otherwiseSection = configurationSection.getConfigurationSection("else");
+        if (otherwiseSection != null) otherwise = new EffectList(otherwiseSection);
+
         String targetStr = configurationSection.getString("mode", "ALL").toUpperCase();
         try {
             mode = Mode.valueOf(targetStr);
         } catch (IllegalArgumentException e) {
             SkillsLibrary.getInstance().getLogger().severe("Invalid target specified at " + configurationSection.getCurrentPath() + ".mode");
+            mode = Mode.ALL;
         }
+    }
+
+    @NotNull
+    public EffectList getOtherwise() {
+        if (otherwise == null) return EffectList.effectList();
+        return otherwise;
     }
 
     public Condition(int condition, Mode mode) {

@@ -58,6 +58,7 @@ public class Trigger {
     }
 
     public static Class<? extends TriggerData> getClass(int trigger) {
+        if (trigger == -1) {SkillsLibrary.getInstance().getLogger().severe("There is an unregistered trigger somewhere!"); return TriggerData.class; }
         Class<? extends TriggerData> triggerClass = triggerToData.get(trigger);
         return triggerClass == null ? TriggerData.class : triggerClass;
     }

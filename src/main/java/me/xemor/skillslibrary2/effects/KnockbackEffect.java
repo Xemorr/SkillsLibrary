@@ -1,7 +1,9 @@
 package me.xemor.skillslibrary2.effects;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class KnockbackEffect extends Effect implements TargetEffect {
@@ -17,7 +19,11 @@ public class KnockbackEffect extends Effect implements TargetEffect {
 
     @Override
     public boolean useEffect(Entity livingEntity, Entity target) {
-        Vector knockback = livingEntity.getLocation().getDirection().clone().multiply(multiplier);
+        Location location = livingEntity.getLocation();
+        if (livingEntity instanceof Player player) {
+            location = player.getEyeLocation();
+        }
+        Vector knockback = location.getDirection().clone().multiply(multiplier);
         if (overwriteCurrentVelocity) target.setVelocity(knockback);
         else target.setVelocity(target.getVelocity().add(knockback));
         return false;

@@ -31,13 +31,14 @@ public class Conditions {
         register("FLYING", FlyingCondition.class);
         register("HEIGHT", HeightCondition.class);
         register("BLOCK", BlockCondition.class);
-        register("ITEM", ItemComparisonCondition.class);
+        register("ITEM", ItemCondition.class);
         register("OR", ORCondition.class);
         register("VISIBILITY", VisibilityCondition.class);
         register("LIGHT", LightCondition.class);
         register("TEMPERATURE", TemperatureCondition.class);
         register("SHIELDED", ShieldedCondition.class);
         register("ITEMWRAPPER", ItemWrapperCondition.class);
+        register("DISTANCE", DistanceCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

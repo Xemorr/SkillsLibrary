@@ -13,7 +13,8 @@ import java.util.*;
 
 public class EffectList implements Iterable<Effect> {
 
-    List<Effect> effects = new ArrayList<>();
+    private List<Effect> effects = new ArrayList<>(1);
+    private static EffectList effectList = new EffectList();
 
     public EffectList(ConfigurationSection effectsSection) {
         loadEffects(effectsSection);
@@ -30,11 +31,11 @@ public class EffectList implements Iterable<Effect> {
         effects.add(Effect.create(effectType, effectSection));
     }
 
-    private void loadEffects(ConfigurationSection effectsSection) {
+    public void loadEffects(ConfigurationSection effectsSection) {
         Collection<Object> values = effectsSection.getValues(false).values();
+        effects = new ArrayList<>(values.size());
         for (Object item : values) {
-            if (item instanceof ConfigurationSection) {
-                ConfigurationSection effectSection = (ConfigurationSection) item;
+            if (item instanceof ConfigurationSection effectSection) {
                 loadEffect(effectSection);
             }
         }
@@ -86,6 +87,10 @@ public class EffectList implements Iterable<Effect> {
             }
         }
         return result;
+    }
+
+    public static EffectList effectList() {
+        return effectList;
     }
 
     @NotNull

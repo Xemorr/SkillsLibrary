@@ -1,37 +1,40 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.configurationdata.comparison.SetData;
+import me.xemor.skillslibrary2.Skill;
+import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BiomeCondition extends Condition implements EntityCondition, TargetCondition, LocationCondition {
 
-    Set<Biome> biomes;
+    private SetData<Biome> biomes;
 
     public BiomeCondition(int condition, ConfigurationSection configurationSection) {
         super(condition, configurationSection);
-        biomes = configurationSection.getStringList("biomes").stream()
-                .map(String::toUpperCase).map(Biome::valueOf).collect(Collectors.toSet());
+        biomes = new SetData<>(Biome.class, "biomes", configurationSection);
     }
 
     @Override
     public boolean isTrue(Entity entity, Location location) {
-        return biomes.contains(location.getWorld().getBiome(location.getBlockX(), location.getBlockY(), location.getBlockZ()));
+        return biomes.inSet(location.getWorld().getBiome(location.getBlockX(), location.getBlockY(), location.getBlockZ()));
     }
 
     @Override
     public boolean isTrue(Entity entity) {
-        return biomes.contains(getBiome(entity.getLocation()));
+        return biomes.inSet(getBiome(entity.getLocation()));
     }
 
     @Override
     public boolean isTrue(Entity entity, Entity target) {
-        return biomes.contains(getBiome(target.getLocation()));
+        return biomes.inSet(getBiome(target.getLocation()));
     }
 
     public Biome getBiome(Location location) {

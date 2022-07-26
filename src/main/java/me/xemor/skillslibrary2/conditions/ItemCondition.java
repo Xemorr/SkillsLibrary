@@ -11,13 +11,13 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public class ItemComparisonCondition extends Condition implements EntityCondition, TargetCondition, ItemStackCondition {
+public class ItemCondition extends Condition implements EntityCondition, TargetCondition, ItemStackCondition {
 
     private EquipmentSlot equipmentSlot;
     private int slot;
     private ItemComparisonData itemComparison;
 
-    public ItemComparisonCondition(int condition, ConfigurationSection configurationSection) {
+    public ItemCondition(int condition, ConfigurationSection configurationSection) {
         super(condition, configurationSection);
         String equipmentSlotStr = configurationSection.getString("slot", "HAND").toUpperCase();
         try {

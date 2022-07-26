@@ -9,14 +9,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConditionList implements Iterable<Condition> {
 
-    private List<Condition> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>(1);
 
     public ConditionList(ConfigurationSection conditionsSection) {
         loadConditions(conditionsSection);
@@ -24,9 +21,11 @@ public class ConditionList implements Iterable<Condition> {
 
     public ConditionList() {}
 
+
     private void loadConditions(ConfigurationSection conditionsSection) {
         if (conditionsSection == null) return;
         Map<String, Object> values = conditionsSection.getValues(false);
+        conditions = new ArrayList<>(values.size());
         for (Object item : values.values()) {
             if (item instanceof ConfigurationSection) {
                 ConfigurationSection conditionSection = (ConfigurationSection) item;
@@ -50,25 +49,21 @@ public class ConditionList implements Iterable<Condition> {
     public boolean ANDConditions(Entity entity, boolean exact, Object... objects) {
         Object otherObject = objects.length == 0 ? null : objects[0];
         for (Condition condition : conditions) {
-            if (condition instanceof EntityCondition && condition.getMode().runs(Mode.SELF) && (!exact || otherObject == null)) {
-                EntityCondition entityCondition = (EntityCondition) condition;
+            if (condition instanceof EntityCondition entityCondition && condition.getMode().runs(Mode.SELF) && (!exact || otherObject == null)) {
                 boolean result = entityCondition.isTrue(entity);
-                if (!result) return false;
+                if (!result) { condition.getOtherwise().handleEffects(entity); return false; }
             }
-            if (condition instanceof TargetCondition && otherObject instanceof Entity && condition.getMode().runs(Mode.OTHER)) {
-                TargetCondition targetCondition = (TargetCondition) condition;
-                boolean result = targetCondition.isTrue(entity, (Entity) objects[0]);
-                if (!result) return false;
+            if (condition instanceof TargetCondition targetCondition && otherObject instanceof Entity other && condition.getMode().runs(Mode.OTHER)) {
+                boolean result = targetCondition.isTrue(entity, other);
+                if (!result) { condition.getOtherwise().handleEffects(entity, other); return false; }
             }
-            else if (condition instanceof LocationCondition && otherObject instanceof Location && condition.getMode().runs(Mode.LOCATION)) {
-                LocationCondition locationCondition = (LocationCondition) condition;
-                boolean result = locationCondition.isTrue(entity, (Location) objects[0]);
-                if (!result) return false;
+            else if (condition instanceof LocationCondition locationCondition && otherObject instanceof Location location && condition.getMode().runs(Mode.LOCATION)) {
+                boolean result = locationCondition.isTrue(entity, location);
+                if (!result) { condition.getOtherwise().handleEffects(entity, location); return false; }
             }
-            else if (condition instanceof ItemStackCondition && otherObject instanceof ItemStackCondition && condition.getMode().runs(Mode.ITEM)) {
-                ItemStackCondition itemStackCondition = (ItemStackCondition) condition;
-                boolean result = itemStackCondition.isTrue(entity, (ItemStack) objects[0]);
-                if (!result) return false;
+            else if (condition instanceof ItemStackCondition itemStackCondition && otherObject instanceof ItemStack item && condition.getMode().runs(Mode.ITEM)) {
+                boolean result = itemStackCondition.isTrue(entity, item);
+                if (!result) { condition.getOtherwise().handleEffects(entity, item); return false; }
             }
         }
         return true;
@@ -77,27 +72,24 @@ public class ConditionList implements Iterable<Condition> {
     public boolean ORConditions(Entity entity, boolean exact, Object... objects) {
         Object otherObject = objects.length == 0 ? null : objects[0];
         for (Condition condition : conditions) {
-            if (condition instanceof EntityCondition && condition.getMode().runs(Mode.SELF) && (!exact || otherObject == null)) {
-                EntityCondition entityCondition = (EntityCondition) condition;
+            if (condition instanceof EntityCondition entityCondition && condition.getMode().runs(Mode.SELF) && (!exact || otherObject == null)) {
                 boolean result = entityCondition.isTrue(entity);
                 if (result) return true;
             }
-            if (condition instanceof TargetCondition && otherObject instanceof Entity && condition.getMode().runs(Mode.OTHER)) {
-                TargetCondition targetCondition = (TargetCondition) condition;
-                boolean result = targetCondition.isTrue(entity, (Entity) objects[0]);
+            if (condition instanceof TargetCondition targetCondition && otherObject instanceof Entity other && condition.getMode().runs(Mode.OTHER)) {
+                boolean result = targetCondition.isTrue(entity, other);
                 if (result) return true;
             }
-            else if (condition instanceof LocationCondition && otherObject instanceof Location && condition.getMode().runs(Mode.LOCATION)) {
-                LocationCondition locationCondition = (LocationCondition) condition;
-                boolean result = locationCondition.isTrue(entity, (Location) objects[0]);
+            else if (condition instanceof LocationCondition locationCondition && otherObject instanceof Location location && condition.getMode().runs(Mode.LOCATION)) {
+                boolean result = locationCondition.isTrue(entity, location);
                 if (result) return true;
             }
-            else if (condition instanceof ItemStackCondition && otherObject instanceof ItemStackCondition && condition.getMode().runs(Mode.ITEM)) {
-                ItemStackCondition itemStackCondition = (ItemStackCondition) condition;
-                boolean result = itemStackCondition.isTrue(entity, (ItemStack) objects[0]);
+            else if (condition instanceof ItemStackCondition itemStackCondition && otherObject instanceof ItemStack item && condition.getMode().runs(Mode.ITEM)) {
+                boolean result = itemStackCondition.isTrue(entity, item);
                 if (result) return true;
             }
         }
+
         return false;
     }
 
