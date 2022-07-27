@@ -1,15 +1,22 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.configuration.ConfigurationSection;
 
 public abstract class ComparisonCondition extends Condition {
 
-    private final Comparison comparison;
-    private double comparedValue;
+    private Comparison comparison;
+    private final double comparedValue;
 
     public ComparisonCondition(int condition, ConfigurationSection configurationSection) {
         super(condition, configurationSection);
-        comparison = Comparison.fromString(configurationSection.getString("comparison", "EQUAL"));
+        String comparisonStr = configurationSection.getString("comparison", "EQUAL");
+        try {
+            comparison = Comparison.fromString(comparisonStr);
+        } catch (IllegalArgumentException e) {
+            SkillsLibrary.getInstance().getLogger().severe("This is not a valid comparison type! " + comparisonStr + " This was found at " + configurationSection.getCurrentPath() + ".comparison");
+            e.printStackTrace();
+        }
         comparedValue = configurationSection.getDouble("value");
     }
 
@@ -47,7 +54,7 @@ public abstract class ComparisonCondition extends Condition {
                 case "GREATEREQUAL":
                     return GREATEREQUAL;
             }
-            return EQUAL;
+            throw new IllegalArgumentException("This is not a valid comparison type!");
         }
     }
 
