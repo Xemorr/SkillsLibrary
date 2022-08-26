@@ -4,11 +4,11 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
-public class SmiteEffect extends Effect implements EntityEffect, TargetEffect {
+public class LightningEffect extends Effect implements EntityEffect, TargetEffect {
 
     private boolean isFake;
 
-    public SmiteEffect(int effect, ConfigurationSection configurationSection) {
+    public LightningEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
         isFake = configurationSection.getBoolean("fake", false);
     }

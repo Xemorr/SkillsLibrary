@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.BlockDataData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,31 +13,39 @@ import org.bukkit.entity.Entity;
 
 public class PlaceBlockEffect extends Effect implements LocationEffect {
 
-    private Material type;
+    private BlockData blockData;
     private final boolean updatePhysics;
     private final int revertsAfter;
 
     public PlaceBlockEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
-        String typeStr = configurationSection.getString("material", "STONE");
+        String typeStr = configurationSection.getString("material");
+        if (typeStr == null) {
+            BlockDataData blockDataData = new BlockDataData(configurationSection.getConfigurationSection("block"));
+            blockData = blockDataData.getBlockData();
+        }
+        else {
+            try {
+                blockData = Bukkit.createBlockData(Material.valueOf(typeStr));
+            } catch (IllegalArgumentException e) {
+                SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid material! " + configurationSection.getCurrentPath() + ".material");
+            }
+        }
         updatePhysics = configurationSection.getBoolean("updatePhysics", true);
         revertsAfter = (int) Math.round(configurationSection.getDouble("revertsAfter", -1) * 20);
-        try {
-            type = Material.valueOf(typeStr);
-        } catch (IllegalArgumentException e) {
-            SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid material! " + configurationSection.getCurrentPath() + ".material");
-        }
+
     }
 
     @Override
     public boolean useEffect(Entity entity, Location location) {
-        World world = location.getWorld();
         Block block = location.getBlock();
-        BlockData blockData = block.getBlockData();
-        block.setType(type, updatePhysics);
+        BlockData oldData = block.getBlockData();
+        block.setBlockData(blockData, updatePhysics);
         if (revertsAfter > 0) {
             Bukkit.getScheduler().runTaskLater(SkillsLibrary.getInstance(), () -> {
-                block.setBlockData(blockData, updatePhysics);
+                if (block.getBlockData().matches(blockData)) {
+                    block.setBlockData(oldData, updatePhysics);
+                }
             }, revertsAfter);
         }
         return false;

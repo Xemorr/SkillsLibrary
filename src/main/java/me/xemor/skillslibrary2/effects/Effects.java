@@ -1,7 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
 import com.google.common.collect.HashBiMap;
-import me.xemor.skillslibrary2.triggers.TriggerData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,8 @@ public class Effects {
         registerEffect("PICKUP", Pickup.class);
         registerEffect("REPULSE", Repulse.class);
         registerEffect("RESIZE", ResizeEffect.class);
-        registerEffect("SMITE", SmiteEffect.class);
+        registerEffect("SMITE", LightningEffect.class);
+        registerEffect("LIGHTNING", LightningEffect.class);
         registerEffect("VELOCITY", VelocityEffect.class);
         registerEffect("FLING", VelocityEffect.class);
         registerEffect("METADATA", MetadataEffect.class);
@@ -45,6 +45,7 @@ public class Effects {
         registerEffect("SHOOTER", ShooterEffect.class);
         registerEffect("KNOCKBACK", KnockbackEffect.class);
         registerEffect("IGNITE", IgniteEffect.class);
+        registerEffect("FIRE", IgniteEffect.class);
         registerEffect("LOSETARGET", LoseTargetEffect.class);
         registerEffect("TARGET", TargetEntityEffect.class);
         registerEffect("SWAP", SwapEffect.class);

@@ -39,6 +39,7 @@ public class Conditions {
         register("SHIELDED", ShieldedCondition.class);
         register("ITEMWRAPPER", ItemWrapperCondition.class);
         register("DISTANCE", DistanceCondition.class);
+        register("SWIMMING", SwimmingCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

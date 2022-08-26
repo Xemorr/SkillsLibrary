@@ -17,9 +17,9 @@ public class MessageEffect extends Effect implements EntityEffect, TargetEffect 
     public MessageEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
         this.message = configurationSection.getString("message");
-        try{
+        try {
             Component component = MiniMessage.miniMessage().deserialize(message, Placeholder.unparsed("player", ""));
-        }catch (ParsingException e) {
+        } catch (ParsingException e) {
             SkillsLibrary.getInstance().getLogger().severe("There is likely a legacy colour code at this location " + configurationSection.getCurrentPath() + ".message");
             e.printStackTrace();
         }

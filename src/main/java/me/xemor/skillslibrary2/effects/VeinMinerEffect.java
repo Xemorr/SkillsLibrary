@@ -10,19 +10,27 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.EnumSet;
+
 public class VeinMinerEffect extends Effect implements LocationEffect {
 
     private SetData<Material> materials;
     private long delay;
     private boolean allowMultiTypeVein;
 
+    private final static EnumSet<BlockFace> faces = EnumSet.complementOf(
+            EnumSet.of(BlockFace.EAST_NORTH_EAST, BlockFace.EAST_SOUTH_EAST,
+            BlockFace.NORTH_NORTH_EAST, BlockFace.NORTH_NORTH_WEST,
+            BlockFace.SOUTH_SOUTH_EAST, BlockFace.SOUTH_SOUTH_WEST,
+            BlockFace.WEST_NORTH_WEST, BlockFace.WEST_SOUTH_WEST));
+
     public VeinMinerEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
-        materials = new SetData<>(Material.class,"types",configurationSection);
+        materials = new SetData<>(Material.class, "types", configurationSection);
         if (materials.getSet().isEmpty()){
             throw new IllegalStateException("Materials property has not been specified.");
         }
-        delay = Math.round(20 * configurationSection.getDouble("delay",0.05D));
+        delay = Math.round(20 * configurationSection.getDouble("delay", 0.05D));
         allowMultiTypeVein = configurationSection.getBoolean("allowMultiTypeVein",false);
     }
 
@@ -38,7 +46,7 @@ public class VeinMinerEffect extends Effect implements LocationEffect {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    for (BlockFace face : BlockFace.values()) {
+                    for (BlockFace face : faces) {
                         Block blockToBreak = block.getRelative(face);
                         if (allowMultiTypeVein || blockToBreak.getType() == currentType) {
                             breakLog(blockToBreak);

@@ -9,7 +9,7 @@ public class IgniteEffect extends Effect implements EntityEffect, TargetEffect {
 
     public IgniteEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
-        fireTicks = configurationSection.getInt("fireTicks");
+        fireTicks = configurationSection.getInt("fireTicks", 40);
     }
 
     @Override

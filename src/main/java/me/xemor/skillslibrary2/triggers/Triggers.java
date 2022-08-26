@@ -121,6 +121,12 @@ public class Triggers implements Listener {
         }
     }
 
+    @EventHandler
+    public void onMove(PlayerMoveEvent e) {
+        if (e.getTo() == null) return;
+        handleSkills(Trigger.getTrigger("MOVE"), e.getPlayer(), e.getTo());
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onGlide(EntityToggleGlideEvent e) {
         if (e.getEntity() instanceof LivingEntity) {
@@ -199,12 +205,11 @@ public class Triggers implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageEvent e) {
         boolean cancel = false;
-        if (e.getEntity() instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) e.getEntity();
+        if (e.getEntity() instanceof LivingEntity livingEntity) {
             Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(Trigger.getTrigger("DAMAGED"));
             for (Skill skill : skills) {
                 DamageData damageData = (DamageData) skill.getTriggerData();
-                if (damageData.getDamageCauses().size() == 0 || damageData.getDamageCauses().contains(e.getCause())) {
+                if (damageData.getDamageCauses().inSet(e.getCause())) {
                     if (skill.handleEffects(livingEntity)) cancel = true;
                 }
             }
@@ -264,6 +269,11 @@ public class Triggers implements Listener {
     public void onEntityDeath(EntityDeathEvent e) {
         handleSkills(Trigger.getTrigger("DEATH"), e.getEntity(), e.getEntity().getKiller());
         handleSkills(Trigger.getTrigger("KILL"), e.getEntity().getKiller(), e.getEntity());
+    }
+
+    @EventHandler
+    public void onConsume(PlayerItemConsumeEvent e) {
+        e.setCancelled(handleSkills(Trigger.getTrigger("CONSUME"), e.getPlayer()));
     }
 
     @EventHandler

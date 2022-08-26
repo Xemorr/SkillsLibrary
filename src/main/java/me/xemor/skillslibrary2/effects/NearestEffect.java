@@ -24,12 +24,14 @@ public class NearestEffect extends WrapperEffect implements EntityEffect, Target
     @Override
     public boolean useEffect(Entity entity, Location location) {
         LivingEntity nearest = getNearest(entity, location);
+        if (nearest == null) return false;
         return handleEffects(entity, nearest);
     }
 
     @Override
     public boolean useEffect(Entity entity) {
         LivingEntity nearest = getNearest(entity, entity.getLocation());
+        if (nearest == null) return false;
         return handleEffects(entity, nearest);
     }
 
@@ -45,7 +47,7 @@ public class NearestEffect extends WrapperEffect implements EntityEffect, Target
         World world = location.getWorld();
         Collection<Entity> entities = world.getNearbyEntities(location, radius, radius, radius);
         entities.removeIf((entity -> !(entity instanceof LivingEntity)));
-        entities.removeIf((entity -> !getConditions().areConditionsTrue(livingEntity, entity)));
+        entities.removeIf((entity -> !getConditions().ANDConditions(livingEntity, false, entity)));
         if (entities.size() == 0) {
             return null;
         }
