@@ -10,11 +10,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-public class MessageEffect extends Effect implements EntityEffect, TargetEffect {
+public class ActionBarEffect extends Effect implements EntityEffect, TargetEffect {
 
     private final String message;
 
-    public MessageEffect(int effect, ConfigurationSection configurationSection) {
+    public ActionBarEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
         this.message = configurationSection.getString("message");
 
@@ -44,7 +44,7 @@ public class MessageEffect extends Effect implements EntityEffect, TargetEffect 
             Audience audience = SkillsLibrary.getBukkitAudiences().player(player);
             try {
                 Component component = MiniMessage.miniMessage().deserialize(message, Placeholder.unparsed("player", player.getDisplayName()));
-                audience.sendMessage(component);
+                audience.sendActionBar(component);
             }catch (ParsingException e) {
                 SkillsLibrary.getInstance().getLogger().severe("There is likely a legacy colour code in this message " + message);
                 e.printStackTrace();
