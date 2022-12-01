@@ -10,7 +10,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class MetadataEffect extends ModifyEffect implements EntityEffect, TargetEffect {
 
-    NamespacedKey variable;
+    private NamespacedKey variable;
 
     public MetadataEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);

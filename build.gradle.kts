@@ -1,6 +1,7 @@
 plugins {
     java
     `kotlin-dsl`
+    `maven-publish`
     id("com.github.johnrengelman.shadow") version("7.1.2")
 }
 
@@ -19,7 +20,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
     shadow("net.kyori:adventure-text-minimessage:4.11.0")
-    shadow("net.kyori:adventure-platform-bukkit:4.1.1")
+    shadow("net.kyori:adventure-platform-bukkit:4.1.2")
     shadow("me.xemor:configurationdata:1.19.0-SNAPSHOT")
 }
 

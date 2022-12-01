@@ -9,7 +9,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class MetadataCondition extends ComparisonCondition implements EntityCondition, TargetCondition {
 
-    NamespacedKey variable;
+    private NamespacedKey variable;
 
     public MetadataCondition(int condition, ConfigurationSection configurationSection) {
         super(condition, configurationSection);
