@@ -63,7 +63,7 @@ public class Triggers implements Listener {
         }.runTaskTimer(SkillsLibrary.getInstance(), 1L, 1L);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent e) {
         SkillsLibrary.getSkillsManager().addLoopEntity(e.getPlayer().getUniqueId());
         handleSkills(Trigger.getTrigger("PLAYERJOIN"), e.getPlayer());
