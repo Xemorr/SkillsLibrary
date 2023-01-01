@@ -8,7 +8,7 @@ This library depends on ConfigurationData, so if you haven't installed it alread
 https://github.com/Xemorr/ConfigurationData
 
 __IntelliJ Instructions__
-```bash
+```
 File -> New -> Project from Version Control 
 Enter https://github.com/Xemorr/SkillsLibrary.git as the repository URL and click clone
 Go to build.gradle.kts and either set an environment variable on your PC called "pluginFolder" that leads to the folder of your plugins folder or replace val folder = "your plugin folder directory".
