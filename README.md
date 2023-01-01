@@ -17,7 +17,7 @@ When this is done, double hit LCTRL to bring up the command line executing windo
 ```
 
 __Other__
-```bash
+```
 Ensure you have an installation of gradle in the PATH on your computer
 In a directory of your pleasing do,
 git clone https://github.com/Xemorr/ConfigurationData.git
