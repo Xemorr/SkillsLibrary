@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.xemor"
-version = "2.9.1"
+version = "2.11.0"
 
 repositories {
     mavenCentral()
@@ -17,11 +17,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
     shadow("net.kyori:adventure-text-minimessage:4.11.0")
     shadow("net.kyori:adventure-platform-bukkit:4.1.2")
-    shadow("me.xemor:configurationdata:1.19.1-SNAPSHOT")
+    shadow("me.xemor:configurationdata:1.19.2-SNAPSHOT")
 }
 
 java {
@@ -31,6 +31,8 @@ java {
 
 tasks.shadowJar {
     minimize()
+    relocate("net.kyori", "me.xemor.skillslibrary2.kyori")
+    relocate("me.xemor.configurationdata", "me.xemor.skillslibrary2.configurationdata")
     configurations = listOf(project.configurations.shadow.get())
     val folder = System.getenv("pluginFolder")
     destinationDirectory.set(file(folder))

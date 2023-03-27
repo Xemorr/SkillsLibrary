@@ -4,11 +4,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-public class Repulse extends Effect implements TargetEffect {
+public class RepulseEffect extends Effect implements TargetEffect {
 
     private final double velocity;
 
-    public Repulse(int effect, ConfigurationSection configurationSection) {
+    public RepulseEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
         velocity = configurationSection.getDouble("velocity", 1.0);
     }

@@ -1,5 +1,5 @@
 name: SkillsLibrary2
-version: ${project.version}
+version: ${version}
 main: me.xemor.skillslibrary2.SkillsLibrary
 api-version: 1.16
 authors: [ Xemor_ ]

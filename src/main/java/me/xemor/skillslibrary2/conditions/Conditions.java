@@ -40,6 +40,8 @@ public class Conditions {
         register("ITEMWRAPPER", ItemWrapperCondition.class);
         register("DISTANCE", DistanceCondition.class);
         register("SWIMMING", SwimmingCondition.class);
+        register("SPEED", SpeedCondition.class);
+        register("SHOOTER", ShooterCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

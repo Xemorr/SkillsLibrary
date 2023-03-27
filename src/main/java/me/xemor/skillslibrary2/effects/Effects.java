@@ -27,7 +27,7 @@ public class Effects {
         registerEffect("LAUNCH", LaunchEffect.class);
         registerEffect("MESSAGE", MessageEffect.class);
         registerEffect("PICKUP", Pickup.class);
-        registerEffect("REPULSE", Repulse.class);
+        registerEffect("REPULSE", RepulseEffect.class);
         registerEffect("RESIZE", ResizeEffect.class);
         registerEffect("SMITE", LightningEffect.class);
         registerEffect("LIGHTNING", LightningEffect.class);
