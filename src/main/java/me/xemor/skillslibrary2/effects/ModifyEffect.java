@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 public abstract class ModifyEffect extends Effect {
 
     private Operation operation;
-    private double value;
+    protected double value;
 
     public ModifyEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
@@ -14,21 +14,21 @@ public abstract class ModifyEffect extends Effect {
         try {
             this.operation = Operation.valueOf(operationStr);
         } catch(IllegalArgumentException e) {
-            SkillsLibrary.getInstance().getLogger().severe(configurationSection.getCurrentPath() + " has an invalid operation specified!");
+            SkillsLibrary.getInstance().getLogger().severe(configurationSection.getCurrentPath() + ".operation has an invalid operation specified! Defaulting to SET operation!");
+            this.operation = Operation.SET;
             return;
         }
         this.value = configurationSection.getDouble("value", 1);
     }
 
     public double changeValue(double oldValue) {
-        switch (operation) {
-            case ADD: return oldValue + value;
-            case SUBTRACT: return oldValue - value;
-            case MULTIPLY: return oldValue * value;
-            case DIVIDE: return oldValue / value;
-            case SET: return value;
+        return switch (operation) {
+            case ADD -> oldValue + value;
+            case SUBTRACT -> oldValue - value;
+            case MULTIPLY -> oldValue * value;
+            case DIVIDE -> oldValue / value;
+            case SET -> value;
         };
-        return oldValue;
     }
 
     public enum Operation {

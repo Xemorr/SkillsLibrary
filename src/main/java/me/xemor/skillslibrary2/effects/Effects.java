@@ -65,6 +65,8 @@ public class Effects {
         registerEffect("HUNGER", HungerEffect.class);
         registerEffect("VEINMINER",VeinMinerEffect.class);
         registerEffect("ACTIONBAR", ActionBarEffect.class);
+        registerEffect("FREEZE", FreezeEffect.class);
+        registerEffect("HEALTH", HealthEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {

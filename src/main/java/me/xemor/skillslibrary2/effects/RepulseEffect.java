@@ -7,10 +7,12 @@ import org.bukkit.util.Vector;
 public class RepulseEffect extends Effect implements TargetEffect {
 
     private final double velocity;
+    private final boolean add;
 
     public RepulseEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
         velocity = configurationSection.getDouble("velocity", 1.0);
+        add = configurationSection.getBoolean("add", false);
     }
 
     @Override
@@ -24,6 +26,11 @@ public class RepulseEffect extends Effect implements TargetEffect {
         if (Double.isNaN(repulseVelocity.lengthSquared())) {
             return;
         }
-        target.setVelocity(repulseVelocity);
+        if (add) {
+            target.setVelocity(target.getVelocity().add(repulseVelocity));
+        }
+        else {
+            target.setVelocity(repulseVelocity);
+        }
     }
 }

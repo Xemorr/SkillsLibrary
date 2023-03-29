@@ -10,7 +10,7 @@ public class GlidingCondition extends Condition implements EntityCondition {
 
     public GlidingCondition(int condition, ConfigurationSection configurationSection) {
         super(condition, configurationSection);
-        shouldGlide = configurationSection.getBoolean("shouldGlide", true);
+        shouldGlide = configurationSection.getBoolean("shouldGlide", true) && configurationSection.getBoolean("glide", true);
     }
 
     @Override
