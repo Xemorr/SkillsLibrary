@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.xemor"
-version = "2.12.0"
+version = "2.12.1"
 
 repositories {
     mavenCentral()
@@ -39,5 +39,8 @@ tasks.shadowJar {
 }
 
 tasks.processResources {
-    expand(project.properties)
+    inputs.property("version", rootProject.version)
+    filesMatching("plugin.yml") {
+        expand("version" to rootProject.version)
+    }
 }

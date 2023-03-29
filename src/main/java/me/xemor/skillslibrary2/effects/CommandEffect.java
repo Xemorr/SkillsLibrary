@@ -55,13 +55,12 @@ public class CommandEffect extends Effect implements EntityEffect, TargetEffect 
     }
 
     public String parse(String command, Entity entity1, Entity entity2) {
-        if (entity1 instanceof Player) {
-            Player player = (Player) entity1;
-            command.replaceAll("%self_name%", player.getName());
+        if (entity1 instanceof Player player) {
+            command = command.replaceAll("%self_name%", player.getName());
         }
         else if (entity2 instanceof Player) {
-            command.replace("%other_name%", entity2.getName());
-            command.replace("%target_name%", entity2.getName());
+            command = command.replace("%other_name%", entity2.getName());
+            command = command.replace("%target_name%", entity2.getName());
         }
         return command;
     }
