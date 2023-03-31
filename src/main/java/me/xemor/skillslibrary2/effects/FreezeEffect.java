@@ -12,8 +12,7 @@ public class FreezeEffect extends ModifyEffect implements EntityEffect, TargetEf
 
     @Override
     public boolean useEffect(Entity entity) {
-        if (entity instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) entity;
+        if (entity instanceof LivingEntity livingEntity) {
             livingEntity.setFreezeTicks((int) changeValue(livingEntity.getFreezeTicks()));
         }
         return false;
@@ -21,6 +20,6 @@ public class FreezeEffect extends ModifyEffect implements EntityEffect, TargetEf
 
     @Override
     public boolean useEffect(Entity entity, Entity target) {
-        return false;
+        return useEffect(target);
     }
 }
