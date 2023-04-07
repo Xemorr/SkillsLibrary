@@ -290,6 +290,11 @@ public class Triggers implements Listener {
     }
 
     @EventHandler
+    public void onPlayerSpawn(PlayerJoinEvent e) {
+        handleSkills(Trigger.getTrigger("SPAWN"), e.getPlayer());
+    }
+
+    @EventHandler
     public void changeMainHand(PlayerItemHeldEvent e) {
         handleSkills(Trigger.getTrigger("CHANGEMAINHAND"), e.getPlayer(), e.getPlayer().getInventory().getItem(e.getNewSlot()));
     }

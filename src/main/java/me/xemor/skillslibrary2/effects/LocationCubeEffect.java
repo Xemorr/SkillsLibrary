@@ -47,7 +47,7 @@ public class LocationCubeEffect extends WrapperEffect implements EntityEffect, L
 
     @Override
     public boolean useEffect(Entity entity, Entity target) {
-        useEffect(entity, entity.getLocation());
+        useEffect(entity, target.getLocation());
         return false;
     }
 }
