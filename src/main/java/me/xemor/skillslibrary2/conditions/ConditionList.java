@@ -27,11 +27,11 @@ public class ConditionList implements Iterable<Condition> {
         Map<String, Object> values = conditionsSection.getValues(false);
         conditions = new ArrayList<>(values.size());
         for (Object item : values.values()) {
-            if (item instanceof ConfigurationSection) {
-                ConfigurationSection conditionSection = (ConfigurationSection) item;
+            if (item instanceof ConfigurationSection conditionSection) {
                 int condition = Conditions.getCondition(conditionSection.getString("type"));
                 if (condition == -1) {
                     Bukkit.getLogger().warning("Invalid Condition Type at " + conditionSection.getCurrentPath() + ".type");
+                    continue;
                 }
                 Condition conditionData = Condition.create(condition, conditionSection);
                 if (conditionData != null) {

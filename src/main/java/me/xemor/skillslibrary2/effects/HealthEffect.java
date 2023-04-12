@@ -14,7 +14,9 @@ public class HealthEffect extends ModifyEffect implements EntityEffect, TargetEf
 	@Override
 	public boolean useEffect(Entity entity) {
 		if (entity instanceof LivingEntity) {
-			((LivingEntity) entity).setHealth((int) changeValue(((LivingEntity) entity).getHealth()));
+			double newHealth = (int) changeValue(((LivingEntity) entity).getHealth());
+			if (newHealth < 0) newHealth = 0;
+			((LivingEntity) entity).setHealth(newHealth);
 		}
 		return false;
 	}

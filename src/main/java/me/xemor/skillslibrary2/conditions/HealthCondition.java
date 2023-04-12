@@ -16,14 +16,14 @@ public class HealthCondition extends Condition implements EntityCondition, Targe
             healthRange = new RangeData(configurationSection.getString("healthPercentage", "0 - 100"));
         }
         else {
-            healthRange = new RangeData(configurationSection.getDouble("minimumHealthPercentage", 0) / 100 + " - " + configurationSection.getDouble("maximumHealthPercentage", 100) / 100);
+            healthRange = new RangeData(configurationSection.getDouble("minimumHealthPercentage", 0) + " - " + configurationSection.getDouble("maximumHealthPercentage", 100));
         }
     }
 
     @Override
     public boolean isTrue(Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
-            double healthPercentage = livingEntity.getHealth() / livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() * 100;
+            double healthPercentage = (livingEntity.getHealth() / livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()) * 100;
             return healthRange.isInRange(healthPercentage);
         }
         return false;

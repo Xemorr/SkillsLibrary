@@ -27,6 +27,7 @@ public class EffectList implements Iterable<Effect> {
         int effectType = Effects.getEffect(effectTypeStr);
         if (effectType == -1) {
             Bukkit.getLogger().warning("Invalid Effect Specified: " + effectTypeStr + " at " + effectSection.getCurrentPath() + ".type");
+            return;
         }
         effects.add(Effect.create(effectType, effectSection));
     }
