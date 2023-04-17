@@ -14,9 +14,10 @@ import java.util.EnumSet;
 
 public class VeinMinerEffect extends Effect implements LocationEffect {
 
-    private SetData<Material> materials;
-    private long delay;
-    private boolean allowMultiTypeVein;
+    private final SetData<Material> materials;
+    private final long delay;
+    private final int limit; // The maximum number of iterations outwards from the centre NOT the number of blocks broken
+    private final boolean allowMultiTypeVein;
 
     private final static EnumSet<BlockFace> faces = EnumSet.complementOf(
             EnumSet.of(BlockFace.EAST_NORTH_EAST, BlockFace.EAST_SOUTH_EAST,
@@ -32,16 +33,18 @@ public class VeinMinerEffect extends Effect implements LocationEffect {
         }
         delay = Math.round(20 * configurationSection.getDouble("delay", 0.05D));
         allowMultiTypeVein = configurationSection.getBoolean("allowMultiTypeVein",false);
+        limit = configurationSection.getInt("limit", 10);
     }
 
     @Override
     public boolean useEffect(Entity entity, Location location) {
-        breakLog(location.getBlock());
+        breakLog(location.getBlock(), 0);
         return false;
     }
 
-    private void breakLog(Block block) {
+    private void breakLog(Block block, int count) {
         Material currentType = block.getType();
+        if (count >= limit) return;
         if (materials.inSet(currentType)) {
             new BukkitRunnable() {
                 @Override
@@ -49,7 +52,7 @@ public class VeinMinerEffect extends Effect implements LocationEffect {
                     for (BlockFace face : faces) {
                         Block blockToBreak = block.getRelative(face);
                         if (allowMultiTypeVein || blockToBreak.getType() == currentType) {
-                            breakLog(blockToBreak);
+                            breakLog(blockToBreak, count + 1);
                         }
                     }
                     block.breakNaturally();
