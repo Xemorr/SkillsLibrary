@@ -1,10 +1,12 @@
 package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
 
-public class NOTCondition extends Condition implements EntityCondition, TargetCondition {
+public class NOTCondition extends Condition implements EntityCondition, TargetCondition, LocationCondition, ItemStackCondition {
 
     private Condition condition;
 
@@ -23,8 +25,7 @@ public class NOTCondition extends Condition implements EntityCondition, TargetCo
 
     @Override
     public boolean isTrue(Entity boss) {
-        if (condition instanceof EntityCondition) {
-            EntityCondition entityCondition = (EntityCondition) condition;
+        if (condition instanceof EntityCondition entityCondition) {
             return !entityCondition.isTrue(boss);
         }
         return true;
@@ -32,10 +33,25 @@ public class NOTCondition extends Condition implements EntityCondition, TargetCo
 
     @Override
     public boolean isTrue(Entity entity, Entity target) {
-        if (condition instanceof TargetCondition) {
-            TargetCondition targetCondition = (TargetCondition) condition;
+        if (condition instanceof TargetCondition targetCondition) {
             return !targetCondition.isTrue(entity, target);
         }
         return true;
+    }
+
+    @Override
+    public boolean isTrue(Entity entity, ItemStack itemStack) {
+        if (condition instanceof ItemStackCondition itemCondition) {
+            return !itemCondition.isTrue(entity, itemStack);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isTrue(Entity entity, Location location) {
+        if (condition instanceof LocationCondition locationCondition) {
+            return !locationCondition.isTrue(entity, location);
+        }
+        return false;
     }
 }

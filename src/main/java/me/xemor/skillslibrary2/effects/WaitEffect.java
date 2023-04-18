@@ -5,9 +5,10 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEffect, LocationEffect {
+public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEffect, LocationEffect, ItemStackEffect {
 
     private final long ticksDelay;
 
@@ -45,7 +46,18 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
             public void run() {
                 handleEffects(entity, location);
             }
-        };
+        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
+        return false;
+    }
+
+    @Override
+    public boolean useEffect(Entity entity, ItemStack item) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                handleEffects(entity, item);
+            }
+        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
         return false;
     }
 }

@@ -4,13 +4,14 @@ import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 
 /*
     This class was originally written by Creeves
  */
-public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEffect, LocationEffect {
+public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEffect, LocationEffect, ItemStackEffect {
 
     private final long ticksDelay;
     private final long period;
@@ -60,6 +61,21 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
             @Override
             public void run() {
                 handleEffects(entity, location);
+                if (++count >= repeats) {
+                    this.cancel();
+                }
+            }
+        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
+        return false;
+    }
+
+    @Override
+    public boolean useEffect(Entity entity, ItemStack item) {
+        new BukkitRunnable() {
+            int count = 0;
+            @Override
+            public void run() {
+                handleEffects(entity, item);
                 if (++count >= repeats) {
                     this.cancel();
                 }
