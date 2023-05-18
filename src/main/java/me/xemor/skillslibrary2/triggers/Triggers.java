@@ -51,14 +51,13 @@ public class Triggers implements Listener {
                     if (tick.get() % loopData.getPeriod() == 0) {
                         for (UUID uuid : SkillsLibrary.getSkillsManager().getLoopEntities()) {
                             Entity entity = Bukkit.getEntity(uuid);
-                            if (entity instanceof LivingEntity) {
-                                LivingEntity livingEntity = (LivingEntity) entity;
+                            if (entity instanceof LivingEntity livingEntity) {
                                 skill.handleEffects(livingEntity);
                             }
                         }
                     }
                 }
-                tick.addAndGet(1);
+                tick.incrementAndGet();
             }
         }.runTaskTimer(SkillsLibrary.getInstance(), 1L, 1L);
     }
