@@ -51,6 +51,7 @@ public class Trigger {
         registerTrigger("TOTEM", TriggerData.class);
         registerTrigger("CONSUME", TriggerData.class);
         registerTrigger("MOVE", TriggerData.class);
+        registerTrigger("SWAPHANDS", TriggerData.class);
     }
 
     public static void registerTrigger(String name, Class<? extends TriggerData> effectDataClass) {

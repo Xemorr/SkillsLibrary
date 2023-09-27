@@ -67,6 +67,8 @@ public class Effects {
         registerEffect("ACTIONBAR", ActionBarEffect.class);
         registerEffect("FREEZE", FreezeEffect.class);
         registerEffect("HEALTH", HealthEffect.class);
+        registerEffect("FLY", FlyEffect.class);
+        registerEffect("FLYING", FlyEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {

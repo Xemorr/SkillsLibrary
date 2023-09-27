@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.xemor"
-version = "2.13.1"
+version = "2.15.0"
 
 repositories {
     mavenCentral()
@@ -17,11 +17,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
     shadow("net.kyori:adventure-text-minimessage:4.11.0")
     shadow("net.kyori:adventure-platform-bukkit:4.1.2")
-    shadow("me.xemor:configurationdata:1.19.2-SNAPSHOT")
+    shadow("me.xemor:configurationdata:1.20.0-SNAPSHOT")
 }
 
 java {

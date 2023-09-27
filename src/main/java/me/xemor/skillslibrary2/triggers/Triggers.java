@@ -90,6 +90,11 @@ public class Triggers implements Listener {
     }
 
     @EventHandler
+    public void onSwitchHand(PlayerSwapHandItemsEvent e) {
+        handleSkills(Trigger.getTrigger("SWAPHANDS"), e.getPlayer());
+    }
+
+    @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(Trigger.getTrigger("INTERACT"));

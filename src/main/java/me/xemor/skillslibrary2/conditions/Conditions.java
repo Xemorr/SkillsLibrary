@@ -28,6 +28,7 @@ public class Conditions {
         register("INBLOCK", InBlockCondition.class);
         register("WORLD", WorldCondition.class);
         register("TAMED", TamedCondition.class);
+        register("FLY", FlyingCondition.class);
         register("FLYING", FlyingCondition.class);
         register("HEIGHT", HeightCondition.class);
         register("BLOCK", BlockCondition.class);
