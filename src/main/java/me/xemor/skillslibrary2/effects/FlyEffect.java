@@ -15,8 +15,9 @@ public class FlyEffect extends Effect implements EntityEffect, TargetEffect {
 
     @Override
     public boolean useEffect(Entity entity) {
-        if (entity instanceof Player) {
-            ((Player) entity).setFlying(fly);
+        if (entity instanceof Player player) {
+            player.setAllowFlight(fly);
+            player.setFlying(fly);
         }
         return false;
     }
