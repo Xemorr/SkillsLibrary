@@ -58,9 +58,9 @@ public class CommandEffect extends Effect implements EntityEffect, TargetEffect 
         if (entity1 instanceof Player player) {
             command = command.replaceAll("%self_name%", player.getName());
         }
-        else if (entity2 instanceof Player) {
-            command = command.replace("%other_name%", entity2.getName());
-            command = command.replace("%target_name%", entity2.getName());
+        if (entity2 instanceof Player player) {
+            command = command.replace("%other_name%", player.getName());
+            command = command.replace("%target_name%", player.getName());
         }
         return command;
     }
