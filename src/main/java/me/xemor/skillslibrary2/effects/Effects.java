@@ -69,6 +69,7 @@ public class Effects {
         registerEffect("HEALTH", HealthEffect.class);
         registerEffect("FLY", FlyEffect.class);
         registerEffect("FLYING", FlyEffect.class);
+        registerEffect("FURNACEBURNTIME", FurnaceBurnTimeEffect.class);
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
