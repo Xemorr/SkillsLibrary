@@ -16,8 +16,13 @@ public class Potion extends Effect implements EntityEffect, TargetEffect {
         super(effect, configurationSection);
         ConfigurationSection potionSection = configurationSection.getConfigurationSection("potion");
         if (potionSection != null) {
-            PotionEffectData potionEffectData = new PotionEffectData(potionSection, PotionEffectType.REGENERATION, 10, 1);
-            potionEffect = potionEffectData.getPotionEffect();
+            PotionEffectData potionEffectData = new PotionEffectData(potionSection);
+            if (potionEffectData.getPotionEffect().isPresent()) {
+                potionEffect = potionEffectData.getPotionEffect().get();
+            } else {
+                SkillsLibrary.getInstance().getLogger().severe("Falling back to default regeneration potion effect as " + configurationSection.getCurrentPath() + ".potion is invalid.");
+                potionEffect = PotionEffectType.getByName("REGENERATION").createEffect(10, 1);
+            }
         } else {
             SkillsLibrary.getInstance().getLogger().severe("Falling back to default regeneration potion effect as " + configurationSection.getCurrentPath() + ".potion is null.");
             potionEffect = PotionEffectType.getByName("REGENERATION").createEffect(10, 1);
