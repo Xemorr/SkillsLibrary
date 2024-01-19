@@ -3,6 +3,7 @@ package me.xemor.skillslibrary2.effects;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class LungeEffect extends Effect implements EntityEffect, TargetEffect {
@@ -35,7 +36,12 @@ public class LungeEffect extends Effect implements EntityEffect, TargetEffect {
     }
 
     public void setVelocity(LivingEntity entity) {
-        Vector direction = entity.getEyeLocation().getDirection();
+        Vector direction;
+        if (entity instanceof Player)
+            direction = entity.getEyeLocation().getDirection();
+        else {
+            direction = entity.getLocation().getDirection();
+        }
         double x = direction.getX() * horizontalVelocity;
         double z = direction.getZ() * horizontalVelocity;
         double y = direction.getY() * verticalVelocity;
