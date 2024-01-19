@@ -21,7 +21,7 @@ dependencies {
     compileOnly("org.jetbrains:annotations:23.0.0")
     shadow("net.kyori:adventure-text-minimessage:4.11.0")
     shadow("net.kyori:adventure-platform-bukkit:4.1.2")
-    shadow("me.xemor:configurationdata:1.21.0-SNAPSHOT")
+    shadow("me.xemor:configurationdata:2.0.0-SNAPSHOT")
 }
 
 java {
