@@ -34,28 +34,25 @@ public class ParticleEffect extends Effect implements EntityEffect, LocationEffe
     @Override
     public boolean useEffect(Entity entity) {
         spawnParticle(entity.getWorld(), entity.getLocation());
-//        entity.getWorld().spawnParticle(particle, entity.getLocation(), count, offsetX, offsetY, offsetZ, extra, force);
         return true;
     }
 
     @Override
     public boolean useEffect(Entity entity, Location location) {
         spawnParticle(entity.getWorld(), entity.getLocation(), location);
-//        entity.getWorld().spawnParticle(particle, entity.getLocation(), count, offsetX, offsetY, offsetZ, extra, force);
         return false;
     }
 
     @Override
     public boolean useEffect(Entity entity, Entity target) {
         spawnParticle(entity.getWorld(), entity.getLocation(), target.getLocation());
-//        entity.getWorld().spawnParticle(particle, entity.getLocation(), count, offsetX, offsetY, offsetZ, extra, force);
         return false;
     }
 
     public void spawnParticle(@NotNull World world, @NotNull Location location, Location... locations) {
         switch(shape) {
             case SINGLE -> {
-                world.spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, extra, force);
+                world.spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, extra, null, force);
             }
             case LINE -> {
                 Location fromLocation = location.clone();
@@ -65,7 +62,7 @@ public class ParticleEffect extends Effect implements EntityEffect, LocationEffe
                 for (double i = 1; i <= fromLocation.distance(toLocation); i += 0.5) {
                     vector.multiply(i);
                     fromLocation.add(vector);
-                    world.spawnParticle(particle, fromLocation, count, offsetX, offsetY, offsetZ, extra, force);
+                    world.spawnParticle(particle, fromLocation, count, offsetX, offsetY, offsetZ, extra, null, force);
                     fromLocation.subtract(vector);
                     vector.normalize();
                 }
@@ -78,7 +75,9 @@ public class ParticleEffect extends Effect implements EntityEffect, LocationEffe
 
                 for (double x = minX; x <= maxX; x += 0.05) {
                     for (double z = minZ; z <= maxZ; z += 0.05) {
-                        world.spawnParticle(particle, new Location(world, x, location.getBlockY(), z), count, offsetX, offsetY, offsetZ, extra, force);
+                        if (x == minX || x >= maxX - 0.05 || z == minZ || z >= maxZ - 0.05) {
+                            world.spawnParticle(particle, new Location(world, x, location.getBlockY(), z), count, offsetX, offsetY, offsetZ, extra, null, force);
+                        }
                     }
                 }
             }
@@ -93,7 +92,14 @@ public class ParticleEffect extends Effect implements EntityEffect, LocationEffe
                 for (double x = minX; x <= maxX; x += 0.05) {
                     for (double y = minY; y <= maxY; y += 0.05) {
                         for (double z = minZ; z <= maxZ; z += 0.05) {
-                            world.spawnParticle(particle, new Location(world, x, y, z), count, offsetX, offsetY, offsetZ, extra, force);
+                            int successes = 0;
+                            if (x == minX || x >= maxX - 0.05) successes++;
+                            if (y == minY || y >= maxY - 0.05) successes++;
+                            if (z == minZ || z >= maxZ - 0.05) successes++;
+
+                            if (successes >= 2) {
+                                world.spawnParticle(particle, new Location(world, x, y, z), count, offsetX, offsetY, offsetZ, extra, null, force);
+                            }
                         }
                     }
                 }
