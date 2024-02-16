@@ -39,13 +39,13 @@ public class ParticleEffect extends Effect implements EntityEffect, LocationEffe
 
     @Override
     public boolean useEffect(Entity entity, Location location) {
-        spawnParticle(entity.getWorld(), entity.getLocation(), location);
+        spawnParticle(entity.getWorld(), location, entity.getLocation());
         return false;
     }
 
     @Override
     public boolean useEffect(Entity entity, Entity target) {
-        spawnParticle(entity.getWorld(), entity.getLocation(), target.getLocation());
+        spawnParticle(entity.getWorld(), target.getLocation(), entity.getLocation());
         return false;
     }
 
