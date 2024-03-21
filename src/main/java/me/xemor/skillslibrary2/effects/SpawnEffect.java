@@ -16,7 +16,7 @@ public class SpawnEffect extends Effect implements EntityEffect, TargetEffect, L
         if (entitySection == null) {
             SkillsLibrary.getInstance().getLogger().severe("You have not specified an entity! " + configurationSection.getCurrentPath() + ".entity");
         }
-        entityData = new EntityData(entitySection);
+        entityData = EntityData.create(entitySection);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class SpawnEffect extends Effect implements EntityEffect, TargetEffect, L
 
     @Override
     public boolean useEffect(Entity entity, Location location) {
-        entityData.createEntity(location.getWorld(), location);
+        entityData.spawnEntity(location.getWorld(), location);
         return false;
     }
 

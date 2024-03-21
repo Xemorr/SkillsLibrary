@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.entity.EntityData;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,12 +11,14 @@ import org.bukkit.util.Vector;
 
 public class LaunchEffect extends Effect implements EntityEffect, TargetEffect {
 
-    private final EntityType entityType;
+    private final EntityData entityData;
     private final double velocity;
 
     public LaunchEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
-        this.entityType = EntityType.valueOf(configurationSection.getString("entity", "FIREBALL"));
+
+        ConfigurationSection entitySection = configurationSection.getConfigurationSection("entity");
+        this.entityData = entitySection != null ? EntityData.create(entitySection, EntityType.FIREBALL) : new EntityData();
         this.velocity = configurationSection.getDouble("velocity", 1.0);
     }
 
@@ -30,7 +33,7 @@ public class LaunchEffect extends Effect implements EntityEffect, TargetEffect {
         }
         Vector direction = target.getLocation().subtract(entityLocation).toVector().normalize();
         Location spawnLocation = entityLocation.clone().add(direction);
-        Entity projectile = world.spawnEntity(spawnLocation, entityType);
+        Entity projectile = entityData.spawnEntity(world, spawnLocation);
         projectile.setVelocity(direction.multiply(velocity));
         return false;
     }
@@ -47,7 +50,7 @@ public class LaunchEffect extends Effect implements EntityEffect, TargetEffect {
             direction = entity.getLocation().getDirection();
             spawnLocation = entity.getLocation().clone().add(direction);
         }
-        Entity projectile = world.spawnEntity(spawnLocation, entityType);
+        Entity projectile = entityData.spawnEntity(world, spawnLocation);
         projectile.setVelocity(direction.multiply(velocity));
         return false;
     }
