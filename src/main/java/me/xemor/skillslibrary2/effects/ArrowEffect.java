@@ -21,7 +21,7 @@ public class ArrowEffect extends Effect implements TargetEffect {
         damage = configurationSection.getInt("damage", 4);
 
         ConfigurationSection entitySection = configurationSection.getConfigurationSection("entity");
-        this.entityData = entitySection != null ? new EntityData(entitySection) : new EntityData();
+        this.entityData = entitySection != null ? EntityData.create(entitySection) : new EntityData();
         fireTicks = configurationSection.getInt("fireTicks", 0);
     }
 
@@ -42,7 +42,7 @@ public class ArrowEffect extends Effect implements TargetEffect {
             double initialXVelocity = solveForInitialHorizontalVelocity(xDifference, time);
             double initialZVelocity = solveForInitialHorizontalVelocity(zDifference, time);
             Vector vector = new Vector(initialXVelocity, initialYVelocity, initialZVelocity);
-            Entity spawnedEntity = entityData.createEntity(world, startPoint);
+            Entity spawnedEntity = entityData.spawnEntity(world, startPoint);
             if (spawnedEntity instanceof Arrow arrow) {
                 arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                 arrow.setDamage(damage);
