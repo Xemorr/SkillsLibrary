@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -17,7 +18,7 @@ public class LaunchEffect extends Effect implements EntityEffect, TargetEffect {
         super(effect, configurationSection);
 
         ConfigurationSection entitySection = configurationSection.getConfigurationSection("entity");
-        this.entityData = entitySection != null ? EntityData.create(entitySection) : new EntityData();
+        this.entityData = entitySection != null ? EntityData.create(entitySection, EntityType.FIREBALL) : new EntityData();
         this.velocity = configurationSection.getDouble("velocity", 1.0);
     }
 
