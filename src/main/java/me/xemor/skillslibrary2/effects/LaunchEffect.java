@@ -17,8 +17,13 @@ public class LaunchEffect extends Effect implements EntityEffect, TargetEffect {
     public LaunchEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
 
-        ConfigurationSection entitySection = configurationSection.getConfigurationSection("entity");
-        this.entityData = entitySection != null ? EntityData.create(entitySection, EntityType.FIREBALL) : new EntityData();
+        if (configurationSection.isString("entity")) {
+            this.entityData = EntityData.create(EntityType.valueOf(configurationSection.getString("entity")));
+        } else {
+            ConfigurationSection entitySection = configurationSection.getConfigurationSection("entity");
+            this.entityData = entitySection != null ? EntityData.create(entitySection, EntityType.FIREBALL) : EntityData.create(EntityType.FIREBALL);
+        }
+
         this.velocity = configurationSection.getDouble("velocity", 1.0);
     }
 

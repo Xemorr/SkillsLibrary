@@ -20,8 +20,13 @@ public class ArrowEffect extends Effect implements TargetEffect {
         velocity = configurationSection.getDouble("velocity", 1.0);
         damage = configurationSection.getInt("damage", 4);
 
-        ConfigurationSection entitySection = configurationSection.getConfigurationSection("entity");
-        this.entityData = entitySection != null ? EntityData.create(entitySection, EntityType.ARROW) : new EntityData();
+        if (configurationSection.isString("entity")) {
+            this.entityData = EntityData.create(EntityType.valueOf(configurationSection.getString("entity")));
+        } else {
+            ConfigurationSection entitySection = configurationSection.getConfigurationSection("entity");
+            this.entityData = entitySection != null ? EntityData.create(entitySection, EntityType.ARROW) : EntityData.create(EntityType.ARROW);
+        }
+
         fireTicks = configurationSection.getInt("fireTicks", 0);
     }
 
