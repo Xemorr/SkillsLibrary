@@ -12,6 +12,7 @@ public class Conditions {
 
     static {
         register("HEALTH", HealthCondition.class);
+        register("HOTBARSLOT", HotbarSlotCondition.class);
         register("CHANCE", ChanceCondition.class);
         register("COOLDOWN", CooldownCondition.class);
         register("ENTITY", EntityWhitelistCondition.class);
