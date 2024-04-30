@@ -31,13 +31,13 @@ public abstract class Effect {
     }
 
     private boolean supports(Mode mode) {
-        switch (mode) {
-            case ALL: return true;
-            case SELF: return this instanceof EntityEffect;
-            case OTHER: return this instanceof TargetEffect;
-            case LOCATION: return this instanceof LocationEffect;
-        }
-        return false;
+        return switch (mode) {
+            case ALL -> true;
+            case SELF -> this instanceof EntityEffect;
+            case OTHER -> this instanceof TargetEffect;
+            case LOCATION -> this instanceof LocationEffect;
+            default -> false;
+        };
     }
 
     @Nullable
