@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.xemor"
-version = "2.19.1"
+version = "2.19.0"
 
 repositories {
     mavenCentral()
