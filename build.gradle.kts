@@ -6,22 +6,24 @@ plugins {
 }
 
 group = "me.xemor"
-version = "2.19.0"
+version = "2.20.0"
 
 repositories {
     mavenCentral()
     mavenLocal()
     maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
     maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
-    maven { url = uri("https://jitpack.io/") }
+    maven { url = uri("https://jitpack.io/")}
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+        name = "sonatype-oss-snapshots"
+    }
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.20.5-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
-    shadow("net.kyori:adventure-text-minimessage:4.12.0")
-    shadow("net.kyori:adventure-platform-bukkit:4.3.2")
-    shadow("me.xemor:configurationdata:2.0.0-SNAPSHOT")
+    shadow("net.kyori:adventure-platform-bukkit:4.3.3-SNAPSHOT")
+    shadow("me.xemor:configurationdata:3.2.2-SNAPSHOT")
 }
 
 java {

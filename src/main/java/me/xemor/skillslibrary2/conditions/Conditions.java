@@ -44,6 +44,7 @@ public class Conditions {
         register("SWIMMING", SwimmingCondition.class);
         register("SPEED", SpeedCondition.class);
         register("SHOOTER", ShooterCondition.class);
+        register("SPRINTING", SprintingCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {
