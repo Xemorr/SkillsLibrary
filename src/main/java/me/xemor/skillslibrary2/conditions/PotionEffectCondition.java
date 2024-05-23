@@ -20,8 +20,8 @@ public class PotionEffectCondition extends Condition implements EntityCondition,
 
     public PotionEffectCondition(int condition, ConfigurationSection configurationSection) {
         super(condition, configurationSection);
-        if (configurationSection.contains("type")) {
-            String typeStr = configurationSection.getString("type").toLowerCase(Locale.ENGLISH);
+        if (configurationSection.contains("effect")) {
+            String typeStr = configurationSection.getString("effect").toLowerCase(Locale.ENGLISH);
             NamespacedKey key = NamespacedKey.fromString(typeStr);
             if (key == null) {
                 SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid potion effect type at " + configurationSection.getCurrentPath());
