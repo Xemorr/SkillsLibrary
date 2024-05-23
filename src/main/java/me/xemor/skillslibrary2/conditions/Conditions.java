@@ -45,6 +45,7 @@ public class Conditions {
         register("SPEED", SpeedCondition.class);
         register("SHOOTER", ShooterCondition.class);
         register("SPRINTING", SprintingCondition.class);
+        register("POTIONEFFECT", PotionEffectCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

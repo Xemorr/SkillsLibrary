@@ -47,14 +47,17 @@ public class PlaceBlockEffect extends Effect implements LocationEffect {
     public boolean useEffect(Entity entity, Location location) {
         if (isPacket) {
             if (entity instanceof Player player) {
+                BlockData currentData = location.getBlock().getBlockData();
                 player.sendBlockChange(location, blockData);
                 if (revertsAfter > 0) {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
                             boolean conditionsPassed = revertConditions.ANDConditions(entity, false, location);
-                            if (conditionsPassed) {
+                            if (location.getBlock().getBlockData().matches(currentData) && conditionsPassed) {
                                 player.sendBlockChange(location, location.getBlock().getBlockData());
+                            }
+                            if (conditionsPassed) {
                                 cancel();
                             }
                         }
