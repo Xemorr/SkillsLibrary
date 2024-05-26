@@ -12,13 +12,7 @@ public class SpawnEffect extends Effect implements EntityEffect, TargetEffect, L
 
     public SpawnEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
-
-        if (configurationSection.isString("entity")) {
-            this.entityData = EntityData.create(EntityType.valueOf(configurationSection.getString("entity")));
-        } else {
-            ConfigurationSection entitySection = configurationSection.getConfigurationSection("entity");
-            this.entityData = entitySection != null ? EntityData.create(entitySection, EntityType.ZOMBIE) : EntityData.create(EntityType.ZOMBIE);
-        }
+        this.entityData = EntityData.create(configurationSection, "entity", EntityType.ZOMBIE);
     }
 
     @Override
@@ -29,7 +23,7 @@ public class SpawnEffect extends Effect implements EntityEffect, TargetEffect, L
 
     @Override
     public boolean useEffect(Entity entity, Location location) {
-        entityData.spawnEntity(location.getWorld(), location);
+        entityData.spawnEntity(location);
         return false;
     }
 

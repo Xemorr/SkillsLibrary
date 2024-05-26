@@ -15,14 +15,7 @@ public class ProjectileEffect extends Effect implements EntityEffect, TargetEffe
 
     public ProjectileEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
-
-        if (configurationSection.isString("entity")) {
-            this.projectile = EntityData.create(EntityType.valueOf(configurationSection.getString("entity")));
-        } else {
-            ConfigurationSection entitySection = configurationSection.getConfigurationSection("entity");
-            this.projectile = entitySection != null ? EntityData.create(entitySection, EntityType.SNOWBALL) : EntityData.create(EntityType.SNOWBALL);
-        }
-
+        projectile = EntityData.create(configurationSection, "entity", EntityType.SNOWBALL);
         velocity = configurationSection.getDouble("velocity", 1.0);
     }
 
