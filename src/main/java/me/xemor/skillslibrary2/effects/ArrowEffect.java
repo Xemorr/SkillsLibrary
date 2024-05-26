@@ -29,7 +29,6 @@ public class ArrowEffect extends Effect implements TargetEffect {
         if (entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) entity;
             Location startPoint = livingEntity.getEyeLocation();
-            World world = entity.getWorld();
             double yDifference = location.getY() - startPoint.getY();
             double xDifference = location.getX() - startPoint.getX();
             double zDifference = location.getZ() - startPoint.getZ();
@@ -40,7 +39,7 @@ public class ArrowEffect extends Effect implements TargetEffect {
             double initialXVelocity = solveForInitialHorizontalVelocity(xDifference, time);
             double initialZVelocity = solveForInitialHorizontalVelocity(zDifference, time);
             Vector vector = new Vector(initialXVelocity, initialYVelocity, initialZVelocity);
-            Entity spawnedEntity = entityData.spawnEntity(world, startPoint);
+            Entity spawnedEntity = entityData.spawnEntity(startPoint);
             if (spawnedEntity instanceof Arrow arrow) {
                 arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                 arrow.setDamage(damage);

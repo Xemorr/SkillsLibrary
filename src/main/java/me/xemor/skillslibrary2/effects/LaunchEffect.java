@@ -31,7 +31,7 @@ public class LaunchEffect extends Effect implements EntityEffect, TargetEffect {
         }
         Vector direction = target.getLocation().subtract(entityLocation).toVector().normalize();
         Location spawnLocation = entityLocation.clone().add(direction);
-        Entity projectile = entityData.spawnEntity(world, spawnLocation);
+        Entity projectile = entityData.spawnEntity(spawnLocation);
         projectile.setVelocity(direction.multiply(velocity));
         return false;
     }
@@ -48,7 +48,7 @@ public class LaunchEffect extends Effect implements EntityEffect, TargetEffect {
             direction = entity.getLocation().getDirection();
             spawnLocation = entity.getLocation().clone().add(direction);
         }
-        Entity projectile = entityData.spawnEntity(world, spawnLocation);
+        Entity projectile = entityData.spawnEntity(spawnLocation);
         projectile.setVelocity(direction.multiply(velocity));
         return false;
     }
