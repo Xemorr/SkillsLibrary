@@ -59,6 +59,7 @@ public class Effects {
         registerEffect("REMOVEENTITY", RemoveEntityEffect.class);
         registerEffect("ITEMSTACK", ItemStackWrapperEffect.class);
         registerEffect("ITEMAMOUNT", ItemAmountEffect.class);
+        registerEffect("ITEMMATERIAL", ItemMaterialEffect.class);
         registerEffect("SWITCHEROO", SwitcherooWrapperEffect.class);
         registerEffect("LOCATIONOFFSET", LocationOffsetEffect.class);
         registerEffect("BONEMEAL", BonemealEffect.class);

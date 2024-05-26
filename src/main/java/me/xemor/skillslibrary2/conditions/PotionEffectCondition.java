@@ -14,8 +14,8 @@ import java.util.Locale;
 
 public class PotionEffectCondition extends Condition implements EntityCondition, TargetCondition {
 
-    private RangeData potencyRange;
-    private RangeData durationRange;
+    private final RangeData potencyRange;
+    private final RangeData durationRange;
     private PotionEffectType type = null;
 
     public PotionEffectCondition(int condition, ConfigurationSection configurationSection) {
