@@ -23,7 +23,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.20.5-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
     shadow("net.kyori:adventure-platform-bukkit:4.3.3-SNAPSHOT")
-    shadow("me.xemor:configurationdata:3.2.2-SNAPSHOT")
+    shadow("me.xemor:configurationdata:3.2.3-SNAPSHOT")
 }
 
 java {

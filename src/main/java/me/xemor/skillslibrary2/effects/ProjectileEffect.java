@@ -1,10 +1,10 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.configurationdata.entity.EntityData;
-import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
@@ -15,11 +15,7 @@ public class ProjectileEffect extends Effect implements EntityEffect, TargetEffe
 
     public ProjectileEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
-        ConfigurationSection entity = configurationSection.getConfigurationSection("entity");
-        if (entity == null) {
-            SkillsLibrary.getInstance().getLogger().severe("There hasn't been an entity specified to be fired for Projectile effect at " + configurationSection.getCurrentPath() + ".entity");
-        }
-        projectile = EntityData.create(entity);
+        projectile = EntityData.create(configurationSection, "entity", EntityType.SNOWBALL);
         velocity = configurationSection.getDouble("velocity", 1.0);
     }
 
