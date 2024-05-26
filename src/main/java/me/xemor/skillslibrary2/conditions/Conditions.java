@@ -12,6 +12,7 @@ public class Conditions {
 
     static {
         register("HEALTH", HealthCondition.class);
+        register("HOTBARSLOT", HotbarSlotCondition.class);
         register("CHANCE", ChanceCondition.class);
         register("COOLDOWN", CooldownCondition.class);
         register("ENTITY", EntityWhitelistCondition.class);
@@ -43,6 +44,8 @@ public class Conditions {
         register("SWIMMING", SwimmingCondition.class);
         register("SPEED", SpeedCondition.class);
         register("SHOOTER", ShooterCondition.class);
+        register("SPRINTING", SprintingCondition.class);
+        register("POTIONEFFECT", PotionEffectCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

@@ -18,7 +18,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
@@ -81,9 +80,10 @@ public class Triggers implements Listener {
         boolean cancel = false;
         for (Skill skill : skills) {
             TriggerData triggerData = skill.getTriggerData();
-            if (triggerData instanceof PotionEffectTriggerData) {
-                PotionEffectTriggerData potionEffectTriggerData = (PotionEffectTriggerData) triggerData;
-                if (potionEffectTriggerData.inSet(e.getModifiedType())) cancel |= skill.handleEffects(entity);
+            if (triggerData instanceof PotionEffectTriggerData potionEffectTriggerData) {
+                if (potionEffectTriggerData.actionInSet(e.getAction()) && potionEffectTriggerData.causeInSet(e.getCause())) {
+                    if (potionEffectTriggerData.potionInSet(e.getModifiedType())) cancel |= skill.handleEffects(entity);
+                }
             }
         }
         e.setCancelled(cancel);

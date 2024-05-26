@@ -24,7 +24,7 @@ public class ProjectileEffect extends Effect implements EntityEffect, TargetEffe
         if (entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) entity;
             Vector velocity = livingEntity.getEyeLocation().getDirection().multiply(this.velocity);
-            Entity projectile = this.projectile.spawnEntity(entity.getWorld(), livingEntity.getEyeLocation().add(velocity));
+            Entity projectile = this.projectile.spawnEntity(livingEntity.getEyeLocation().add(velocity));
             projectile.setVelocity(velocity);
         }
         return false;
@@ -39,7 +39,7 @@ public class ProjectileEffect extends Effect implements EntityEffect, TargetEffe
     @Override
     public boolean useEffect(Entity entity, Location location) {
         Vector velocity = location.subtract(entity.getLocation()).toVector().normalize().multiply(this.velocity);
-        Entity projectileEntity = projectile.spawnEntity(location.getWorld(), entity.getLocation().add(velocity));
+        Entity projectileEntity = projectile.spawnEntity(entity.getLocation().add(velocity));
         projectileEntity.setVelocity(velocity);
         return false;
     }
