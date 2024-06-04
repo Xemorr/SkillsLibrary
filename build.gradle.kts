@@ -2,11 +2,11 @@ plugins {
     java
     `kotlin-dsl`
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version("7.1.2")
+    id("com.github.johnrengelman.shadow") version("8.1.1")
 }
 
 group = "me.xemor"
-version = "2.22.0"
+version = "2.23.0"
 
 repositories {
     mavenCentral()
@@ -23,7 +23,8 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.20.5-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
     shadow("net.kyori:adventure-platform-bukkit:4.3.3-SNAPSHOT")
-    shadow("me.xemor:configurationdata:3.3.0-SNAPSHOT")
+    shadow("me.xemor:configurationdata:3.4.0-SNAPSHOT")
+    shadow("me.creeves:ParticlesLibrary:1.1-SNAPSHOT")
 }
 
 java {
