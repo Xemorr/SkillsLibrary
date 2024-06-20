@@ -15,8 +15,7 @@ public class SneakCondition extends Condition implements EntityCondition, Target
 
     @Override
     public boolean isTrue(Entity livingEntity) {
-        if (livingEntity instanceof Player) {
-            Player player = (Player) livingEntity;
+        if (livingEntity instanceof Player player) {
             return player.isSneaking() == sneak;
         }
         return true;
@@ -24,8 +23,7 @@ public class SneakCondition extends Condition implements EntityCondition, Target
 
     @Override
     public boolean isTrue(Entity livingEntity, Entity entity) {
-        if (entity instanceof Player) {
-            Player player = (Player) entity;
+        if (entity instanceof Player player) {
             return player.isSneaking() == sneak;
         }
         return true;
