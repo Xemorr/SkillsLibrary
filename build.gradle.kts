@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.xemor"
-version = "2.24.1"
+version = "3.0.0"
 
 repositories {
     mavenCentral()
@@ -14,6 +14,7 @@ repositories {
     maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
     maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
     maven { url = uri("https://jitpack.io/")}
+    maven { url = uri("https://mvn-repo.arim.space/lesser-gpl3")}
     maven { url = uri("https://repo.xemor.zip/releases")}
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
         name = "sonatype-oss-snapshots"
@@ -27,6 +28,9 @@ dependencies {
     shadow("net.kyori:adventure-text-minimessage:4.17.0")
     shadow("me.xemor:configurationdata:3.5.1-SNAPSHOT")
     shadow("me.creeves:ParticlesLibrary:1.1-SNAPSHOT")
+    shadow("space.arim.morepaperlib:morepaperlib:0.4.3")
+    shadow("me.xemor:foliahacks:1.6.0")
+    shadow("io.papermc:paperlib:1.0.7")
 }
 
 java {
@@ -71,6 +75,9 @@ tasks.shadowJar {
     minimize()
     relocate("net.kyori", "me.xemor.skillslibrary2.kyori")
     relocate("me.xemor.configurationdata", "me.xemor.skillslibrary2.configurationdata")
+    relocate("space.arim.morepaperlib", "me.xemor.skillslibrary2.morepaperlib")
+    relocate("me.xemor.foliahacks", "me.xemor.skillslibrary2.foliahacks")
+    relocate("io.papermc.paperlib", "me.xemor.skillslibrary2.paperlib")
     configurations = listOf(project.configurations.shadow.get())
     val folder = System.getenv("pluginFolder")
     destinationDirectory.set(file(folder))
