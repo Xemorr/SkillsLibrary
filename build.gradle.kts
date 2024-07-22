@@ -32,6 +32,39 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
+publishing {
+    repositories {
+        maven {
+            name = "xemorReleases"
+            url = uri("https://repo.xemor.zip/releases")
+            credentials(PasswordCredentials::class)
+            authentication {
+                isAllowInsecureProtocol = true
+                create<BasicAuthentication>("basic")
+            }
+        }
+
+        maven {
+            name = "xemorSnapshots"
+            url = uri("https://repo.xemor.zip/snapshots")
+            credentials(PasswordCredentials::class)
+            authentication {
+                isAllowInsecureProtocol = true
+                create<BasicAuthentication>("basic")
+            }
+        }
+    }
+
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = rootProject.group.toString()
+            artifactId = rootProject.name
+            version = rootProject.version.toString()
+            from(project.components["java"])
+        }
+    }
+}
+
 tasks.shadowJar {
     minimize()
     relocate("net.kyori", "me.xemor.skillslibrary2.kyori")
