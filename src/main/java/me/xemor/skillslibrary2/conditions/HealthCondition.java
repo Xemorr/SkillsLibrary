@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.configurationdata.comparison.RangeData;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -24,19 +25,17 @@ public class HealthCondition extends Condition implements EntityCondition, Targe
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity) {
-        return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            if (entity instanceof LivingEntity livingEntity) {
-                double healthPercentage = (livingEntity.getHealth() / livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue()) * 100;
-                return healthRange.isInRange(healthPercentage);
-            }
-            return false;
-        });
+    public boolean isTrue(Execution execution, Entity entity) {
+        if (entity instanceof LivingEntity livingEntity) {
+            double healthPercentage = (livingEntity.getHealth() / livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()) * 100;
+            return healthRange.isInRange(healthPercentage);
+        }
+        return false;
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity, Entity target) {
-        return isTrue(target);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> isTrue(execution, target));
     }
 
 

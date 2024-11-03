@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -17,17 +18,15 @@ public class GlidingCondition extends Condition implements EntityCondition, Targ
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity) {
-        return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            if (entity instanceof LivingEntity livingEntity) {
-                return livingEntity.isGliding() == shouldGlide;
-            }
-            return false;
-        });
+    public boolean isTrue(Execution execution, Entity entity) {
+        if (entity instanceof LivingEntity livingEntity) {
+            return livingEntity.isGliding() == shouldGlide;
+        }
+        return false;
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity, Entity target) {
-        return isTrue(target);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> isTrue(execution, target));
     }
 }

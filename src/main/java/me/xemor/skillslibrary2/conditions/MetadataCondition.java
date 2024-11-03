@@ -8,6 +8,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.concurrent.CompletableFuture;
+
 public class MetadataCondition extends ComparisonCondition implements EntityCondition, TargetCondition {
 
     private NamespacedKey variable;
@@ -24,13 +26,13 @@ public class MetadataCondition extends ComparisonCondition implements EntityCond
     }
 
     @Override
-    public boolean isTrue(Entity boss) {
-        return isTrue(boss.getPersistentDataContainer());
+    public boolean isTrue(Execution execution, Entity entity) {
+        return isTrue(execution, entity.getPersistentDataContainer());
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return isTrue(target.getPersistentDataContainer());
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> isTrue(execution, target.getPersistentDataContainer()));
     }
 
     public boolean isTrue(Execution execution, PersistentDataContainer container) {

@@ -37,7 +37,7 @@ public class DamageEffect extends Effect implements TargetEffect, EntityEffect {
     public void useEffect(Execution exe, Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             livingEntity.damage(exe.expression(damageExpression, entity));
-            livingEntity.setLastDamageCause(new EntityDamageEvent(livingEntity, damageCause, damageExpression));
+            livingEntity.setLastDamageCause(new EntityDamageEvent(livingEntity, damageCause, exe.expression(damageExpression)));
         }
     }
 }

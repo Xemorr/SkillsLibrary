@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
@@ -16,9 +17,8 @@ public class RepulseEffect extends Effect implements TargetEffect {
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         repulse(entity, target);
-        return false;
     }
 
     public void repulse(Entity boss, Entity target) {

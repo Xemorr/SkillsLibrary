@@ -28,8 +28,8 @@ public class ActionBarEffect extends Effect implements EntityEffect, TargetEffec
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
-        sendMessage(execution, target);
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        SkillsLibrary.getFoliaHacks().runASAP(target, () -> sendMessage(execution, target));
     }
 
     @Override
@@ -46,8 +46,6 @@ public class ActionBarEffect extends Effect implements EntityEffect, TargetEffec
                 audience.sendActionBar(component);
             } catch (ParsingException e) {
                 SkillsLibrary.getInstance().getLogger().severe("There is likely a legacy colour code in this message " + message);
-                e.printStackTrace();
-            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -25,7 +26,7 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
     }
 
     @Override
-    public boolean useEffect(Execution execution, Entity entity) {
+    public void useEffect(Execution execution, Entity entity) {
         new BukkitRunnable() {
             int count = 0;
             @Override
@@ -36,11 +37,10 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
                 }
             }
         }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         new BukkitRunnable() {
             int count = 0;
             @Override
@@ -51,11 +51,10 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
                 }
             }
         }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Location location) {
+    public void useEffect(Execution execution, Entity entity, Location location) {
         new BukkitRunnable() {
             int count = 0;
             @Override
@@ -66,11 +65,10 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
                 }
             }
         }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, ItemStack item) {
+    public void useEffect(Execution execution, Entity entity, ItemStack item) {
         new BukkitRunnable() {
             int count = 0;
             @Override
@@ -81,6 +79,5 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
                 }
             }
         }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
-        return false;
     }
 }

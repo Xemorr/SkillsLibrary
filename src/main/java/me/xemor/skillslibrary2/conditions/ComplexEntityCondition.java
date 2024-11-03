@@ -5,8 +5,8 @@ import org.bukkit.entity.Entity;
 
 import java.util.concurrent.CompletableFuture;
 
-public interface TargetCondition {
+public interface ComplexEntityCondition {
 
-    CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target);
+    CompletableFuture<Boolean> isTrue(Execution execution, Entity entity);
 
 }

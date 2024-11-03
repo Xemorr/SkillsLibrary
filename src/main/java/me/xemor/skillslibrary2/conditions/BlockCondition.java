@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.configurationdata.comparison.SetData;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,7 +22,7 @@ public class BlockCondition extends Condition implements LocationCondition {
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity, Location location) {
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Location location) {
         World world = location.getWorld();
         return SkillsLibrary.getFoliaHacks().runASAP(location, () -> allowedMaterials.inSet(world.getBlockAt(location).getType()));
     }

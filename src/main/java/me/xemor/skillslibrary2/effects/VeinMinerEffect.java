@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.effects;
 
 import me.xemor.configurationdata.comparison.SetData;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,9 +37,8 @@ public class VeinMinerEffect extends Effect implements ComplexLocationEffect {
     }
 
     @Override
-    public boolean useEffect(Entity entity, Location location) {
+    public void useEffect(Execution execution, Entity entity, Location location) {
         breakLog(location.getBlock(), 0);
-        return false;
     }
 
     private void breakLog(Block block, int count) {

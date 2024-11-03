@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -21,12 +22,11 @@ public class ResizeEffect extends ModifyEffect implements EntityEffect, TargetEf
     }
 
     @Override
-    public boolean useEffect(Entity boss) {
-        if (boss instanceof Slime) {
-            Slime slime = (Slime) boss;
+    public void useEffect(Execution execution, Entity boss) {
+        if (boss instanceof Slime slime) {
             double health = slime.getHealth();
             double maxHealth = slime.getAttribute(Attribute.MAX_HEALTH).getBaseValue();
-            slime.setSize((int) Math.round(changeValue(slime.getSize())));
+            slime.setSize((int) Math.round(changeValue(execution, slime.getSize())));
             if (retainHealth) {
                 slime.getAttribute(Attribute.MAX_HEALTH).setBaseValue(maxHealth);
                 if (health > maxHealth) {
@@ -35,24 +35,19 @@ public class ResizeEffect extends ModifyEffect implements EntityEffect, TargetEf
                 slime.setHealth(health);
             }
         }
-        else if (boss instanceof Phantom) {
-            Phantom phantom = (Phantom) boss;
-            phantom.setSize((int) Math.round(changeValue(phantom.getSize())));
+        else if (boss instanceof Phantom phantom) {
+            phantom.setSize((int) Math.round(changeValue(execution, phantom.getSize())));
         }
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
-        if (target instanceof Slime) {
-            Slime slime = (Slime) target;
-            slime.setSize((int) Math.round(changeValue(slime.getSize())));
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        if (target instanceof Slime slime) {
+            slime.setSize((int) Math.round(changeValue(execution, slime.getSize())));
         }
-        else if (target instanceof Phantom) {
-            Phantom phantom = (Phantom) target;
-            phantom.setSize((int) Math.round(changeValue(phantom.getSize())));
+        else if (target instanceof Phantom phantom) {
+            phantom.setSize((int) Math.round(changeValue(execution, phantom.getSize())));
         }
-        return false;
     }
 
 }

@@ -27,7 +27,7 @@ public class BlockEntityEffect extends Effect implements TargetEffect {
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         Location location = target.getLocation();
         World world = location.getWorld();
         Block block = world.getBlockAt(location);

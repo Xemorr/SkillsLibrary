@@ -1,9 +1,9 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ChanceCondition extends Condition implements EntityCondition {
@@ -16,7 +16,7 @@ public class ChanceCondition extends Condition implements EntityCondition {
     }
 
     @Override
-    public boolean isTrue(Entity boss) {
+    public boolean isTrue(Execution execution, Entity entity) {
         return ThreadLocalRandom.current().nextFloat() <= chance;
     }
 }

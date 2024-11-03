@@ -25,7 +25,7 @@ public class LocationOffsetEffect extends WrapperEffect implements EntityEffect,
 
     @Override
     public void useEffect(Execution execution, Entity entity, Location location) {
-        handleEffects(entity, location.add(offset));
+        handleEffects(execution, entity, location.add(offset));
     }
 
     @Override

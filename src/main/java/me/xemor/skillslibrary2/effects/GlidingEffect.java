@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -22,9 +23,9 @@ public class GlidingEffect extends Effect implements EntityEffect, TargetEffect 
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         if (target instanceof LivingEntity livingTarget) {
-            livingTarget.setGliding(glide);
+            SkillsLibrary.getFoliaHacks().runASAP(target, () -> livingTarget.setGliding(glide));
         }
     }
 }

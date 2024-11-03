@@ -30,19 +30,19 @@ public class AttributeEffect extends ModifyEffect implements EntityEffect, Targe
     @Override
     public void useEffect(Execution execution, Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
-            applyAttributes(livingEntity);
+            applyAttributes(execution, livingEntity);
         }
     }
 
-    public void applyAttributes(LivingEntity entity) {
+    public void applyAttributes(Execution execution, LivingEntity entity) {
         AttributeInstance attributeInstance = entity.getAttribute(attribute);
-        attributeInstance.setBaseValue(changeValue(attributeInstance.getBaseValue()));
+        attributeInstance.setBaseValue(changeValue(execution, attributeInstance.getBaseValue()));
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         if (target instanceof LivingEntity livingEntity) {
-            applyAttributes(livingEntity);
+            SkillsLibrary.getFoliaHacks().runASAP(livingEntity, () -> applyAttributes(execution, livingEntity));
         }
     }
 }

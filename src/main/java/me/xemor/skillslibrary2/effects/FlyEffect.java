@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -23,7 +24,7 @@ public class FlyEffect extends Effect implements EntityEffect, TargetEffect {
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
-        useEffect(execution, target);
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        SkillsLibrary.getFoliaHacks().runASAP(target, () -> useEffect(execution, target));
     }
 }

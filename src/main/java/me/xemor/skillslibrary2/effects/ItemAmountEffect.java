@@ -15,7 +15,7 @@ public class ItemAmountEffect extends ModifyEffect implements ItemStackEffect {
     @Override
     public void useEffect(Execution execution, Entity entity, ItemStack item) {
         SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            item.setAmount((int) Math.round(changeValue(item.getAmount())));
+            item.setAmount((int) Math.round(changeValue(execution, item.getAmount())));
         });
     }
 

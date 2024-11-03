@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,13 +20,13 @@ public class HealthEffect extends ModifyEffect implements EntityEffect, TargetEf
 			if (newHealth < 0) newHealth = 0;
 			double maxHealth = livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
 			if (newHealth > maxHealth) newHealth = maxHealth;
-			((LivingEntity) entity).setHealth(newHealth);
+			livingEntity.setHealth(newHealth);
 		}
 	}
 
 	@Override
-	public void useEffectAgainst(Execution execution, Entity target) {
-		useEffect(execution, target);
+	public void useEffect(Execution execution, Entity entity, Entity target) {
+		SkillsLibrary.getFoliaHacks().runASAP(target, () -> useEffect(execution, target));
 	}
 
 }

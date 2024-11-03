@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ConditionList implements Iterable<Condition> {
 
@@ -72,7 +71,7 @@ public class ConditionList implements Iterable<Condition> {
 
     public CompletableFuture<Boolean> calculateResultAndElseBranch(Execution execution, EntityCondition entityCondition, boolean currentValue, Entity entity) {
         return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            CompletableFuture<Boolean> completableB = CompletableFuture.completedFuture(entityCondition.isTrue(entity));
+            CompletableFuture<Boolean> completableB = CompletableFuture.completedFuture(entityCondition.isTrue(execution, entity));
             completableB = completableB
                     .thenApply((b) -> b && currentValue)
                     .thenApply(b -> {
@@ -90,7 +89,7 @@ public class ConditionList implements Iterable<Condition> {
 
     public CompletableFuture<Boolean> calculateResultAndElseBranch(Execution execution, TargetCondition targetCondition, boolean currentValue, Entity entity, Entity other) {
         return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            CompletableFuture<Boolean> completableB = targetCondition.isTrue(entity, other);
+            CompletableFuture<Boolean> completableB = targetCondition.isTrue(execution, entity, other);
             completableB
                     .thenApply((b) -> b && currentValue)
                     .thenAccept(b -> {
@@ -106,7 +105,7 @@ public class ConditionList implements Iterable<Condition> {
 
     public CompletableFuture<Boolean> calculateResultAndElseBranch(Execution execution, ItemStackCondition itemCondition, boolean currentValue, Entity entity, ItemStack item) {
         return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            CompletableFuture<Boolean> completableB = itemCondition.isTrue(entity, item);
+            CompletableFuture<Boolean> completableB = itemCondition.isTrue(execution, entity, item);
             completableB.thenApply((b) -> b && currentValue).thenAccept(b -> {
                 if (!b) {
                     if (itemCondition instanceof Condition condition) {
@@ -120,7 +119,7 @@ public class ConditionList implements Iterable<Condition> {
 
     public CompletableFuture<Boolean> calculateResultAndElseBranch(Execution execution, LocationCondition locationCondition, boolean currentValue, Entity entity, Location location) {
         return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            CompletableFuture<Boolean> completableB = locationCondition.isTrue(entity, location);
+            CompletableFuture<Boolean> completableB = locationCondition.isTrue(execution, entity, location);
             completableB.thenApply((b) -> b && currentValue).thenAccept(b -> {
                 if (!b) {
                     if (locationCondition instanceof Condition condition) {
@@ -158,9 +157,9 @@ public class ConditionList implements Iterable<Condition> {
 
     public CompletableFuture<Boolean> handleElseBranchForOr(Execution execution, EntityCondition entityCondition, boolean currentValue, Entity entity) {
         return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            CompletableFuture<Boolean> completableB = CompletableFuture.completedFuture(entityCondition.isTrue(entity));
+            CompletableFuture<Boolean> completableB = CompletableFuture.completedFuture(entityCondition.isTrue(execution, entity));
             completableB = completableB
-                    .thenApply((b) -> b && currentValue)
+                    .thenApply((b) -> b || currentValue)
                     .thenApply(b -> {
                         if (!b) {
                             if (entityCondition instanceof Condition condition) {
@@ -175,8 +174,8 @@ public class ConditionList implements Iterable<Condition> {
 
     public CompletableFuture<Boolean> handleElseBranchForOr(Execution execution, TargetCondition targetCondition, boolean currentValue, Entity entity, Entity other) {
         return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            CompletableFuture<Boolean> completableB = targetCondition.isTrue(entity, other);
-            completableB.thenApply((b) -> b && currentValue)
+            CompletableFuture<Boolean> completableB = targetCondition.isTrue(execution, entity, other);
+            completableB.thenApply((b) -> b || currentValue)
                     .thenAccept(b -> {
                         if (!b) {
                             if (targetCondition instanceof Condition condition) {
@@ -197,8 +196,8 @@ public class ConditionList implements Iterable<Condition> {
         conditions.add(0, condition);
     public CompletableFuture<Boolean> handleElseBranchForOr(Execution execution, ItemStackCondition itemCondition, boolean currentValue, Entity entity, ItemStack item) {
         return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            CompletableFuture<Boolean> completableB = itemCondition.isTrue(entity, item);
-            completableB.thenApply((b) -> b && currentValue).thenAccept(b -> {
+            CompletableFuture<Boolean> completableB = itemCondition.isTrue(execution, entity, item);
+            completableB.thenApply((b) -> b || currentValue).thenAccept(b -> {
                 if (!b) {
                     if (itemCondition instanceof Condition condition) {
                         condition.getOtherwise().handleEffects(execution, entity, item);
@@ -211,8 +210,8 @@ public class ConditionList implements Iterable<Condition> {
 
     public CompletableFuture<Boolean> handleElseBranchForOr(Execution execution, LocationCondition locationCondition, boolean currentValue, Entity entity, Location location) {
         return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            CompletableFuture<Boolean> completableB = locationCondition.isTrue(entity, location);
-            completableB.thenApply((b) -> b && currentValue).thenAccept(b -> {
+            CompletableFuture<Boolean> completableB = locationCondition.isTrue(execution, entity, location);
+            completableB.thenApply((b) -> b || currentValue).thenAccept(b -> {
                 if (!b) {
                     if (locationCondition instanceof Condition condition) {
                         condition.getOtherwise().handleEffects(execution, entity, location);

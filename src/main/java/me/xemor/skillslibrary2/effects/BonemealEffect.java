@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.effects;
 
 import java.util.Set;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -23,21 +24,23 @@ public class BonemealEffect extends Effect implements EntityEffect, LocationEffe
     }
 
     @Override
-    public void useEffectAgainst(Location location) {
-        for (BlockFace face : blockFaces) {
-            boolean success = location.getBlock().applyBoneMeal(face);
-            if (success) break;
-        }
+    public void useEffect(Execution execution, Entity entity, Location location) {
+        SkillsLibrary.getFoliaHacks().runASAP(location, () -> {
+            for (BlockFace face : blockFaces) {
+                boolean success = location.getBlock().applyBoneMeal(face);
+                if (success) break;
+            }
+        });
     }
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
-        useEffectAgainst(entity.getLocation());
+        useEffect(execution, entity, entity.getLocation());
     }
 
     @Override
-    public void useEffectAgainst(Entity target) {
-        useEffectAgainst(target.getLocation());
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        useEffect(execution, entity, target.getLocation());
     }
 
 }

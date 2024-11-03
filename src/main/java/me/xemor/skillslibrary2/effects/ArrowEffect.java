@@ -46,7 +46,7 @@ public class ArrowEffect extends Effect implements TargetEffect {
             if (spawnedEntity instanceof Projectile projectile) {
                 projectile.setShooter(livingEntity);
             }
-            spawnedEntity.setFireTicks(execution.expression(fireTicksExpression));
+            spawnedEntity.setFireTicks((int) Math.round(execution.expression(fireTicksExpression)));
             startPoint = startPoint.add(vector.clone().normalize());
             spawnedEntity.teleport(startPoint);
             spawnedEntity.setVelocity(vector);

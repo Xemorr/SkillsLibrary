@@ -24,8 +24,8 @@ public class AOE extends WrapperEffect implements EntityEffect, TargetEffect, Co
         Collection<Entity> entities = location.getWorld().getNearbyEntities(location, radius, radius, radius);
         for (Entity entity : entities) {
             if (entity != skillEntity) {
-                handleEffects(skillEntity);
-                handleEffects(skillEntity, entity);
+                handleEffects(execution, skillEntity);
+                handleEffects(execution, skillEntity, entity);
             }
         }
     }

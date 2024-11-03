@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -21,15 +22,13 @@ public class EntityWhitelistCondition extends Condition implements EntityConditi
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity) {
-        return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            boolean contained = entities.contains(entity.getType());
-            return whitelist == contained;
-        });
+    public boolean isTrue(Execution execution, Entity entity) {
+        boolean contained = entities.contains(entity.getType());
+        return whitelist == contained;
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity, Entity target) {
-        return isTrue(target);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> isTrue(execution, target));
     }
 }

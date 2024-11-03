@@ -25,21 +25,21 @@ public class MetadataEffect extends ModifyEffect implements EntityEffect, Target
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
-        setVariable(entity.getPersistentDataContainer());
+        setVariable(execution, entity.getPersistentDataContainer());
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
-        setVariable(target.getPersistentDataContainer());
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        SkillsLibrary.getFoliaHacks().runASAP(target, () -> setVariable(execution, target.getPersistentDataContainer()));
     }
 
-    public void setVariable(PersistentDataContainer container) {
+    public void setVariable(Execution execution, PersistentDataContainer container) {
         Double value;
         value = container.get(variable, PersistentDataType.DOUBLE);
         if (value == null) {
             value = 0D;
         }
-        container.set(variable, PersistentDataType.DOUBLE, changeValue(value));
+        container.set(variable, PersistentDataType.DOUBLE, changeValue(execution, value));
     }
 }
 

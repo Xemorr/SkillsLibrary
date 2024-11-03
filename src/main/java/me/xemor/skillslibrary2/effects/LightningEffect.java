@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,8 +21,8 @@ public class LightningEffect extends Effect implements EntityEffect, TargetEffec
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
-        strikeLightning(target);
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        SkillsLibrary.getFoliaHacks().runASAP(target, () -> strikeLightning(target));
     }
 
     public void strikeLightning(Entity entity) {

@@ -1,8 +1,12 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+
+import java.util.concurrent.CompletableFuture;
 
 public class SwimmingCondition extends Condition implements EntityCondition, TargetCondition {
     public SwimmingCondition(int condition, ConfigurationSection configurationSection) {
@@ -10,7 +14,7 @@ public class SwimmingCondition extends Condition implements EntityCondition, Tar
     }
 
     @Override
-    public boolean isTrue(Entity entity) {
+    public boolean isTrue(Execution execution, Entity entity) {
         if (entity instanceof Player player) {
             return player.isSwimming();
         }
@@ -18,7 +22,7 @@ public class SwimmingCondition extends Condition implements EntityCondition, Tar
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return isTrue(target);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> isTrue(execution, target));
     }
 }

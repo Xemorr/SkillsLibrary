@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,17 +14,15 @@ public class FlyingCondition extends Condition implements EntityCondition, Targe
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity) {
-        return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            if (entity instanceof Player player) {
-                return player.isFlying();
-            }
-            return false;
-        });
+    public boolean isTrue(Execution execution, Entity entity) {
+        if (entity instanceof Player player) {
+            return player.isFlying();
+        }
+        return false;
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity, Entity target) {
-        return isTrue(target);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> isTrue(execution, target));
     }
 }

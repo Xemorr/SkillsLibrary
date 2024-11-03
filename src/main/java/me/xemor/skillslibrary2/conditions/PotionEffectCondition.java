@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.configurationdata.comparison.RangeData;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,6 +12,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 
 public class PotionEffectCondition extends Condition implements EntityCondition, TargetCondition {
 
@@ -33,7 +35,7 @@ public class PotionEffectCondition extends Condition implements EntityCondition,
     }
 
     @Override
-    public boolean isTrue(Entity entity) {
+    public boolean isTrue(Execution execution, Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             for (PotionEffect potionEffect : livingEntity.getActivePotionEffects()) {
                 if (potionEffect.getType() == type || type == null) {
@@ -49,7 +51,7 @@ public class PotionEffectCondition extends Condition implements EntityCondition,
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return isTrue(target);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> isTrue(execution, target));
     }
 }

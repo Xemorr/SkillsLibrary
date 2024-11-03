@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -21,7 +22,9 @@ public class IgniteEffect extends Effect implements EntityEffect, TargetEffect {
     }
 
     @Override
-    public void useEffectAgainst(Execution exe, Entity target) {
-        target.setFireTicks((int) Math.round(exe.expression(fireTicksExpression, Map.of("other", target.getPersistentDataContainer()))));
+    public void useEffect(Execution exe, Entity entity, Entity target) {
+        SkillsLibrary.getFoliaHacks().runASAP(target, () -> {
+            target.setFireTicks((int) Math.round(exe.expression(fireTicksExpression, Map.of("other", target.getPersistentDataContainer()))));
+        });
     }
 }
