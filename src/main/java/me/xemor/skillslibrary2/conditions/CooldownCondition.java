@@ -1,11 +1,11 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public class CooldownCondition extends Condition implements EntityCondition {
 
@@ -18,13 +18,13 @@ public class CooldownCondition extends Condition implements EntityCondition {
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity) {
+    public boolean isTrue(Execution execution, Entity entity) {
         double cooldownEnds = cooldownEndsMap.getOrDefault(entity.getUniqueId(), -1L);
         if (cooldownEnds < System.currentTimeMillis()) {
             cooldownEndsMap.put(entity.getUniqueId(), cooldown + System.currentTimeMillis());
-            return CompletableFuture.completedFuture(true);
+            return true;
         }
-        return CompletableFuture.completedFuture(false);
+        return false;
     }
 
 }

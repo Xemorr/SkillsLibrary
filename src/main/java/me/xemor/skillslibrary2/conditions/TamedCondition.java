@@ -1,7 +1,11 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
+
+import java.util.concurrent.CompletableFuture;
 
 public class TamedCondition extends Condition implements TargetCondition {
 
@@ -13,13 +17,12 @@ public class TamedCondition extends Condition implements TargetCondition {
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        if (target instanceof Tameable) {
-            Tameable tameable = (Tameable) target;
-            if (checkOwner) return entity.equals(tameable.getOwner());
-            else return tameable.isTamed();
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        if (target instanceof Tameable tameable) {
+            if (checkOwner) return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> entity.equals(tameable.getOwner()));
+            else return SkillsLibrary.getFoliaHacks().runASAP(tameable, tameable::isTamed);
         }
-        return false;
+        return CompletableFuture.completedFuture(false);
     }
 
 }

@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,18 +21,15 @@ public class RandomTeleportEffect extends Effect implements EntityEffect, Target
     }
 
     @Override
-    public boolean useEffect(Execution execution, Entity entity) {
-        if (entity instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) entity;
+    public void useEffect(Execution execution, Entity entity) {
+        if (entity instanceof LivingEntity livingEntity) {
             entity.teleport(findLocation(livingEntity.getEyeLocation()));
         }
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity livingEntity, Entity target) {
+    public void useEffect(Execution execution, Entity livingEntity, Entity target) {
         target.teleport(findLocation(target.getLocation()));
-        return false;
     }
 
     public Location findLocation(Location initialLocation) {

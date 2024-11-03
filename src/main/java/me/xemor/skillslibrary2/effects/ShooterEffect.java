@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
@@ -15,7 +16,7 @@ public class ShooterEffect extends WrapperEffect implements TargetEffect {
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         if (target instanceof Projectile projectile) {
             ProjectileSource shooter = projectile.getShooter();
             handleEffects(entity);
@@ -25,6 +26,5 @@ public class ShooterEffect extends WrapperEffect implements TargetEffect {
             handleEffects(entity);
             handleEffects(entity, target);
         }
-        return false;
     }
 }

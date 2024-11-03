@@ -1,7 +1,11 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+
+import java.util.concurrent.CompletableFuture;
 
 public class NPCCondition extends Condition implements EntityCondition, TargetCondition {
     private final boolean npc;
@@ -12,13 +16,13 @@ public class NPCCondition extends Condition implements EntityCondition, TargetCo
     }
 
     @Override
-    public boolean isTrue(Entity boss) {
+    public boolean isTrue(Execution execution, Entity boss) {
         return boss.hasMetadata("NPC") == npc;
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return target.hasMetadata("NPC") == npc;
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> target.hasMetadata("NPC") == npc);
     }
 }
 

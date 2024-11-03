@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.configurationdata.comparison.SetData;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,7 +10,7 @@ import org.bukkit.entity.Entity;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BiomeCondition extends Condition implements EntityCondition, LocationCondition {
+public class BiomeCondition extends Condition implements EntityCondition, LocationCondition, TargetCondition {
 
     private final SetData<Biome> biomes;
 
@@ -23,18 +24,18 @@ public class BiomeCondition extends Condition implements EntityCondition, Locati
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity, Location location) {
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Location location) {
         return SkillsLibrary.getFoliaHacks().runASAP(location, () -> calculate(entity, location));
     }
 
     @Override
-    public boolean isTrue(Entity entity) {
+    public boolean isTrue(Execution execution, Entity entity) {
         return calculate(entity, entity.getLocation());
     }
 
     @Override
-    public CompletableFuture<Boolean> isTrue(Entity entity, Entity target) {
-        return isTrue(entity, target.getLocation());
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return isTrue(execution, entity, target.getLocation());
     }
 
     public Biome getBiome(Location location) {

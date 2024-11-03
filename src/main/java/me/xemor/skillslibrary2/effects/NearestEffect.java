@@ -26,8 +26,8 @@ public class NearestEffect extends WrapperEffect implements EntityEffect, Target
     @Override
     public void useEffect(Execution execution, Entity entity, Location location) {
         getNearest(execution, entity, location).thenAccept((nearest) -> {
-                    if (nearest == null) return;
-                    handleEffects(entity, nearest);
+            if (nearest == null) return;
+            handleEffects(execution, entity, nearest);
         });
     }
 
@@ -35,7 +35,7 @@ public class NearestEffect extends WrapperEffect implements EntityEffect, Target
     public void useEffect(Execution execution, Entity entity) {
         getNearest(execution, entity, entity.getLocation()).thenAccept((nearest) -> {
             if (nearest == null) return;
-            handleEffects(entity, nearest);
+            handleEffects(execution, entity, nearest);
         });
     }
 
@@ -43,7 +43,7 @@ public class NearestEffect extends WrapperEffect implements EntityEffect, Target
     public void useEffect(Execution execution, Entity livingEntity, Entity target) {
         getNearest(execution, livingEntity, target.getLocation()).thenAccept((nearest) -> {
             if (nearest == null) return;
-            handleEffects(livingEntity, nearest);
+            handleEffects(execution, livingEntity, nearest);
         });
     }
 

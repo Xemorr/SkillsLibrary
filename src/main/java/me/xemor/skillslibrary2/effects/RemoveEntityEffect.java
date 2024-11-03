@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -10,14 +11,12 @@ public class RemoveEntityEffect extends Effect implements EntityEffect, TargetEf
     }
 
     @Override
-    public boolean useEffect(Execution execution, Entity entity) {
+    public void useEffect(Execution execution, Entity entity) {
         entity.remove();
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         target.remove();
-        return false;
     }
 }

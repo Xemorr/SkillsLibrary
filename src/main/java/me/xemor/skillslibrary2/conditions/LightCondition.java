@@ -2,10 +2,13 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.configurationdata.comparison.RangeData;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+
+import java.util.concurrent.CompletableFuture;
 
 public class LightCondition extends Condition implements EntityCondition, TargetCondition, LocationCondition {
 
@@ -25,17 +28,21 @@ public class LightCondition extends Condition implements EntityCondition, Target
     }
 
     @Override
-    public boolean isTrue(Entity entity) {
-        return isTrue(entity, entity.getLocation());
+    public boolean isTrue(Execution execution, Entity entity) {
+        return isLight(entity.getLocation());
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return isTrue(entity, target.getLocation());
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return isTrue(execution, entity, target.getLocation());
     }
 
     @Override
-    public boolean isTrue(Entity entity, Location location) {
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Location location) {
+        return SkillsLibrary.getFoliaHacks().runASAP(location, () -> isLight(location));
+    }
+
+    public boolean isLight(Location location) {
         Block blockAt = location.getWorld().getBlockAt(location);
         byte light;
         if (checkNatural && checkBlocks) {

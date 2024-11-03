@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -14,12 +15,12 @@ public class FreezeEffect extends ModifyEffect implements EntityEffect, TargetEf
     @Override
     public void useEffect(Execution execution, Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
-            livingEntity.setFreezeTicks((int) changeValue(livingEntity.getFreezeTicks()));
+            livingEntity.setFreezeTicks((int) changeValue(execution, livingEntity.getFreezeTicks()));
         }
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
-        useEffect(execution, target);
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        SkillsLibrary.getFoliaHacks().runASAP(target, () -> useEffect(execution, target));
     }
 }

@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -11,14 +12,12 @@ public class TeleportEffect extends Effect implements TargetEffect, ComplexLocat
     }
 
     @Override
-    public boolean useEffect(Entity entity, Location location) {
+    public void useEffect(Execution execution, Entity entity, Location location) {
         entity.teleport(location);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         entity.teleport(target);
-        return false;
     }
 }

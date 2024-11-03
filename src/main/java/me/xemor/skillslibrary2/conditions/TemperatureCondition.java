@@ -1,10 +1,14 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import me.xemor.configurationdata.comparison.RangeData;
+
+import java.util.concurrent.CompletableFuture;
 
 public class TemperatureCondition extends Condition implements EntityCondition, TargetCondition, LocationCondition {
 
@@ -16,18 +20,18 @@ public class TemperatureCondition extends Condition implements EntityCondition, 
     }
 
     @Override
-    public boolean isTrue(Entity entity, Location location) {
-        return temperatureRange.isInRange(location.getBlock().getTemperature());
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Location location) {
+        return SkillsLibrary.getFoliaHacks().runASAP(location, () -> temperatureRange.isInRange(location.getBlock().getTemperature()));
     }
 
     @Override
-    public boolean isTrue(Entity entity) {
-        return isTrue(entity, entity.getLocation());
+    public boolean isTrue(Execution execution, Entity entity) {
+        return temperatureRange.isInRange(entity.getLocation().getBlock().getTemperature());
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return isTrue(entity, target.getLocation());
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return isTrue(execution, entity, target.getLocation());
     }
 
 }

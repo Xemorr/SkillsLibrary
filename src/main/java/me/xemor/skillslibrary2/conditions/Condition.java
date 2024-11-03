@@ -60,32 +60,6 @@ public abstract class Condition {
         return null;
     }
 
-    private CompletableFuture<Boolean> correctThread(Entity entity, Supplier<Boolean> condition) {
-        CompletableFuture<Boolean> future = new CompletableFuture();
-        if (this.entityIsOwnedByCurrentRegion != null) {
-            try {
-                if ((Boolean)this.entityIsOwnedByCurrentRegion.invoke(entity)) {
-                    r.run();
-                    future.complete(true);
-                } else {
-                    this.getScheduling().entitySpecificScheduler(entity).run(() -> {
-                        r.run();
-                        future.complete(false);
-                    }, () -> {
-                    });
-                }
-            } catch (InvocationTargetException | IllegalAccessException var5) {
-                ReflectiveOperationException e = var5;
-                throw new RuntimeException(e);
-            }
-        } else {
-            r.run();
-            future.complete(true);
-        }
-
-        return future;
-    }
-
     public int getCondition() {
         return condition;
     }

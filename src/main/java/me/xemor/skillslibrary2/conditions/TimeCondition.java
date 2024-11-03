@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.configurationdata.comparison.RangeData;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -19,7 +20,7 @@ public class TimeCondition extends Condition implements EntityCondition {
 
 
     @Override
-    public boolean isTrue(Entity entity) {
+    public boolean isTrue(Execution execution, Entity entity) {
         long time = entity.getWorld().getTime();
         if (minimumTime != 0 || maximumTime != 24000) {
             return time >= minimumTime && time <= maximumTime;

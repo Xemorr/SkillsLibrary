@@ -1,9 +1,13 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Phantom;
 import org.bukkit.entity.Slime;
+
+import java.util.concurrent.CompletableFuture;
 
 public class SizeCondition extends Condition implements EntityCondition, TargetCondition {
 
@@ -17,22 +21,20 @@ public class SizeCondition extends Condition implements EntityCondition, TargetC
     }
 
     @Override
-    public boolean isTrue(Entity boss) {
-        return checkCondition(boss);
+    public boolean isTrue(Execution execution, Entity entity) {
+        return checkCondition(entity);
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return checkCondition(target);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> checkCondition(target));
     }
 
     public boolean checkCondition(Entity entity) {
-        if (entity instanceof Slime) {
-            Slime slime = (Slime) entity;
+        if (entity instanceof Slime slime) {
             return minimumSize <= slime.getSize() && slime.getSize() <= maximumSize;
         }
-        if (entity instanceof Phantom) {
-            Phantom phantom = (Phantom) entity;
+        if (entity instanceof Phantom phantom) {
             return minimumSize <= phantom.getSize() && phantom.getSize() <= maximumSize;
         }
         return false;

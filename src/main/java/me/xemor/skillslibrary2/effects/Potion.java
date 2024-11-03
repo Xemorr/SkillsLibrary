@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.effects;
 
 import me.xemor.configurationdata.PotionEffectData;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -30,21 +31,18 @@ public class Potion extends Effect implements EntityEffect, TargetEffect {
     }
 
     public void applyPotionEffect(Entity target) {
-        if (target instanceof LivingEntity) {
-            LivingEntity lTarget = (LivingEntity) target;
+        if (target instanceof LivingEntity lTarget) {
             lTarget.addPotionEffect(potionEffect);
         }
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         applyPotionEffect(target);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity boss) {
+    public void useEffect(Execution execution, Entity boss) {
         applyPotionEffect(boss);
-        return false;
     }
 }

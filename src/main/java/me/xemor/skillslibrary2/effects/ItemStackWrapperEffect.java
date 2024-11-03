@@ -30,15 +30,15 @@ public class ItemStackWrapperEffect extends WrapperEffect implements EntityEffec
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
-        handleEffects(entity);
+        handleEffects(execution, entity);
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
-        handleEffects(target);
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        handleEffects(execution, target);
     }
 
-    public void handleEffects(Entity entity) {
+    public void handleEffects(Execution execution, Entity entity) {
         SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
             if (entity instanceof LivingEntity livingEntity) {
                 ItemStack item = null;
@@ -52,7 +52,7 @@ public class ItemStackWrapperEffect extends WrapperEffect implements EntityEffec
                     item = player.getInventory().getItem(slot);
                 }
                 if (item != null) {
-                    handleEffects(entity, item);
+                    handleEffects(execution, entity, item);
                 }
             }
         });

@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.configurationdata.ItemStackData;
+import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -29,8 +30,8 @@ public class GiveItemEffect extends Effect implements EntityEffect, TargetEffect
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
-        giveItem(target);
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        SkillsLibrary.getFoliaHacks().runASAP(target, () -> giveItem(target));
     }
 
     public void giveItem(Entity entity) {

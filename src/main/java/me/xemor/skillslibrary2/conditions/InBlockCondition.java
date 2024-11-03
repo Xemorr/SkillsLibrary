@@ -1,10 +1,13 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class InBlockCondition extends Condition implements EntityCondition, TargetCondition {
@@ -17,13 +20,13 @@ public class InBlockCondition extends Condition implements EntityCondition, Targ
     }
 
     @Override
-    public boolean isTrue(Entity boss) {
+    public boolean isTrue(Execution execution, Entity boss) {
         return inBlock(boss);
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return inBlock(target);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> inBlock(target));
     }
 
     public boolean inBlock(Entity entity) {
