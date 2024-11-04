@@ -1,9 +1,11 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.configurationdata.comparison.RegistrySetData;
 import me.xemor.configurationdata.comparison.SetData;
 import me.xemor.skillslibrary2.Skill;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.Location;
+import org.bukkit.Registry;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,11 +17,11 @@ import java.util.stream.Collectors;
 
 public class BiomeCondition extends Condition implements EntityCondition, TargetCondition, LocationCondition {
 
-    private SetData<Biome> biomes;
+    private final RegistrySetData<Biome> biomes;
 
     public BiomeCondition(int condition, ConfigurationSection configurationSection) {
         super(condition, configurationSection);
-        biomes = new SetData<>(Biome.class, "biomes", configurationSection);
+        biomes = new RegistrySetData<>(Registry.BIOME::match, "biomes", configurationSection);
     }
 
     @Override

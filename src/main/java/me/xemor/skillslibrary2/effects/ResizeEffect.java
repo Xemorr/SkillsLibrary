@@ -13,7 +13,7 @@ public class ResizeEffect extends ModifyEffect implements EntityEffect, TargetEf
      * If the slime is alive, then the health is also set to the maximum health, which is often unintended behaviour in a boss fight.
      * Hence, the retainHealth attribute setting it back.
      */
-    private boolean retainHealth;
+    private final boolean retainHealth;
 
     public ResizeEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
@@ -25,10 +25,10 @@ public class ResizeEffect extends ModifyEffect implements EntityEffect, TargetEf
         if (boss instanceof Slime) {
             Slime slime = (Slime) boss;
             double health = slime.getHealth();
-            double maxHealth = slime.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+            double maxHealth = slime.getAttribute(Attribute.MAX_HEALTH).getBaseValue();
             slime.setSize((int) Math.round(changeValue(slime.getSize())));
             if (retainHealth) {
-                slime.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
+                slime.getAttribute(Attribute.MAX_HEALTH).setBaseValue(maxHealth);
                 if (health > maxHealth) {
                     health = maxHealth;
                 }
