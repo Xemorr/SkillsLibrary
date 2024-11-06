@@ -93,6 +93,11 @@ public class ConditionList implements Iterable<Condition> {
         return false;
     }
 
+    public void prependCondition(Condition condition) { conditions.add(0, condition); }
+
+    public void appendCondition(Condition condition) { conditions.add(condition); }
+
+    @Deprecated
     public void addCondition(Condition condition) {
         conditions.add(0, condition);
     }
