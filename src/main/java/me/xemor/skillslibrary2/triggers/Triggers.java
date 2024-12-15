@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -307,7 +308,10 @@ public class Triggers implements Listener {
     public void equip(InventoryClickEvent e) {
         if (e.getClick() == ClickType.LEFT || e.getClick() == ClickType.RIGHT) {
             if (e.getSlotType() == InventoryType.SlotType.ARMOR) {
-                e.setCancelled(handleSkills(Trigger.getTrigger("EQUIPARMOR"), e.getWhoClicked(), e.getCurrentItem()));
+                e.setCancelled(
+                        e.isCancelled() ||
+                        handleSkills(Trigger.getTrigger("EQUIPARMOR"), e.getWhoClicked(), e.getCurrentItem())
+                );
             }
         }
     }
@@ -317,7 +321,10 @@ public class Triggers implements Listener {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (e.getItem() == null) return;
             if (armour.contains(e.getItem().getType())) {
-                e.setCancelled(handleSkills(Trigger.getTrigger("EQUIPARMOR"), e.getPlayer(), e.getItem()));
+                Event.Result skillResult = handleSkills(Trigger.getTrigger("EQUIPARMOR"), e.getPlayer(), e.getItem()) ? Event.Result.DENY : Event.Result.DEFAULT;
+                if (skillResult == Event.Result.DENY) {
+                    e.setUseInteractedBlock(skillResult);
+                }
             }
         }
     }
