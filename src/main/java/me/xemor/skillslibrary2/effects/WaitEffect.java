@@ -22,7 +22,7 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
         new BukkitRunnable() {
             @Override
             public void run() {
-                handleEffects(entity);
+                handleEffects(execution, entity);
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
     }
@@ -32,7 +32,7 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
         new BukkitRunnable() {
             @Override
             public void run() {
-                handleEffects(entity, target);
+                handleEffects(execution, entity, target);
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
     }
@@ -42,7 +42,7 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
         new BukkitRunnable() {
             @Override
             public void run() {
-                handleEffects(entity, location);
+                handleEffects(execution, entity, location);
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
     }
@@ -52,7 +52,7 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
         new BukkitRunnable() {
             @Override
             public void run() {
-                handleEffects(entity, item);
+                handleEffects(execution, entity, item);
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
     }

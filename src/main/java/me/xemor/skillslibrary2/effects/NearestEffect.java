@@ -9,10 +9,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class NearestEffect extends WrapperEffect implements EntityEffect, TargetEffect, ComplexLocationEffect {
 
@@ -52,14 +52,34 @@ public class NearestEffect extends WrapperEffect implements EntityEffect, Target
         CompletableFuture<LivingEntity> completableFuture = new CompletableFuture<>();
         SkillsLibrary.getFoliaHacks().runASAP(location, () -> {
             World world = location.getWorld();
-            Collection<Entity> entities = world.getNearbyEntities(location, radius, radius, radius);
+            List<Entity> entities = new ArrayList<>(world.getNearbyEntities(location, radius, radius, radius));
             entities.removeIf((entity -> !(entity instanceof LivingEntity)));
+            if (entities.isEmpty()) {
+                return;
+            }
             SkillsLibrary.getFoliaHacks().runASAP(livingEntity, () -> {
-                entities.removeIf((entity -> !getConditions().ANDConditions(execution, livingEntity, false, entity)));
-                if (entities.isEmpty()) {
-                    return;
-                }
-                completableFuture.complete((LivingEntity) Collections.min(entities, Comparator.comparingDouble(entity -> entity.getLocation().distanceSquared(location))));
+                CompletableFuture[] futures = entities
+                        .stream()
+                        .map((entity) -> getConditions().ANDConditions(execution, livingEntity, false, entity))
+                        .toArray(CompletableFuture[]::new);
+                CompletableFuture.allOf(
+                        futures
+                ).thenAccept((result) -> {
+                    List<Entity> filteredEntities = new ArrayList<>();
+                    for (int i = 0; i < futures.length; i++) {
+                        Entity entity = entities.get(i);
+                        // This is always true, we've just lost the generic information due to the stream
+                        CompletableFuture<Boolean> future = (CompletableFuture<Boolean>) futures[i];
+                        try {
+                            if (future.get()) {
+                                filteredEntities.add(entity);
+                            }
+                        } catch (InterruptedException | ExecutionException e) {
+                            SkillsLibrary.getInstance().getLogger().severe("This should never happen. Contact the developer of SkillsLibrary if you see this error.");
+                        }
+                    }
+                    completableFuture.complete((LivingEntity) Collections.min(filteredEntities, Comparator.comparingDouble(entity -> entity.getLocation().distanceSquared(location))));
+                });
             });
         });
         return completableFuture;

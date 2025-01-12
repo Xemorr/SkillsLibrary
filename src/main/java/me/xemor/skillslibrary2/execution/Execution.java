@@ -171,4 +171,8 @@ public class Execution {
             default -> 0;
         };
     }
+
+    public boolean isCancelled() {
+        return cancelled.get();
+    }
 }

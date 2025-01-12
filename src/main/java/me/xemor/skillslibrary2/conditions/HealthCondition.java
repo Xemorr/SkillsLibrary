@@ -27,7 +27,7 @@ public class HealthCondition extends Condition implements EntityCondition, Targe
     @Override
     public boolean isTrue(Execution execution, Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
-            double healthPercentage = (livingEntity.getHealth() / livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()) * 100;
+            double healthPercentage = (livingEntity.getHealth() / livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue()) * 100;
             return healthRange.isInRange(healthPercentage);
         }
         return false;

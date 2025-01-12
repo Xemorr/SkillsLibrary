@@ -44,6 +44,10 @@ public class ConditionList implements Iterable<Condition> {
         }
     }
 
+    public CompletableFuture<Boolean> ANDConditions(Entity entity, boolean exact, Object... objects) {
+        return ANDConditions(new Execution(), entity, exact, objects);
+    }
+
     public CompletableFuture<Boolean> ANDConditions(Execution execution, Entity entity, boolean exact, Object... objects) {
         Object otherObject = objects.length == 0 ? null : objects[0];
         CompletableFuture<Boolean> resultFuture = CompletableFuture.completedFuture(true);
@@ -194,6 +198,8 @@ public class ConditionList implements Iterable<Condition> {
     @Deprecated
     public void addCondition(Condition condition) {
         conditions.add(0, condition);
+    }
+
     public CompletableFuture<Boolean> handleElseBranchForOr(Execution execution, ItemStackCondition itemCondition, boolean currentValue, Entity entity, ItemStack item) {
         return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
             CompletableFuture<Boolean> completableB = itemCondition.isTrue(execution, entity, item);

@@ -62,14 +62,12 @@ public class RaytraceEffect extends WrapperEffect implements EntityEffect, Targe
             Vector position = rayTraceResult.getHitPosition();
             result = new Location(world, position.getX(), position.getY(), position.getZ(), location.getYaw(), location.getPitch());
         }
-        handleEffects(entity, result);
-        return false;
+        handleEffects(execution, entity, result);
     }
 
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
-        useEffect(target);
-        return false;
+        useEffect(execution, target);
     }
 
 }

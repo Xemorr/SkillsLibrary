@@ -31,7 +31,7 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
             int count = 0;
             @Override
             public void run() {
-                handleEffects(entity);
+                handleEffects(execution, entity);
                 if (++count >= repeats) {
                     this.cancel();
                 }
@@ -45,7 +45,7 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
             int count = 0;
             @Override
             public void run() {
-                handleEffects(entity, target);
+                handleEffects(execution, entity, target);
                 if (++count >= repeats) {
                     this.cancel();
                 }
@@ -59,7 +59,7 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
             int count = 0;
             @Override
             public void run() {
-                handleEffects(entity, location);
+                handleEffects(execution, entity, location);
                 if (++count >= repeats) {
                     this.cancel();
                 }
@@ -73,7 +73,7 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
             int count = 0;
             @Override
             public void run() {
-                handleEffects(entity, item);
+                handleEffects(execution, entity, item);
                 if (++count >= repeats) {
                     this.cancel();
                 }

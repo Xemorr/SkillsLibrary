@@ -14,6 +14,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.concurrent.CompletableFuture;
+
 public class PlaceBlockEffect extends Effect implements ComplexLocationEffect {
 
     private BlockData blockData;
@@ -62,24 +64,23 @@ public class PlaceBlockEffect extends Effect implements ComplexLocationEffect {
     }
 
     public void handlePacketPlaceBlock(Execution execution, Entity entity, Location location, int revertsAfter) {
+        if (revertsAfter <= 0) return;
         if (entity instanceof Player player) {
             BlockData currentData = location.getBlock().getBlockData();
             SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
                 player.sendBlockChange(location, blockData);
             });
-            if (revertsAfter > 0) {
-                SkillsLibrary.getScheduling().regionSpecificScheduler(location).runAtFixedRate((task) -> {
-                    boolean conditionsPassed = revertConditions.ANDConditions(execution, entity, false, location);
-                    if (location.getBlock().getBlockData().matches(currentData) && conditionsPassed) {
-                        SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-                            player.sendBlockChange(location, location.getBlock().getBlockData());
-                        });
-                    }
-                    if (conditionsPassed) {
+            SkillsLibrary.getScheduling().regionSpecificScheduler(location).runAtFixedRate((task) -> {
+                CompletableFuture<Boolean> conditionsPassed = revertConditions.ANDConditions(execution, entity, false, location);
+                conditionsPassed.thenAccept((b) -> {
+                    if (b) {
                         task.cancel();
                     }
-                }, revertsAfter, revertsAfter);
-            }
+                    if (location.getBlock().getBlockData().matches(currentData)) {
+                        SkillsLibrary.getFoliaHacks().runASAP(entity, () -> player.sendBlockChange(location, location.getBlock().getBlockData()));
+                    }
+                });
+            }, revertsAfter, revertsAfter);
         }
     }
 
@@ -89,13 +90,15 @@ public class PlaceBlockEffect extends Effect implements ComplexLocationEffect {
         block.setBlockData(blockData, updatePhysics);
         if (revertsAfter > 0) {
             SkillsLibrary.getScheduling().regionSpecificScheduler(location).runAtFixedRate((task) -> {
-                boolean conditionsPassed = revertConditions.ANDConditions(execution, entity, false, location);
-                if (block.getBlockData().matches(blockData) && conditionsPassed) {
-                    block.setBlockData(oldData, updatePhysics);
-                }
-                if (conditionsPassed) {
-                    task.cancel();
-                }
+                CompletableFuture<Boolean> conditionsPassed = revertConditions.ANDConditions(execution, entity, false, location);
+                conditionsPassed.thenAccept((b) -> {
+                    if (b) {
+                        if (block.getBlockData().matches(blockData)) {
+                            block.setBlockData(oldData, updatePhysics);
+                        }
+                        task.cancel();
+                    }
+                });
             }, revertsAfter, revertsAfter);
         }
     }

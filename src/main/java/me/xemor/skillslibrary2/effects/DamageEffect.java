@@ -16,7 +16,7 @@ public class DamageEffect extends Effect implements TargetEffect, EntityEffect {
     public DamageEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
         damageExpression = configurationSection.getString("damage", "5");
-        shouldTriggerEvents = configurationSection.getBoolean("shouldTriggerEvents", true);
+        shouldTriggerEvents = configurationSection.getBoolean("shouldTriggerEvents", false);
         try {
             damageCause = EntityDamageEvent.DamageCause.valueOf(configurationSection.getString("cause", "CUSTOM"));
         } catch (IllegalArgumentException e) {

@@ -18,7 +18,7 @@ public class SpawnEffect extends Effect implements EntityEffect, TargetEffect, C
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
-        useEffect(entity, entity.getLocation());
+        useEffect(execution, entity, entity.getLocation());
     }
 
     @Override
@@ -28,6 +28,6 @@ public class SpawnEffect extends Effect implements EntityEffect, TargetEffect, C
 
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
-        useEffect(entity, target.getLocation());
+        useEffect(execution, entity, target.getLocation());
     }
 }

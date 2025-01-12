@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2;
 
 import me.xemor.skillslibrary2.effects.*;
+import me.xemor.skillslibrary2.execution.Execution;
 import me.xemor.skillslibrary2.triggers.Trigger;
 import me.xemor.skillslibrary2.triggers.TriggerData;
 import org.bukkit.configuration.ConfigurationSection;
@@ -31,10 +32,11 @@ public class Skill {
     }
 
     public boolean handleEffects(Entity entity, Object... objects) {
-        if (trigger.getConditions().ANDConditions(entity, false, objects)) {
-            return effects.handleEffects(entity, objects);
-        }
-        return false;
+        Execution execution = new Execution();
+        trigger.getConditions().ANDConditions(execution, entity, false, objects).thenAccept((b) -> {
+            if (b) effects.handleEffects(execution, entity, objects);
+        });
+        return execution.isCancelled();
     }
 
     public TriggerData getTriggerData() {

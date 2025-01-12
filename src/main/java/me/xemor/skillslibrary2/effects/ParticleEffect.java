@@ -31,15 +31,14 @@ public class ParticleEffect extends Effect implements EntityEffect, TargetEffect
     }
 
     @Override
-    public void useEffectAgainst(Execution execution, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Location location) {
+        particleData.spawnParticle(location);
+    }
+
+    @Override
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         if (target instanceof LivingEntity livingEntity) {
             particleData.spawnParticle(livingEntity);
         }
-    }
-
-
-    @Override
-    public void useEffectAgainst(Execution execution, Location location) {
-        particleData.spawnParticle(location);
     }
 }

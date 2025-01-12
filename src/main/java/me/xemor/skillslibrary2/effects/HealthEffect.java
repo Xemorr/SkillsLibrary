@@ -18,7 +18,7 @@ public class HealthEffect extends ModifyEffect implements EntityEffect, TargetEf
 		if (entity instanceof LivingEntity livingEntity) {
 			double newHealth = (int) changeValue(execution, livingEntity.getHealth());
 			if (newHealth < 0) newHealth = 0;
-			double maxHealth = livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+			double maxHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue();
 			if (newHealth > maxHealth) newHealth = maxHealth;
 			livingEntity.setHealth(newHealth);
 		}
