@@ -125,7 +125,7 @@ public class Triggers implements Listener {
         if (e.getTo() == null) return;
         double difference = e.getTo().clone().subtract(e.getFrom()).getY();
         if (difference >= 0.33319999363422426 && difference <= 0.3332) { //the second condition must be there to support geyser bedrock players
-            handleSkills(Trigger.getTrigger("PLAYERJUMP"), e.getPlayer());
+             handleSkills(Trigger.getTrigger("PLAYERJUMP"), e.getPlayer());
         }
     }
 

@@ -22,14 +22,14 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.21.3-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
     shadow("net.kyori:adventure-platform-bukkit:4.3.3-SNAPSHOT")
     shadow("net.kyori:adventure-text-minimessage:4.17.0")
     shadow("me.xemor:configurationdata:3.5.1-SNAPSHOT")
     shadow("me.creeves:ParticlesLibrary:1.1-SNAPSHOT")
     shadow("space.arim.morepaperlib:morepaperlib:0.4.3")
-    shadow("me.xemor:foliahacks:1.7.0")
+    shadow("me.xemor:foliahacks:1.7.4")
     shadow("io.papermc:paperlib:1.0.7")
 }
 

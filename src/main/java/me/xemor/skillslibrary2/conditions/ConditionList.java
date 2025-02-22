@@ -15,7 +15,6 @@ import java.util.concurrent.*;
 
 public class ConditionList implements Iterable<Condition> {
 
-    private static final Executor completer = Executors.newSingleThreadExecutor();
     private List<Condition> conditions = new ArrayList<>(1);
 
     public ConditionList(ConfigurationSection conditionsSection) {
@@ -54,22 +53,26 @@ public class ConditionList implements Iterable<Condition> {
         for (Condition condition : conditions) {
             resultFuture = resultFuture.thenCompose(previousResult -> {
                 CompletableFuture<Boolean> future = CompletableFuture.completedFuture(previousResult);
+                if (!previousResult) return future;
                 if (condition instanceof EntityCondition entityCondition && condition.getMode().runs(Mode.SELF) && (!exact || otherObject == null)) {
-                    future.thenCompose((bool) -> calculateResultAndElseBranch(execution, entityCondition, bool, entity));
+                    future = future.thenCompose((bool) -> calculateResultAndElseBranch(execution, entityCondition, bool, entity));
                 }
                 if (condition instanceof TargetCondition targetCondition && otherObject instanceof Entity other && condition.getMode().runs(Mode.OTHER)) {
-                    future.thenCompose((bool) -> calculateResultAndElseBranch(execution, targetCondition, bool, entity, other));
+                    future = future.thenCompose((bool) -> calculateResultAndElseBranch(execution, targetCondition, bool, entity, other));
                 }
                 if (condition instanceof LocationCondition locationCondition && otherObject instanceof Location location && condition.getMode().runs(Mode.LOCATION)) {
-                    future.thenCompose((bool) -> calculateResultAndElseBranch(execution, locationCondition, bool, entity, location));
+                    future = future.thenCompose((bool) -> calculateResultAndElseBranch(execution, locationCondition, bool, entity, location));
                 }
                 if (condition instanceof ItemStackCondition itemStackCondition && otherObject instanceof ItemStack item && condition.getMode().runs(Mode.ITEM)) {
-                    future.thenCompose((bool) -> calculateResultAndElseBranch(execution, itemStackCondition, bool, entity, item));
+                    future = future.thenCompose((bool) -> calculateResultAndElseBranch(execution, itemStackCondition, bool, entity, item));
                 }
                 return future;
             });
         }
-        return resultFuture;
+        return resultFuture.exceptionally(ex -> {
+            ex.printStackTrace();
+            return false;
+        });
     }
 
 
@@ -137,21 +140,22 @@ public class ConditionList implements Iterable<Condition> {
 
     public CompletableFuture<Boolean> ORConditions(Execution execution, Entity entity, boolean exact, Object... objects) {
         Object otherObject = objects.length == 0 ? null : objects[0];
-        CompletableFuture<Boolean> resultFuture = CompletableFuture.completedFuture(true);
+        CompletableFuture<Boolean> resultFuture = CompletableFuture.completedFuture(false);
         for (Condition condition : conditions) {
             resultFuture = resultFuture.thenCompose(previousResult -> {
                 CompletableFuture<Boolean> future = CompletableFuture.completedFuture(previousResult);
+                if (previousResult) return future;
                 if (condition instanceof EntityCondition entityCondition && condition.getMode().runs(Mode.SELF) && (!exact || otherObject == null)) {
-                    future.thenCompose((bool) -> (handleElseBranchForOr(execution, entityCondition, bool, entity)));
+                    future = future.thenCompose((bool) -> (handleElseBranchForOr(execution, entityCondition, bool, entity)));
                 }
                 if (condition instanceof TargetCondition targetCondition && otherObject instanceof Entity other && condition.getMode().runs(Mode.OTHER)) {
-                    future.thenCompose((bool) -> (handleElseBranchForOr(execution, targetCondition, bool, entity, other)));
+                    future = future.thenCompose((bool) -> (handleElseBranchForOr(execution, targetCondition, bool, entity, other)));
                 }
                 if (condition instanceof LocationCondition locationCondition && otherObject instanceof Location location && condition.getMode().runs(Mode.LOCATION)) {
-                    future.thenCompose((bool) -> (handleElseBranchForOr(execution, locationCondition, bool, entity, location)));
+                    future = future.thenCompose((bool) -> (handleElseBranchForOr(execution, locationCondition, bool, entity, location)));
                 }
                 if (condition instanceof ItemStackCondition itemStackCondition && otherObject instanceof ItemStack item && condition.getMode().runs(Mode.ITEM)) {
-                    future.thenCompose((bool) -> (handleElseBranchForOr(execution, itemStackCondition, bool, entity, item)));
+                    future = future.thenCompose((bool) -> (handleElseBranchForOr(execution, itemStackCondition, bool, entity, item)));
                 }
                 return future;
             });
@@ -191,15 +195,6 @@ public class ConditionList implements Iterable<Condition> {
         });
     }
 
-    public void prependCondition(Condition condition) { conditions.add(0, condition); }
-
-    public void appendCondition(Condition condition) { conditions.add(condition); }
-
-    @Deprecated
-    public void addCondition(Condition condition) {
-        conditions.add(0, condition);
-    }
-
     public CompletableFuture<Boolean> handleElseBranchForOr(Execution execution, ItemStackCondition itemCondition, boolean currentValue, Entity entity, ItemStack item) {
         return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
             CompletableFuture<Boolean> completableB = itemCondition.isTrue(execution, entity, item);
@@ -226,6 +221,15 @@ public class ConditionList implements Iterable<Condition> {
             });
             return completableB;
         });
+    }
+
+    public void prependCondition(Condition condition) { conditions.add(0, condition); }
+
+    public void appendCondition(Condition condition) { conditions.add(condition); }
+
+    @Deprecated
+    public void addCondition(Condition condition) {
+        conditions.add(0, condition);
     }
 
     @NotNull

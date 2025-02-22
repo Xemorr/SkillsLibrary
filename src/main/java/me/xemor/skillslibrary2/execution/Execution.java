@@ -97,6 +97,8 @@ public class Execution {
                     output.add(stack.pop());
                 }
                 stack.push(token);
+            } else {
+                output.add(token); // variable case
             }
         }
 
