@@ -5,10 +5,13 @@ import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.effects.EffectList;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public abstract class Condition {
 

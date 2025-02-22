@@ -4,9 +4,8 @@ import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
-public interface LocationEffect {
+public interface ComplexLocationEffect {
 
     void useEffect(Execution execution, Entity entity, Location location);
-
 
 }

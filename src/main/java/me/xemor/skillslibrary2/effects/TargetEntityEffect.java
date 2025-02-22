@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -12,13 +13,10 @@ public class TargetEntityEffect extends Effect implements TargetEffect {
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
-        if (entity instanceof Mob && target instanceof LivingEntity) {
-            Mob mob = (Mob) entity;
-            LivingEntity livingTarget = (LivingEntity) target;
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        if (entity instanceof Mob mob && target instanceof LivingEntity livingTarget) {
             mob.setTarget(livingTarget);
         }
-        return false;
     }
 
 }

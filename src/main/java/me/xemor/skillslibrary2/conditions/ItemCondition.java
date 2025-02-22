@@ -2,6 +2,7 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.configurationdata.comparison.ItemComparisonData;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -10,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
+import java.util.concurrent.CompletableFuture;
 
 public class ItemCondition extends Condition implements EntityCondition, TargetCondition, ItemStackCondition {
 
@@ -36,22 +39,20 @@ public class ItemCondition extends Condition implements EntityCondition, TargetC
     }
 
     @Override
-    public boolean isTrue(Entity entity) {
+    public boolean isTrue(Execution execution, Entity entity) {
         return matches(entity);
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return matches(target);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> matches(target));
     }
 
     public boolean matches(Entity entity) {
-        if (entity instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) entity;
+        if (entity instanceof LivingEntity livingEntity) {
             ItemStack item = null;
             if (equipmentSlot != null) item = livingEntity.getEquipment().getItem(equipmentSlot);
-            else if (entity instanceof Player) {
-                Player player = (Player) entity;
+            else if (entity instanceof Player player) {
                 PlayerInventory inventory = player.getInventory();
                 item = inventory.getItem(slot);
             }
@@ -62,7 +63,9 @@ public class ItemCondition extends Condition implements EntityCondition, TargetC
     }
 
     @Override
-    public boolean isTrue(Entity entity, ItemStack itemStack) {
-        return itemComparison.matches(itemStack);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, ItemStack itemStack) {
+        return SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
+            itemComparison.matches(itemStack);
+        });
     }
 }

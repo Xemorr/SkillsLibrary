@@ -1,18 +1,20 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
-public class NearestEffect extends WrapperEffect implements EntityEffect, TargetEffect, LocationEffect {
+public class NearestEffect extends WrapperEffect implements EntityEffect, TargetEffect, ComplexLocationEffect {
 
     private final double radius;
 
@@ -22,36 +24,65 @@ public class NearestEffect extends WrapperEffect implements EntityEffect, Target
     }
 
     @Override
-    public boolean useEffect(Entity entity, Location location) {
-        LivingEntity nearest = getNearest(entity, location);
-        if (nearest == null) return false;
-        return handleEffects(entity, nearest);
+    public void useEffect(Execution execution, Entity entity, Location location) {
+        getNearest(execution, entity, location).thenAccept((nearest) -> {
+            if (nearest == null) return;
+            handleEffects(execution, entity, nearest);
+        });
     }
 
     @Override
-    public boolean useEffect(Entity entity) {
-        LivingEntity nearest = getNearest(entity, entity.getLocation());
-        if (nearest == null) return false;
-        return handleEffects(entity, nearest);
+    public void useEffect(Execution execution, Entity entity) {
+        getNearest(execution, entity, entity.getLocation()).thenAccept((nearest) -> {
+            if (nearest == null) return;
+            handleEffects(execution, entity, nearest);
+        });
     }
 
     @Override
-    public boolean useEffect(Entity livingEntity, Entity target) {
-        LivingEntity nearest = getNearest(livingEntity, target.getLocation());
-        if (nearest == null) return false;
-        return handleEffects(livingEntity, nearest);
+    public void useEffect(Execution execution, Entity livingEntity, Entity target) {
+        getNearest(execution, livingEntity, target.getLocation()).thenAccept((nearest) -> {
+            if (nearest == null) return;
+            handleEffects(execution, livingEntity, nearest);
+        });
     }
 
-    @Nullable
-    public LivingEntity getNearest(Entity livingEntity, Location location) {
-        World world = location.getWorld();
-        Collection<Entity> entities = world.getNearbyEntities(location, radius, radius, radius);
-        entities.removeIf((entity -> !(entity instanceof LivingEntity)));
-        entities.removeIf((entity -> !getConditions().ANDConditions(livingEntity, false, entity)));
-        if (entities.size() == 0) {
-            return null;
-        }
-        return (LivingEntity) Collections.min(entities, Comparator.comparingDouble(entity -> entity.getLocation().distanceSquared(location)));
+    @NotNull
+    public CompletableFuture<LivingEntity> getNearest(Execution execution, Entity livingEntity, Location location) {
+        CompletableFuture<LivingEntity> completableFuture = new CompletableFuture<>();
+        SkillsLibrary.getFoliaHacks().runASAP(location, () -> {
+            World world = location.getWorld();
+            List<Entity> entities = new ArrayList<>(world.getNearbyEntities(location, radius, radius, radius));
+            entities.removeIf((entity -> !(entity instanceof LivingEntity)));
+            if (entities.isEmpty()) {
+                return;
+            }
+            SkillsLibrary.getFoliaHacks().runASAP(livingEntity, () -> {
+                CompletableFuture[] futures = entities
+                        .stream()
+                        .map((entity) -> getConditions().ANDConditions(execution, livingEntity, false, entity))
+                        .toArray(CompletableFuture[]::new);
+                CompletableFuture.allOf(
+                        futures
+                ).thenAccept((result) -> {
+                    List<Entity> filteredEntities = new ArrayList<>();
+                    for (int i = 0; i < futures.length; i++) {
+                        Entity entity = entities.get(i);
+                        // This is always true, we've just lost the generic information due to the stream
+                        CompletableFuture<Boolean> future = (CompletableFuture<Boolean>) futures[i];
+                        try {
+                            if (future.get()) {
+                                filteredEntities.add(entity);
+                            }
+                        } catch (InterruptedException | ExecutionException e) {
+                            SkillsLibrary.getInstance().getLogger().severe("This should never happen. Contact the developer of SkillsLibrary if you see this error.");
+                        }
+                    }
+                    completableFuture.complete((LivingEntity) Collections.min(filteredEntities, Comparator.comparingDouble(entity -> entity.getLocation().distanceSquared(location))));
+                });
+            });
+        });
+        return completableFuture;
     }
 
 }

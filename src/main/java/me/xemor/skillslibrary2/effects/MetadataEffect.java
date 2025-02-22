@@ -1,7 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
-import org.bukkit.Location;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -24,26 +24,22 @@ public class MetadataEffect extends ModifyEffect implements EntityEffect, Target
     }
 
     @Override
-    public boolean useEffect(Entity entity) {
-        setVariable(entity.getPersistentDataContainer());
-        return false;
+    public void useEffect(Execution execution, Entity entity) {
+        setVariable(execution, entity.getPersistentDataContainer());
     }
 
     @Override
-    public boolean useEffect(Entity livingEntity, Entity target) {
-        setVariable(target.getPersistentDataContainer());
-        return false;
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        SkillsLibrary.getFoliaHacks().runASAP(target, () -> setVariable(execution, target.getPersistentDataContainer()));
     }
 
-    public void setVariable(PersistentDataContainer container) {
+    public void setVariable(Execution execution, PersistentDataContainer container) {
         Double value;
         value = container.get(variable, PersistentDataType.DOUBLE);
         if (value == null) {
             value = 0D;
         }
-        container.set(variable, PersistentDataType.DOUBLE, changeValue(value));
+        container.set(variable, PersistentDataType.DOUBLE, changeValue(execution, value));
     }
-
-
 }
 

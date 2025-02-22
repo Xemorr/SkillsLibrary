@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.Inventory;
@@ -15,15 +16,13 @@ public class ScrambleInventoryEffect extends Effect implements EntityEffect, Tar
     }
 
     @Override
-    public boolean useEffect(Entity entity) {
+    public void useEffect(Execution execution, Entity entity) {
         scrambleInventory(entity);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity livingEntity, Entity target) {
+    public void useEffect(Execution execution, Entity livingEntity, Entity target) {
         scrambleInventory(target);
-        return false;
     }
 
     public void scrambleInventory(Entity entity) {

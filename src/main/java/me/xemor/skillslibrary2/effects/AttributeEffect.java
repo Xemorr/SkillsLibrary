@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,24 +28,21 @@ public class AttributeEffect extends ModifyEffect implements EntityEffect, Targe
 
 
     @Override
-    public boolean useEffect(Entity entity) {
-        if (entity instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) entity;
-            applyAttributes(livingEntity);
+    public void useEffect(Execution execution, Entity entity) {
+        if (entity instanceof LivingEntity livingEntity) {
+            applyAttributes(execution, livingEntity);
         }
-        return false;
     }
 
-    public void applyAttributes(LivingEntity entity) {
+    public void applyAttributes(Execution execution, LivingEntity entity) {
         AttributeInstance attributeInstance = entity.getAttribute(attribute);
-        attributeInstance.setBaseValue(changeValue(attributeInstance.getBaseValue()));
+        attributeInstance.setBaseValue(changeValue(execution, attributeInstance.getBaseValue()));
     }
 
     @Override
-    public boolean useEffect(Entity livingEntity, Entity target) {
-        if (target instanceof LivingEntity) {
-            applyAttributes((LivingEntity) target);
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        if (target instanceof LivingEntity livingEntity) {
+            SkillsLibrary.getFoliaHacks().runASAP(livingEntity, () -> applyAttributes(execution, livingEntity));
         }
-        return false;
     }
 }

@@ -1,9 +1,10 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.entity.Entity;
 
 public interface TargetEffect {
 
-    boolean useEffect(Entity entity, Entity target);
+    void useEffect(Execution execution, Entity entity, Entity target);
 
 }

@@ -1,11 +1,14 @@
 package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.concurrent.CompletableFuture;
 
 public class MetadataCondition extends ComparisonCondition implements EntityCondition, TargetCondition {
 
@@ -23,18 +26,18 @@ public class MetadataCondition extends ComparisonCondition implements EntityCond
     }
 
     @Override
-    public boolean isTrue(Entity boss) {
-        return isTrue(boss.getPersistentDataContainer());
+    public boolean isTrue(Execution execution, Entity entity) {
+        return isTrue(execution, entity.getPersistentDataContainer());
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return isTrue(target.getPersistentDataContainer());
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> isTrue(execution, target.getPersistentDataContainer()));
     }
 
-    public boolean isTrue(PersistentDataContainer container) {
+    public boolean isTrue(Execution execution, PersistentDataContainer container) {
         Double value = container.get(variable, PersistentDataType.DOUBLE);
-        return checkComparison(value == null ? 0 : value);
+        return checkComparison(execution, value == null ? 0 : value);
     }
 
 }

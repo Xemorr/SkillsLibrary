@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -11,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 /*
     This class was originally written by Creeves
  */
-public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEffect, LocationEffect, ItemStackEffect {
+public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEffect, ComplexLocationEffect, ItemStackEffect {
 
     private final long ticksDelay;
     private final long period;
@@ -25,62 +26,58 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
     }
 
     @Override
-    public boolean useEffect(Entity entity) {
+    public void useEffect(Execution execution, Entity entity) {
         new BukkitRunnable() {
             int count = 0;
             @Override
             public void run() {
-                handleEffects(entity);
+                handleEffects(execution, entity);
                 if (++count >= repeats) {
                     this.cancel();
                 }
             }
         }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         new BukkitRunnable() {
             int count = 0;
             @Override
             public void run() {
-                handleEffects(entity, target);
+                handleEffects(execution, entity, target);
                 if (++count >= repeats) {
                     this.cancel();
                 }
             }
         }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Location location) {
+    public void useEffect(Execution execution, Entity entity, Location location) {
         new BukkitRunnable() {
             int count = 0;
             @Override
             public void run() {
-                handleEffects(entity, location);
+                handleEffects(execution, entity, location);
                 if (++count >= repeats) {
                     this.cancel();
                 }
             }
         }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, ItemStack item) {
+    public void useEffect(Execution execution, Entity entity, ItemStack item) {
         new BukkitRunnable() {
             int count = 0;
             @Override
             public void run() {
-                handleEffects(entity, item);
+                handleEffects(execution, entity, item);
                 if (++count >= repeats) {
                     this.cancel();
                 }
             }
         }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
-        return false;
     }
 }

@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -28,34 +29,32 @@ public class ItemStackWrapperEffect extends WrapperEffect implements EntityEffec
     }
 
     @Override
-    public boolean useEffect(Entity entity) {
-        handleEffects(entity);
-        return false;
+    public void useEffect(Execution execution, Entity entity) {
+        handleEffects(execution, entity);
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
-        handleEffects(target);
-        return false;
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        handleEffects(execution, target);
     }
 
-    public void handleEffects(Entity entity) {
-        if (entity instanceof LivingEntity) {
-            ItemStack item = null;
-            LivingEntity livingEntity = (LivingEntity) entity;
-            if (equipmentSlot != null) {
-                item = livingEntity.getEquipment().getItem(equipmentSlot);
+    public void handleEffects(Execution execution, Entity entity) {
+        SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
+            if (entity instanceof LivingEntity livingEntity) {
+                ItemStack item = null;
+                if (equipmentSlot != null) {
+                    item = livingEntity.getEquipment().getItem(equipmentSlot);
+                }
+                else if (slot == -1) {
+                    item = livingEntity.getEquipment().getItemInMainHand();
+                }
+                else if (entity instanceof Player player) {
+                    item = player.getInventory().getItem(slot);
+                }
+                if (item != null) {
+                    handleEffects(execution, entity, item);
+                }
             }
-            else if (slot == -1) {
-                item = livingEntity.getEquipment().getItemInMainHand();
-            }
-            else if (entity instanceof Player) {
-                Player player = (Player) entity;
-                item = player.getInventory().getItem(slot);
-            }
-            if (item != null) {
-                handleEffects(entity, item);
-            }
-        }
+        });
     }
 }

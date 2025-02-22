@@ -2,20 +2,17 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.configurationdata.comparison.RegistrySetData;
 import me.xemor.configurationdata.comparison.SetData;
-import me.xemor.skillslibrary2.Skill;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.Registry;
 import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
 
-public class BiomeCondition extends Condition implements EntityCondition, TargetCondition, LocationCondition {
+public class BiomeCondition extends Condition implements EntityCondition, LocationCondition, TargetCondition {
 
     private final RegistrySetData<Biome> biomes;
 
@@ -24,19 +21,23 @@ public class BiomeCondition extends Condition implements EntityCondition, Target
         biomes = new RegistrySetData<>(Registry.BIOME::match, "biomes", configurationSection);
     }
 
-    @Override
-    public boolean isTrue(Entity entity, Location location) {
-        return biomes.inSet(location.getWorld().getBiome(location.getBlockX(), location.getBlockY(), location.getBlockZ()));
+    private boolean calculate(Entity entity, Location location) {
+        return biomes.inSet(getBiome(location));
     }
 
     @Override
-    public boolean isTrue(Entity entity) {
-        return biomes.inSet(getBiome(entity.getLocation()));
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Location location) {
+        return SkillsLibrary.getFoliaHacks().runASAP(location, () -> calculate(entity, location));
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return biomes.inSet(getBiome(target.getLocation()));
+    public boolean isTrue(Execution execution, Entity entity) {
+        return calculate(entity, entity.getLocation());
+    }
+
+    @Override
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return isTrue(execution, entity, target.getLocation());
     }
 
     public Biome getBiome(Location location) {

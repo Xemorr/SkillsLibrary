@@ -1,12 +1,13 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.configurationdata.entity.EntityData;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
-public class SpawnEffect extends Effect implements EntityEffect, TargetEffect, LocationEffect {
+public class SpawnEffect extends Effect implements EntityEffect, TargetEffect, ComplexLocationEffect {
 
     private final EntityData entityData;
 
@@ -16,20 +17,17 @@ public class SpawnEffect extends Effect implements EntityEffect, TargetEffect, L
     }
 
     @Override
-    public boolean useEffect(Entity entity) {
-        useEffect(entity, entity.getLocation());
-        return false;
+    public void useEffect(Execution execution, Entity entity) {
+        useEffect(execution, entity, entity.getLocation());
     }
 
     @Override
-    public boolean useEffect(Entity entity, Location location) {
+    public void useEffect(Execution execution, Entity entity, Location location) {
         entityData.spawnEntity(location);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
-        useEffect(entity, target.getLocation());
-        return false;
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        useEffect(execution, entity, target.getLocation());
     }
 }

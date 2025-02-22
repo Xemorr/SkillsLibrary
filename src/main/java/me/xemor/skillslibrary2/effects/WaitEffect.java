@@ -1,14 +1,14 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEffect, LocationEffect, ItemStackEffect {
+public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEffect, ComplexLocationEffect, ItemStackEffect {
 
     private final long ticksDelay;
 
@@ -18,46 +18,42 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
     }
 
     @Override
-    public boolean useEffect(Entity entity) {
+    public void useEffect(Execution execution, Entity entity) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                handleEffects(entity);
+                handleEffects(execution, entity);
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
+    public void useEffect(Execution execution, Entity entity, Entity target) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                handleEffects(entity, target);
+                handleEffects(execution, entity, target);
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Location location) {
+    public void useEffect(Execution execution, Entity entity, Location location) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                handleEffects(entity, location);
+                handleEffects(execution, entity, location);
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, ItemStack item) {
+    public void useEffect(Execution execution, Entity entity, ItemStack item) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                handleEffects(entity, item);
+                handleEffects(execution, entity, item);
             }
         }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
-        return false;
     }
 }

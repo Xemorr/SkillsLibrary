@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -17,10 +18,10 @@ public class CooldownCondition extends Condition implements EntityCondition {
     }
 
     @Override
-    public boolean isTrue(Entity boss) {
-        double cooldownEnds = cooldownEndsMap.getOrDefault(boss.getUniqueId(), -1L);
+    public boolean isTrue(Execution execution, Entity entity) {
+        double cooldownEnds = cooldownEndsMap.getOrDefault(entity.getUniqueId(), -1L);
         if (cooldownEnds < System.currentTimeMillis()) {
-            cooldownEndsMap.put(boss.getUniqueId(), cooldown + System.currentTimeMillis());
+            cooldownEndsMap.put(entity.getUniqueId(), cooldown + System.currentTimeMillis());
             return true;
         }
         return false;

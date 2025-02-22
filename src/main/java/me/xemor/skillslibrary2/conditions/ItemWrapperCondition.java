@@ -1,9 +1,7 @@
 package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
-import me.xemor.skillslibrary2.effects.EntityEffect;
-import me.xemor.skillslibrary2.effects.TargetEffect;
-import me.xemor.skillslibrary2.effects.WrapperEffect;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -12,7 +10,9 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemWrapperCondition extends WrapperCondition implements EntityCondition, TargetCondition {
+import java.util.concurrent.CompletableFuture;
+
+public class ItemWrapperCondition extends WrapperCondition implements ComplexEntityCondition, TargetCondition {
 
     private EquipmentSlot equipmentSlot;
     private int slot = -1;
@@ -32,25 +32,25 @@ public class ItemWrapperCondition extends WrapperCondition implements EntityCond
     }
 
     @Override
-    public boolean isTrue(Entity entity) {
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity) {
         if (equipmentSlot != null) {
             if (entity instanceof LivingEntity livingEntity) {
                 EntityEquipment entityEquipment = livingEntity.getEquipment();
-                if (entityEquipment == null) return false;
+                if (entityEquipment == null) return CompletableFuture.completedFuture(false);
                 ItemStack item = entityEquipment.getItem(equipmentSlot);
-                return handleConditions(entity, item);
+                return handleConditions(execution, entity, item);
             }
         }
         else if (slot != -1) {
             if (entity instanceof Player player) {
-                return handleConditions(entity, player.getInventory().getItem(slot));
+                return handleConditions(execution, entity, player.getInventory().getItem(slot));
             }
         }
-        return false;
+        return CompletableFuture.completedFuture(false);
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
-        return isTrue(target);
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
+        return SkillsLibrary.getFoliaHacks().runASAP(target, () -> isTrue(execution, target));
     }
 }

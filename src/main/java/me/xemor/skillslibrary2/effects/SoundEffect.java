@@ -1,12 +1,13 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.configurationdata.SoundData;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
-public class SoundEffect extends Effect implements EntityEffect, TargetEffect, LocationEffect {
+public class SoundEffect extends Effect implements EntityEffect, TargetEffect, ComplexLocationEffect {
+
     private final SoundData soundData;
 
     public SoundEffect(int effect, ConfigurationSection configurationSection) {
@@ -16,21 +17,18 @@ public class SoundEffect extends Effect implements EntityEffect, TargetEffect, L
     }
 
     @Override
-    public boolean useEffect(Entity entity) {
+    public void useEffect(Execution execution, Entity entity) {
         playSound(entity.getLocation());
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity livingEntity, Entity target) {
+    public void useEffect(Execution execution, Entity livingEntity, Entity target) {
         playSound(target.getLocation());
-        return false;
     }
 
     @Override
-    public boolean useEffect(Entity entity, Location location) {
+    public void useEffect(Execution execution, Entity entity, Location location) {
         playSound(location);
-        return false;
     }
 
     private void playSound(Location location) {

@@ -1,10 +1,13 @@
 package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.concurrent.CompletableFuture;
 
 public class NOTCondition extends Condition implements EntityCondition, TargetCondition, LocationCondition, ItemStackCondition {
 
@@ -24,34 +27,34 @@ public class NOTCondition extends Condition implements EntityCondition, TargetCo
 
 
     @Override
-    public boolean isTrue(Entity boss) {
+    public boolean isTrue(Execution execution, Entity entity) {
         if (condition instanceof EntityCondition entityCondition) {
-            return !entityCondition.isTrue(boss);
+            return !entityCondition.isTrue(execution, entity);
         }
         return true;
     }
 
     @Override
-    public boolean isTrue(Entity entity, Entity target) {
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Entity target) {
         if (condition instanceof TargetCondition targetCondition) {
-            return !targetCondition.isTrue(entity, target);
+            return targetCondition.isTrue(execution, entity, target).thenApply((b) -> !b);
         }
-        return true;
+        return CompletableFuture.completedFuture(true);
     }
 
     @Override
-    public boolean isTrue(Entity entity, ItemStack itemStack) {
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, ItemStack itemStack) {
         if (condition instanceof ItemStackCondition itemCondition) {
-            return !itemCondition.isTrue(entity, itemStack);
+            return itemCondition.isTrue(execution, entity, itemStack).thenApply((b) -> !b);
         }
-        return false;
+        return CompletableFuture.completedFuture(false);
     }
 
     @Override
-    public boolean isTrue(Entity entity, Location location) {
+    public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Location location) {
         if (condition instanceof LocationCondition locationCondition) {
-            return !locationCondition.isTrue(entity, location);
+            return locationCondition.isTrue(execution, entity, location).thenApply((b) -> !b);
         }
-        return false;
+        return CompletableFuture.completedFuture(false);
     }
 }

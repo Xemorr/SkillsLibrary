@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -33,7 +34,7 @@ public class RaytraceEffect extends WrapperEffect implements EntityEffect, Targe
     }
 
     @Override
-    public boolean useEffect(Entity entity) {
+    public void useEffect(Execution execution, Entity entity) {
         World world = entity.getWorld();
         Location location;
         if (entity instanceof Player) {
@@ -54,21 +55,19 @@ public class RaytraceEffect extends WrapperEffect implements EntityEffect, Targe
         if (rayTraceResult == null && alwaysHit) {
             result = location.add(direction.multiply(maxDistance));
         } else if (rayTraceResult == null) {
-            return false;
+            return;
         } else if (rayTraceResult.getHitEntity() != null) {
             result = rayTraceResult.getHitEntity();
         } else {
             Vector position = rayTraceResult.getHitPosition();
             result = new Location(world, position.getX(), position.getY(), position.getZ(), location.getYaw(), location.getPitch());
         }
-        handleEffects(entity, result);
-        return false;
+        handleEffects(execution, entity, result);
     }
 
     @Override
-    public boolean useEffect(Entity entity, Entity target) {
-        useEffect(target);
-        return false;
+    public void useEffect(Execution execution, Entity entity, Entity target) {
+        useEffect(execution, target);
     }
 
 }
