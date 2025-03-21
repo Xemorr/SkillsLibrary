@@ -1,12 +1,15 @@
 package me.xemor.skillslibrary2.conditions;
 
+import com.fasterxml.jackson.databind.jsontype.NamedType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Conditions {
 
-    private static final HashMap<String, Integer> nameToCondition = new HashMap<>();
+    private static final HashMap<String, ConditionId> nameToCondition = new HashMap<>();
     private static final List<Class<? extends Condition>> conditionToClass = new ArrayList<>();
     private static int counter;
 
@@ -49,7 +52,7 @@ public class Conditions {
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {
-        nameToCondition.put(name, counter);
+        nameToCondition.put(name, new ConditionId(counter));
         conditionToClass.add(triggerDataClass);
         counter++;
     }
@@ -59,8 +62,17 @@ public class Conditions {
         return effectClass == null ? Condition.class : effectClass;
     }
 
-    public static int getCondition(String name) {
-        return nameToCondition.getOrDefault(name, -1);
+    public static ConditionId getCondition(String name) {
+        return nameToCondition.getOrDefault(name, null);
+    }
+
+    public static NamedType[] getNamedSubTypes() {
+        return nameToCondition
+                .entrySet()
+                .stream()
+                .map((entry) -> Map.entry(entry.getKey(), conditionToClass.get(entry.getValue().getId())))
+                .map((entry) -> new NamedType(entry.getValue(), entry.getKey()))
+                .toArray(NamedType[]::new);
     }
 
 }

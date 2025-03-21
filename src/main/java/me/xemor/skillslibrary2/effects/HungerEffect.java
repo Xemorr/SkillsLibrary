@@ -8,10 +8,6 @@ import org.bukkit.entity.HumanEntity;
 
 public class HungerEffect extends ModifyEffect implements EntityEffect, TargetEffect {
 
-	public HungerEffect(int effect, ConfigurationSection configurationSection) {
-		super(effect, configurationSection);
-	}
-
 	@Override
 	public void useEffect(Execution execution, Entity entity) {
 		if (entity instanceof HumanEntity) {

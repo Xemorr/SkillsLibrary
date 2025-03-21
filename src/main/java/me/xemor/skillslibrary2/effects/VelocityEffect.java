@@ -12,7 +12,7 @@ public class VelocityEffect extends ModifyEffect implements EntityEffect, Target
 
     public VelocityEffect(int effect, ConfigurationSection configurationSection) {
         super(effect, configurationSection);
-        if (!configurationSection.contains("value")) super.valueExpr = configurationSection.getString("velocity", "1.0");
+        if (!configurationSection.contains("value")) super.value = configurationSection.getString("velocity", "1.0");
         // default is Y to maintain backwards compatibility unfortunately
         // would be better for it to be all
         component = configurationSection.getString("component", "Y");

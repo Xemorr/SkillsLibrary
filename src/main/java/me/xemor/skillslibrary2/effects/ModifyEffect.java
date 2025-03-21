@@ -1,34 +1,39 @@
 package me.xemor.skillslibrary2.effects;
 
-import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.configuration.ConfigurationSection;
+import me.xemor.skillslibrary2.execution.Expression;
+import org.bukkit.entity.Entity;
+import org.bukkit.persistence.PersistentDataHolder;
+
+import java.util.Map;
 
 public abstract class ModifyEffect extends Effect {
 
-    private Operation operation;
-    protected String valueExpr;
-
-    public ModifyEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        String operationStr = configurationSection.getString("operation", "").toUpperCase();
-        try {
-            this.operation = Operation.valueOf(operationStr);
-        } catch(IllegalArgumentException e) {
-            SkillsLibrary.getInstance().getLogger().severe(configurationSection.getCurrentPath() + ".operation has an invalid operation specified! Defaulting to SET operation!");
-            this.operation = Operation.SET;
-            return;
-        }
-        this.valueExpr = configurationSection.getString("value", "1");
-    }
+    @JsonPropertyWithDefault
+    private Operation operation = Operation.SET;
+    @JsonPropertyWithDefault
+    protected Expression value = new Expression(1);
 
     public double changeValue(Execution execution, double oldValue) {
+        return changeValue(execution, oldValue, Map.of());
+    }
+
+    public double changeValue(Execution execution, double oldValue, Entity entity) {
+        return changeValue(execution, oldValue, Map.of("self", entity));
+    }
+
+    public double changeValue(Execution execution, double oldValue, Entity entity, Entity other) {
+        return changeValue(execution, oldValue, Map.of("self", entity, "other", other));
+    }
+
+    public double changeValue(Execution execution, double oldValue, Map<String, PersistentDataHolder> modeToHolder) {
         return switch (operation) {
-            case ADD -> oldValue + execution.expression(valueExpr);
-            case SUBTRACT -> oldValue - execution.expression(valueExpr);
-            case MULTIPLY -> oldValue * execution.expression(valueExpr);
-            case DIVIDE -> oldValue / execution.expression(valueExpr);
-            case SET -> execution.expression(valueExpr);
+            case ADD -> oldValue + value.result(execution, modeToHolder);
+            case SUBTRACT -> oldValue - value.result(execution, modeToHolder);
+            case MULTIPLY -> oldValue * value.result(execution, modeToHolder);
+            case DIVIDE -> oldValue / value.result(execution, modeToHolder);
+            case SET -> value.result(execution, modeToHolder);
         };
     }
 

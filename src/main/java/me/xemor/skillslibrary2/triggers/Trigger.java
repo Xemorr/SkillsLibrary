@@ -1,14 +1,16 @@
 package me.xemor.skillslibrary2.triggers;
 
+import com.fasterxml.jackson.databind.jsontype.NamedType;
 import me.xemor.skillslibrary2.SkillsLibrary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Trigger {
 
-    private static final HashMap<String, Integer> nameToTrigger = new HashMap<>();
+    private static final HashMap<String, TriggerId> nameToTrigger = new HashMap<>();
     private static final List<Class<? extends TriggerData>> triggerToData = new ArrayList<>();
     private static int counter = 0;
 
@@ -55,23 +57,32 @@ public class Trigger {
     }
 
     public static void registerTrigger(String name, Class<? extends TriggerData> effectDataClass) {
-        nameToTrigger.put(name, counter);
+        nameToTrigger.put(name, new TriggerId(counter));
         triggerToData.add(effectDataClass);
         counter++;
     }
 
-    public static Class<? extends TriggerData> getClass(int trigger) {
-        if (trigger == -1) {SkillsLibrary.getInstance().getLogger().severe("There is an unregistered trigger somewhere!"); return TriggerData.class; }
-        Class<? extends TriggerData> triggerClass = triggerToData.get(trigger);
+    public static Class<? extends TriggerData> getClass(TriggerId trigger) {
+        if (trigger == null) {SkillsLibrary.getInstance().getLogger().severe("There is an unregistered trigger somewhere!"); return TriggerData.class; }
+        Class<? extends TriggerData> triggerClass = triggerToData.get(trigger.getId());
         return triggerClass == null ? TriggerData.class : triggerClass;
     }
 
-    public static int getTrigger(String name) {
-        int trigger = nameToTrigger.getOrDefault(name, -1);
-        if (trigger == -1) {
+    public static TriggerId getTrigger(String name) {
+        TriggerId trigger = nameToTrigger.get(name);
+        if (trigger == null) {
             SkillsLibrary.getInstance().getLogger().severe(name + " has not been registered as a trigger!");
         }
         return trigger;
+    }
+
+    public static NamedType[] getNamedSubTypes() {
+        return nameToTrigger
+                .entrySet()
+                .stream()
+                .map((entry) -> Map.entry(entry.getKey(), triggerToData.get(entry.getValue().getId())))
+                .map((entry) -> new NamedType(entry.getValue(), entry.getKey()))
+                .toArray(NamedType[]::new);
     }
 
 }

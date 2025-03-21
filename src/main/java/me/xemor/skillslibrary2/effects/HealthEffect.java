@@ -9,10 +9,6 @@ import org.bukkit.entity.LivingEntity;
 
 public class HealthEffect extends ModifyEffect implements EntityEffect, TargetEffect {
 
-	public HealthEffect(int effect, ConfigurationSection configurationSection) {
-		super(effect, configurationSection);
-	}
-
 	@Override
 	public void useEffect(Execution execution, Entity entity) {
 		if (entity instanceof LivingEntity livingEntity) {

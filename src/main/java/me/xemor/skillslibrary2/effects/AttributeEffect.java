@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.attribute.Attribute;
@@ -10,22 +11,8 @@ import org.bukkit.entity.LivingEntity;
 
 public class AttributeEffect extends ModifyEffect implements EntityEffect, TargetEffect {
 
+    @JsonPropertyWithDefault
     private Attribute attribute = null;
-
-    public AttributeEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        String originalAttributeString = configurationSection.getString("attribute", "").toUpperCase();
-        String attributeString = originalAttributeString;
-        if (!(attributeString.equals("HORSE_JUMP_STRENGTH") || attributeString.equals("ZOMBIE_SPAWN_REINFORCEMENTS"))) {
-            attributeString = "GENERIC_" + attributeString;
-        }
-        try {
-            attribute = Attribute.valueOf(attributeString);
-        } catch (IllegalArgumentException e) {
-            SkillsLibrary.getInstance().getLogger().severe("Invalid attribute " + "\"" + originalAttributeString + "\"" + " at " + configurationSection.getCurrentPath());
-        }
-    }
-
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
@@ -36,13 +23,16 @@ public class AttributeEffect extends ModifyEffect implements EntityEffect, Targe
 
     public void applyAttributes(Execution execution, LivingEntity entity) {
         AttributeInstance attributeInstance = entity.getAttribute(attribute);
-        attributeInstance.setBaseValue(changeValue(execution, attributeInstance.getBaseValue()));
+        attributeInstance.setBaseValue(changeValue(execution, attributeInstance.getBaseValue(), entity));
     }
 
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
-        if (target instanceof LivingEntity livingEntity) {
-            SkillsLibrary.getFoliaHacks().runASAP(livingEntity, () -> applyAttributes(execution, livingEntity));
+        if (target instanceof LivingEntity targetLivingEntity) {
+            SkillsLibrary.getFoliaHacks().runASAP(targetLivingEntity, () -> {
+                AttributeInstance attributeInstance = targetLivingEntity.getAttribute(attribute);
+                attributeInstance.setBaseValue(changeValue(execution, attributeInstance.getBaseValue(), entity, targetLivingEntity));
+            });
         }
     }
 }

@@ -8,10 +8,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemAmountEffect extends ModifyEffect implements ItemStackEffect {
 
-    public ItemAmountEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-    }
-
     @Override
     public void useEffect(Execution execution, Entity entity, ItemStack item) {
         SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {

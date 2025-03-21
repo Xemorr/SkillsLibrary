@@ -10,10 +10,6 @@ import org.bukkit.entity.Entity;
 
 public class FurnaceBurnTimeEffect extends ModifyEffect implements LocationEffect {
 
-    public FurnaceBurnTimeEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-    }
-
     @Override
     public void useEffect(Execution execution, Entity entity, Location location) {
         SkillsLibrary.getFoliaHacks().runASAP(location, () -> {

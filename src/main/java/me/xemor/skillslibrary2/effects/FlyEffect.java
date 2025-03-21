@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
@@ -8,12 +9,8 @@ import org.bukkit.entity.Player;
 
 public class FlyEffect extends Effect implements EntityEffect, TargetEffect {
 
-    private final boolean fly;
-
-    public FlyEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        fly = configurationSection.getBoolean("fly", true);
-    }
+    @JsonPropertyWithDefault
+    private boolean fly = true;
 
     @Override
     public void useEffect(Execution execution, Entity entity) {

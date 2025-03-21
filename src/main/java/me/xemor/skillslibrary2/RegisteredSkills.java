@@ -10,7 +10,7 @@ public class RegisteredSkills {
     private final Multimap<Integer, Skill> triggerToSkill = HashMultimap.create();
 
     public void registerSkill(Skill skill) {
-        triggerToSkill.put(skill.getTriggerData().getTrigger(), skill);
+        triggerToSkill.put(skill.getTriggerData().getTriggerId(), skill);
     }
 
     public Collection<Skill> getSkills(int triggerID) {

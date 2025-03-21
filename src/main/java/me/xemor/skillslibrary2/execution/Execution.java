@@ -4,6 +4,7 @@ import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
@@ -11,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Execution {
 
@@ -27,55 +29,7 @@ public class Execution {
         variables.put(variable, value);
     }
 
-    public String message(String message, Entity entity) {
-        return message(message, Map.of("self", entity.getPersistentDataContainer()));
-    }
-
-    public String message(String message, Entity entity, Entity other) {
-        return message(message, Map.of("self", entity.getPersistentDataContainer(), "other", other.getPersistentDataContainer()));
-    }
-
-    public String message(String message, Map<String, PersistentDataContainer> containers) {
-        Pattern pattern = Pattern.compile("\\$\\{([^}]+)}");
-        Matcher matcher = pattern.matcher(message);
-        StringBuilder result = new StringBuilder();
-
-        while (matcher.find()) {
-            String expression = matcher.group(1);
-            double evaluatedValue = expression(expression, containers);
-            matcher.appendReplacement(result, String.valueOf(evaluatedValue));
-        }
-        matcher.appendTail(result);
-        return result.toString();
-    }
-
-    public String message(String message) {
-        return message(message, Map.of());
-    }
-
-    public double expression(String expression) {
-        return expression(expression, Map.of());
-    }
-
-    public double expression(String expression, Entity self) {
-        return expression(expression, Map.of("self", self.getPersistentDataContainer()));
-    }
-
-    public double expression(String expression, Entity self, Entity target) {
-        return expression(expression, Map.of("self", self.getPersistentDataContainer(), "other", target.getPersistentDataContainer()));
-    }
-
-    public double expression(String expression, Map<String, PersistentDataContainer> containers) {
-        List<String> postfix = infixToPostfix(expression);
-        try {
-            return evaluatePostfix(postfix, containers);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    private static List<String> infixToPostfix(String expression) {
+    protected static List<String> infixToPostfix(String expression) {
         List<String> output = new ArrayList<>();
         Deque<String> stack = new ArrayDeque<>();
         StringTokenizer tokenizer = new StringTokenizer(expression, "()+-*/^ ", true);
@@ -109,7 +63,15 @@ public class Execution {
         return output;
     }
 
-    private double evaluatePostfix(List<String> postfix, Map<String, PersistentDataContainer> containers) throws IllegalArgumentException {
+    protected double evaluatePostfix(List<String> postfix, Map<String, PersistentDataHolder> modeToHolders) throws IllegalArgumentException {
+        var containers = modeToHolders
+                .entrySet()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                Map.Entry::getKey,
+                                (entry) -> entry.getValue().getPersistentDataContainer())
+                );
         Deque<Double> stack = new ArrayDeque<>();
 
         for (String token : postfix) {
