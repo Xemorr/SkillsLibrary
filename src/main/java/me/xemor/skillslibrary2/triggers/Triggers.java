@@ -24,11 +24,9 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Triggers implements Listener {
@@ -146,14 +144,12 @@ public class Triggers implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) e.getDamager();
+        if (e.getDamager() instanceof LivingEntity livingEntity) {
             boolean cancel = handleSkills(Trigger.getTrigger("DAMAGEDENTITY"), livingEntity, e.getEntity());
             cancel |= handleSkills(Trigger.getTrigger("COMBAT"), livingEntity, e.getEntity());
             if (cancel) e.setCancelled(true);
         }
-        if (e.getEntity() instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) e.getEntity();
+        if (e.getEntity() instanceof LivingEntity livingEntity) {
             boolean cancel = handleSkills(Trigger.getTrigger("DAMAGEDBYENTITY"), livingEntity, e.getDamager());
             cancel |= handleSkills(Trigger.getTrigger("COMBAT"), livingEntity, e.getDamager());
             if (cancel) e.setCancelled(true);
@@ -236,7 +232,9 @@ public class Triggers implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onTarget(EntityTargetLivingEntityEvent e) {
         if (e.getTarget() != null) {
-            e.setCancelled(handleSkills(Trigger.getTrigger("TARGET"), e.getEntity(), e.getTarget()) || handleSkills(Trigger.getTrigger("TARGETED"), e.getTarget(), e.getEntity()));
+            boolean cancel = handleSkills(Trigger.getTrigger("TARGET"), e.getEntity(), e.getTarget()) ||
+                    handleSkills(Trigger.getTrigger("TARGETED"), e.getTarget(), e.getEntity());
+            e.setCancelled(e.isCancelled() || cancel);
         }
     }
 
@@ -258,8 +256,7 @@ public class Triggers implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onProjectileLaunch(ProjectileLaunchEvent e) {
         Projectile projectile = e.getEntity();
-        if (projectile.getShooter() instanceof LivingEntity) {
-            LivingEntity shooter = (LivingEntity) projectile.getShooter();
+        if (projectile.getShooter() instanceof LivingEntity shooter) {
             e.setCancelled(handleSkills(Trigger.getTrigger("LAUNCHPROJECTILE"), shooter, projectile));
         }
     }
@@ -267,8 +264,7 @@ public class Triggers implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onProjectileHit(ProjectileHitEvent e) {
         Projectile projectile = e.getEntity();
-        if (projectile.getShooter() instanceof LivingEntity) {
-            LivingEntity shooter = (LivingEntity) projectile.getShooter();
+        if (projectile.getShooter() instanceof LivingEntity shooter) {
             e.setCancelled(handleSkills(Trigger.getTrigger("PROJECTILEHIT"), shooter, projectile));
         }
     }
@@ -357,8 +353,8 @@ public class Triggers implements Listener {
         handleSkills(Trigger.getTrigger("BLOCKBREAK"), entity, block.getLocation());
     }
 
-    public boolean handleSkills(int trigger, @Nullable Entity entity, Object... objects) {
-        Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(trigger);
+    public boolean handleSkills(TriggerId triggerId, @Nullable Entity entity, Object... objects) {
+        Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(triggerId);
         boolean cancel = false;
         for (Skill skill : skills) {
             cancel |= skill.handleEffects(entity, objects);

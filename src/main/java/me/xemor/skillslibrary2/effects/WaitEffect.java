@@ -1,5 +1,8 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.Duration;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
@@ -10,12 +13,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEffect, ComplexLocationEffect, ItemStackEffect {
 
-    private final long ticksDelay;
-
-    public WaitEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        ticksDelay = Math.round(configurationSection.getDouble("delay", 1) * 20);
-    }
+    @JsonPropertyWithDefault
+    @JsonAlias("delay")
+    private Duration ticksDelay = new Duration(20D);
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
@@ -24,7 +24,7 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
             public void run() {
                 handleEffects(execution, entity);
             }
-        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
+        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
             public void run() {
                 handleEffects(execution, entity, target);
             }
-        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
+        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
             public void run() {
                 handleEffects(execution, entity, location);
             }
-        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
+        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L));
     }
 
     @Override
@@ -54,6 +54,6 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
             public void run() {
                 handleEffects(execution, entity, item);
             }
-        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay);
+        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L));
     }
 }

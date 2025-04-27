@@ -1,12 +1,13 @@
 package me.xemor.skillslibrary2.conditions;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.comparison.SetData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.util.concurrent.CompletableFuture;
@@ -14,12 +15,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class BlockCondition extends Condition implements LocationCondition {
 
-    private final SetData<Material> allowedMaterials;
-
-    public BlockCondition(int condition, ConfigurationSection configurationSection) {
-        super(condition, configurationSection);
-        allowedMaterials = new SetData<>(Material.class, "materials", configurationSection);
-    }
+    @JsonPropertyWithDefault
+    @JsonAlias("materials")
+    private SetData<Material> allowedMaterials = new SetData<>();
 
     @Override
     public CompletableFuture<Boolean> isTrue(Execution execution, Entity entity, Location location) {

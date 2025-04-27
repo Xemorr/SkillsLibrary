@@ -11,9 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class ScrambleInventoryEffect extends Effect implements EntityEffect, TargetEffect {
-    public ScrambleInventoryEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-    }
 
     @Override
     public void useEffect(Execution execution, Entity entity) {

@@ -1,27 +1,16 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-import me.xemor.configurationdata.VectorData;
-
 public class LocationOffsetEffect extends WrapperEffect implements EntityEffect, ComplexLocationEffect, TargetEffect {
 
-    private final Vector offset;
-
-    public LocationOffsetEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        ConfigurationSection offsetSection = configurationSection.getConfigurationSection("offset");
-        if (offsetSection == null) {
-            offset = new Vector(0, 0, 0);
-        } else {
-            offset = new VectorData(offsetSection).getVector();
-        }
-    }
+    @JsonPropertyWithDefault
+    private Vector offset = new Vector(0, 0, 0);
 
     @Override
     public void useEffect(Execution execution, Entity entity, Location location) {

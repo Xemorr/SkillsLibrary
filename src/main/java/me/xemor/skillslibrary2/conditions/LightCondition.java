@@ -1,31 +1,27 @@
 package me.xemor.skillslibrary2.conditions;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.comparison.RangeData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.util.concurrent.CompletableFuture;
 
 public class LightCondition extends Condition implements EntityCondition, TargetCondition, LocationCondition {
 
-    private final boolean checkNatural;
-    private final boolean checkBlocks;
-    private final RangeData lightRange;
-
-    public LightCondition(int condition, ConfigurationSection configurationSection) {
-        super(condition, configurationSection);
-        lightRange = new RangeData("lightRange", configurationSection);
-        checkNatural = configurationSection.getBoolean("checkNaturalLight", true);
-        checkBlocks = configurationSection.getBoolean("checkBlockLight", true);
-        if (!checkNatural && !checkBlocks) {
-            SkillsLibrary.getInstance().getLogger().severe("You have disabled checkNaturalLight and checkBlockLight, this effectively disables the condition.");
-            SkillsLibrary.getInstance().getLogger().severe("It is unlikely this is what you want to do. "  + configurationSection.getCurrentPath());
-        }
-    }
+    @JsonPropertyWithDefault
+    @JsonAlias("checkNaturalLight")
+    private boolean checkNatural = true;
+    @JsonPropertyWithDefault
+    @JsonAlias("checkBlockLight")
+    private boolean checkBlocks = true;
+    @JsonPropertyWithDefault
+    @JsonAlias("light")
+    private RangeData lightRange = new RangeData();
 
     @Override
     public boolean isTrue(Execution execution, Entity entity) {

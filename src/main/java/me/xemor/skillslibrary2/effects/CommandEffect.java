@@ -1,34 +1,25 @@
 package me.xemor.skillslibrary2.effects;
 
-import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.execution.Execution;
+import me.xemor.skillslibrary2.execution.ExpressiveMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class CommandEffect extends Effect implements EntityEffect, TargetEffect {
 
-    private Executor executor;
-    private List<String> commands;
-
-    public CommandEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        String executorStr = configurationSection.getString("executor", "CONSOLE").toUpperCase();
-        commands = configurationSection.getStringList("commands");
-        try {
-            executor = Executor.valueOf(executorStr);
-        } catch (IllegalArgumentException e) {
-            SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid command executor! " + configurationSection.getCurrentPath() + ".executor");
-        }
-    }
+    @JsonPropertyWithDefault
+    private Executor executor = Executor.CONSOLE;
+    @JsonPropertyWithDefault
+    private List<ExpressiveMessage> commands = Collections.emptyList();
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
-        for (String command : commands) {
+        for (ExpressiveMessage command : commands) {
             String parsedCommand = parse(command, execution, entity, null);
             execute(parsedCommand, entity);
         }
@@ -36,7 +27,7 @@ public class CommandEffect extends Effect implements EntityEffect, TargetEffect 
 
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
-        for (String command : commands) {
+        for (ExpressiveMessage command : commands) {
             String parsedCommand = parse(command, execution, entity, target);
             execute(parsedCommand, entity);
         }
@@ -54,9 +45,8 @@ public class CommandEffect extends Effect implements EntityEffect, TargetEffect 
         }
     }
 
-    public String parse(String command, Execution execution, Entity entity, Entity target) {
-        var map = target == null ? Map.of("self", entity.getPersistentDataContainer()) : Map.of("self", entity.getPersistentDataContainer(), "other", target.getPersistentDataContainer());
-        String parsedCommand = execution.message(command, map);
+    public String parse(ExpressiveMessage command, Execution execution, Entity entity, Entity target) {
+        String parsedCommand = command.result(execution, entity, target);
         if (entity instanceof Player player) {
             parsedCommand = parsedCommand.replace("%self_name%", player.getName());
         }

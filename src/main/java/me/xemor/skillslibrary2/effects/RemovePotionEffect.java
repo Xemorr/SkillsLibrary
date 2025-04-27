@@ -1,5 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
+import me.xemor.configurationdata.comparison.SetData;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -13,22 +15,14 @@ import java.util.stream.Collectors;
 
 public class RemovePotionEffect extends Effect implements EntityEffect, TargetEffect {
 
-    private Set<PotionEffectType> types;
-
-    public RemovePotionEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        types = configurationSection.getStringList("types").stream().map(String::toUpperCase).map(PotionEffectType::getByName).collect(Collectors.toSet());
-    }
-
-    public boolean inSet(PotionEffectType type) {
-        return types.isEmpty() || types.contains(type);
-    }
+    @JsonPropertyWithDefault
+    private SetData<PotionEffectType> types = new SetData<>();
 
     public void removeEffects(Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             Collection<PotionEffect> activePotionEffects = livingEntity.getActivePotionEffects();
             for (PotionEffect effect : activePotionEffects) {
-                if (inSet(effect.getType())) {
+                if (types.inSet(effect.getType())) {
                     livingEntity.removePotionEffect(effect.getType());
                 }
             }

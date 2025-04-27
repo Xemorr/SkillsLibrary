@@ -1,46 +1,30 @@
 package me.xemor.skillslibrary2.conditions;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.xemor.skillslibrary2.Mode;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class ConditionList implements Iterable<Condition> {
 
+    @JsonIgnore
     private List<Condition> conditions = new ArrayList<>(1);
-
-    public ConditionList(ConfigurationSection conditionsSection) {
-        loadConditions(conditionsSection);
-    }
 
     public ConditionList() {}
 
-
-    private void loadConditions(ConfigurationSection conditionsSection) {
-        if (conditionsSection == null) return;
-        Map<String, Object> values = conditionsSection.getValues(false);
-        conditions = new ArrayList<>(values.size());
-        for (Object item : values.values()) {
-            if (item instanceof ConfigurationSection conditionSection) {
-                int condition = Conditions.getCondition(conditionSection.getString("type"));
-                if (condition == -1) {
-                    Bukkit.getLogger().warning("Invalid Condition Type at " + conditionSection.getCurrentPath() + ".type");
-                    continue;
-                }
-                Condition conditionData = Condition.create(condition, conditionSection);
-                if (conditionData != null) {
-                    conditions.add(conditionData);
-                }
-            }
-        }
+    @JsonAnySetter
+    public void loadCondition(String name, Condition condition) {
+        conditions.add(condition);
     }
 
     public CompletableFuture<Boolean> ANDConditions(Entity entity, boolean exact, Object... objects) {

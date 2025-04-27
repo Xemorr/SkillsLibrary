@@ -1,10 +1,13 @@
 package me.xemor.skillslibrary2.conditions;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.CompulsoryJsonProperty;
+import me.xemor.configurationdata.InventorySlot;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.comparison.ItemComparisonData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -16,27 +19,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class ItemCondition extends Condition implements EntityCondition, TargetCondition, ItemStackCondition {
 
-    private EquipmentSlot equipmentSlot;
-    private int slot;
+    @JsonPropertyWithDefault
+    private InventorySlot slot = new InventorySlot(EquipmentSlot.HAND);
+    @CompulsoryJsonProperty
+    @JsonAlias("item")
     private ItemComparisonData itemComparison;
-
-    public ItemCondition(int condition, ConfigurationSection configurationSection) {
-        super(condition, configurationSection);
-        String equipmentSlotStr = configurationSection.getString("slot", "HAND").toUpperCase();
-        try {
-            equipmentSlot = EquipmentSlot.valueOf(equipmentSlotStr);
-        } catch (IllegalArgumentException e) {
-            try {
-                slot = Integer.parseInt(equipmentSlotStr);
-            } catch (NumberFormatException ignored) {
-                SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid equipment slot! " + configurationSection.getCurrentPath() + ".slot");
-            }
-        }
-        ConfigurationSection itemSection = configurationSection.getConfigurationSection("item");
-        if (itemSection != null) {
-            itemComparison = new ItemComparisonData(itemSection);
-        }
-    }
 
     @Override
     public boolean isTrue(Execution execution, Entity entity) {
@@ -51,10 +38,10 @@ public class ItemCondition extends Condition implements EntityCondition, TargetC
     public boolean matches(Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             ItemStack item = null;
-            if (equipmentSlot != null) item = livingEntity.getEquipment().getItem(equipmentSlot);
+            if (slot.getEquipmentSlot() != null) item = livingEntity.getEquipment().getItem(slot.getEquipmentSlot());
             else if (entity instanceof Player player) {
                 PlayerInventory inventory = player.getInventory();
-                item = inventory.getItem(slot);
+                item = inventory.getItem(slot.getSlot());
             }
             if (item == null) item = new ItemStack(Material.AIR);
             return itemComparison.matches(item);

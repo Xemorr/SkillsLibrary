@@ -1,13 +1,15 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.google.common.collect.HashBiMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Effects {
 
-    private static final HashBiMap<String, Integer> nameToEffect = HashBiMap.create();
+    private static final HashBiMap<String, EffectId> nameToEffect = HashBiMap.create();
     private static final List<Class<? extends Effect>> effectToData = new ArrayList<>();
     private static int counter = 0;
 
@@ -30,7 +32,6 @@ public class Effects {
         registerEffect("RESIZE", ResizeEffect.class);
         registerEffect("SMITE", LightningEffect.class);
         registerEffect("LIGHTNING", LightningEffect.class);
-        registerEffect("VELOCITY", VelocityEffect.class);
         registerEffect("FLING", VelocityEffect.class);
         registerEffect("METADATA", MetadataEffect.class);
         registerEffect("GIVEITEM", GiveItemEffect.class);
@@ -74,22 +75,31 @@ public class Effects {
     }
 
     public static void registerEffect(String name, Class<? extends Effect> effectDataClass) {
-        nameToEffect.put(name, counter);
+        nameToEffect.put(name, new EffectId(counter));
         effectToData.add(effectDataClass);
         counter++;
     }
 
-    public static Class<? extends Effect> getClass(int effect) {
-        Class<? extends Effect> effectClass = effectToData.get(effect);
+    public static Class<? extends Effect> getClass(EffectId effectId) {
+        Class<? extends Effect> effectClass = effectToData.get(effectId.getId());
         return effectClass == null ? Effect.class : effectClass;
     }
 
-    public static int getEffect(String name) {
-        return nameToEffect.getOrDefault(name, -1);
+    public static EffectId getEffect(String name) {
+        return nameToEffect.getOrDefault(name, null);
     }
 
-    public static String getName(int effect) {
+    public static String getName(EffectId effect) {
         return nameToEffect.inverse().get(effect);
+    }
+
+    public static NamedType[] getNamedSubTypes() {
+        return nameToEffect
+                .entrySet()
+                .stream()
+                .map((entry) -> Map.entry(entry.getKey(), effectToData.get(entry.getValue().getId())))
+                .map((entry) -> new NamedType(entry.getValue(), entry.getKey()))
+                .toArray(NamedType[]::new);
     }
 
 }

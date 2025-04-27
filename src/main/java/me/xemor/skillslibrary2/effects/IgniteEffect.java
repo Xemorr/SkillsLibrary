@@ -1,30 +1,27 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.configuration.ConfigurationSection;
+import me.xemor.skillslibrary2.execution.Expression;
 import org.bukkit.entity.Entity;
-
-import java.util.Map;
 
 public class IgniteEffect extends Effect implements EntityEffect, TargetEffect {
 
-    private final String fireTicksExpression;
-
-    public IgniteEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        fireTicksExpression = configurationSection.getString("fireTicks", "40");
-    }
+    @JsonPropertyWithDefault
+    private Expression fireTicks;
 
     @Override
     public void useEffect(Execution exe, Entity entity) {
-        entity.setFireTicks((int) Math.round(exe.expression(fireTicksExpression, entity)));
+        entity.setFireTicks((int) Math.round(fireTicks.result(exe, entity) * 20));
     }
 
     @Override
     public void useEffect(Execution exe, Entity entity, Entity target) {
         SkillsLibrary.getFoliaHacks().runASAP(target, () -> {
-            target.setFireTicks((int) Math.round(exe.expression(fireTicksExpression, Map.of("other", target.getPersistentDataContainer()))));
+            target.setFireTicks((int) Math.round(fireTicks.result(exe, entity, target) * 20));
         });
     }
 }

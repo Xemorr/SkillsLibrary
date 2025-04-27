@@ -1,5 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.NamespacedKey;
@@ -12,11 +14,10 @@ public class MetadataEffect extends ModifyEffect implements EntityEffect, Target
 
     private NamespacedKey variable;
 
-    public MetadataEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        String variableStr = configurationSection.getString("variable");
+    @JsonCreator
+    public MetadataEffect(@JsonProperty("variable") String variableStr) {
         if (variableStr == null) {
-            SkillsLibrary.getInstance().getLogger().severe("You need to specify a variable name! " + configurationSection.getCurrentPath() + ".variable is null!");
+            SkillsLibrary.getInstance().getLogger().severe("You need to specify a variable name! .variable is null!");
         }
         else {
             variable = new NamespacedKey(SkillsLibrary.getInstance(), variableStr);

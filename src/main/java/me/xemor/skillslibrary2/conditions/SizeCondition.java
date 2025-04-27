@@ -1,8 +1,9 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
+import me.xemor.configurationdata.comparison.RangeData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Phantom;
 import org.bukkit.entity.Slime;
@@ -11,14 +12,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class SizeCondition extends Condition implements EntityCondition, TargetCondition {
 
-    private final int minimumSize;
-    private final int maximumSize;
-
-    public SizeCondition(int condition, ConfigurationSection configurationSection) {
-        super(condition, configurationSection);
-        minimumSize = configurationSection.getInt("minimumSize", 0);
-        maximumSize = configurationSection.getInt("maximumSize", 4);
-    }
+    @JsonPropertyWithDefault
+    private RangeData size = new RangeData();
 
     @Override
     public boolean isTrue(Execution execution, Entity entity) {
@@ -32,10 +27,10 @@ public class SizeCondition extends Condition implements EntityCondition, TargetC
 
     public boolean checkCondition(Entity entity) {
         if (entity instanceof Slime slime) {
-            return minimumSize <= slime.getSize() && slime.getSize() <= maximumSize;
+            return size.isInRange(slime.getSize());
         }
         if (entity instanceof Phantom phantom) {
-            return minimumSize <= phantom.getSize() && phantom.getSize() <= maximumSize;
+            return size.isInRange(phantom.getSize());
         }
         return false;
     }

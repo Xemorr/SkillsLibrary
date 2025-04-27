@@ -1,7 +1,10 @@
 package me.xemor.skillslibrary2;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import me.xemor.foliahacks.FoliaHacks;
-import me.creeves.particleslibrary.ParticlesLibrary;
+import me.xemor.skillslibrary2.conditions.Conditions;
+import me.xemor.skillslibrary2.effects.Effects;
+import me.xemor.skillslibrary2.triggers.Trigger;
 import me.xemor.skillslibrary2.triggers.Triggers;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,12 +23,18 @@ public final class SkillsLibrary extends JavaPlugin {
         bukkitAudiences = BukkitAudiences.create(this);
         skillsManager = new SkillsManager();
         foliaHacks = new FoliaHacks(this);
-        ParticlesLibrary.registerParticlesLibrary(this);
         this.getServer().getPluginManager().registerEvents(new Triggers(), this);
     }
 
     public static FoliaHacks getFoliaHacks() {
         return foliaHacks;
+    }
+
+    public ObjectMapper setupObjectMapper(ObjectMapper mapper) {
+        mapper.registerSubtypes(Trigger.getNamedSubTypes());
+        mapper.registerSubtypes(Effects.getNamedSubTypes());
+        mapper.registerSubtypes(Conditions.getNamedSubTypes());
+        return mapper;
     }
 
     public static GracefulScheduling getScheduling() {

@@ -6,10 +6,6 @@ import org.bukkit.entity.Entity;
 
 public class SwitcherooWrapperEffect extends WrapperEffect implements TargetEffect {
 
-    public SwitcherooWrapperEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-    }
-
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
         handleEffects(execution, target, entity);

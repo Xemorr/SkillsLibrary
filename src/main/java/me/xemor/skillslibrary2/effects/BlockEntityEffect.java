@@ -1,29 +1,27 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
+import me.xemor.skillslibrary2.execution.Expression;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class BlockEntityEffect extends Effect implements TargetEffect {
 
-    private final int duration;
-    private Material blockToPlace;
+    @JsonPropertyWithDefault
+    private Expression durationInTicks = new Expression(-1);
+    @JsonPropertyWithDefault
+    private Material blockToPlace = Material.COBWEB;
 
-    public BlockEntityEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        this.duration = (int) Math.round(configurationSection.getDouble("duration", -1) * 20);
-        String blockToPlaceStr = configurationSection.getString("block", "COBWEB");
-        try {
-            blockToPlace = Material.valueOf(blockToPlaceStr);
-        } catch (IllegalArgumentException e) {
-            SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid block type at " + configurationSection.getCurrentPath());
-        }
+    @JsonCreator
+    public BlockEntityEffect(Expression duration, Material blockToPlace) {
+        if (duration != null) this.durationInTicks = duration.apply((result) -> result * 20);
+        if (blockToPlace != null) this.blockToPlace = blockToPlace;
     }
 
     @Override
@@ -33,10 +31,11 @@ public class BlockEntityEffect extends Effect implements TargetEffect {
         Block block = world.getBlockAt(location);
         Material originalType = block.getType();
         block.setType(blockToPlace, false);
-        if (duration >= 0) {
+        double calculatedDurationInTicks = durationInTicks.result(execution, entity, target);
+        if (calculatedDurationInTicks >= 0) {
             SkillsLibrary.getScheduling().entitySpecificScheduler(target).runDelayed(() -> {
                     block.setType(originalType, false);
-            }, () -> {}, this.duration);
+            }, () -> {}, Math.round(calculatedDurationInTicks));
         }
     }
 }

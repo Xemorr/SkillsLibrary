@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,12 +15,8 @@ public class ResizeEffect extends ModifyEffect implements EntityEffect, TargetEf
      * If the slime is alive, then the health is also set to the maximum health, which is often unintended behaviour in a boss fight.
      * Hence, the retainHealth attribute setting it back.
      */
-    private final boolean retainHealth;
-
-    public ResizeEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        this.retainHealth = configurationSection.getBoolean("retainHealth", true);
-    }
+    @JsonPropertyWithDefault
+    private boolean retainHealth = true;
 
     @Override
     public void useEffect(Execution execution, Entity boss) {

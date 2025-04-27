@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
@@ -8,29 +9,23 @@ import org.bukkit.util.Vector;
 
 public class VelocityEffect extends ModifyEffect implements EntityEffect, TargetEffect {
 
-    private String component;
-
-    public VelocityEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        if (!configurationSection.contains("value")) super.valueExpr = configurationSection.getString("velocity", "1.0");
-        // default is Y to maintain backwards compatibility unfortunately
-        // would be better for it to be all
-        component = configurationSection.getString("component", "Y");
-        if ("ALL".equalsIgnoreCase(component)) {
-            component = "XYZ";
-        }
-    }
+    @JsonPropertyWithDefault
+    private String component = "Y";
 
     @Override
     public void useEffect(Execution execution, Entity livingEntity) {
+        if ("ALL".equalsIgnoreCase(component)) {
+            component = "XYZ";
+        }
+        component = component.toUpperCase();
         Vector velocity = livingEntity.getVelocity();
-        if (component.contains("X") || component.contains("x")) {
+        if (component.contains("X")) {
             velocity = velocity.setX(changeValue(execution, velocity.getX()));
         }
-        if (component.contains("Y") || component.contains("y")) {
+        if (component.contains("Y")) {
             velocity = velocity.setY(changeValue(execution, velocity.getY()));
         }
-        if (component.contains("Z") || component.contains("z")) {
+        if (component.contains("Z")) {
             velocity = velocity.setZ(changeValue(execution, velocity.getZ()));
         }
         livingEntity.setVelocity(velocity);

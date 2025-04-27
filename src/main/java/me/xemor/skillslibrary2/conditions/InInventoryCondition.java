@@ -2,7 +2,6 @@ package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
@@ -10,9 +9,6 @@ import org.bukkit.event.inventory.InventoryType;
 import java.util.concurrent.CompletableFuture;
 
 public class InInventoryCondition extends Condition implements EntityCondition, TargetCondition {
-    public InInventoryCondition(int condition, ConfigurationSection configurationSection) {
-        super(condition, configurationSection);
-    }
 
     @Override
     public boolean isTrue(Execution execution, Entity boss) {

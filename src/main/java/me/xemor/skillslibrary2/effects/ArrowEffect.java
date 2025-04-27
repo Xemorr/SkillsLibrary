@@ -1,27 +1,26 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.entity.EntityData;
 import me.xemor.skillslibrary2.execution.Execution;
+import me.xemor.skillslibrary2.execution.Expression;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
 public class ArrowEffect extends Effect implements TargetEffect {
 
-    private final String velocityExpression;
-    private final String damageExpression;
-    private final EntityData entityData;
-    private final String fireTicksExpression;
+    @JsonPropertyWithDefault
+    private Expression velocity = new Expression(1.0);
+    @JsonPropertyWithDefault
+    private Expression damage = new Expression(4);
+    @JsonPropertyWithDefault
+    @JsonAlias("entity")
+    private EntityData entityData = new EntityData().setType(EntityType.ARROW);
+    @JsonPropertyWithDefault
+    private Expression fireTicks = new Expression(0);
     private static final double log099 = Math.log(0.99);
-
-    public ArrowEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        velocityExpression = configurationSection.getString("velocity", "1.0");
-        damageExpression = configurationSection.getString("damage", "4");
-        entityData = EntityData.create(configurationSection, "entity", EntityType.ARROW);
-        fireTicksExpression = configurationSection.getString("fireTicks", "0");
-    }
 
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
@@ -33,7 +32,7 @@ public class ArrowEffect extends Effect implements TargetEffect {
             double zDifference = location.getZ() - startPoint.getZ();
             double length = Math.sqrt(yDifference * yDifference + xDifference * xDifference + zDifference * zDifference);
             if (length < 0.1) return;
-            int time = (int) Math.round(length / execution.expression(velocityExpression));
+            int time = (int) Math.round(length / velocity.result(execution, entity, target));
             double initialYVelocity = solveForInitialVerticalVelocity(yDifference, time);
             double initialXVelocity = solveForInitialHorizontalVelocity(xDifference, time);
             double initialZVelocity = solveForInitialHorizontalVelocity(zDifference, time);
@@ -41,12 +40,12 @@ public class ArrowEffect extends Effect implements TargetEffect {
             Entity spawnedEntity = entityData.spawnEntity(startPoint);
             if (spawnedEntity instanceof Arrow arrow) {
                 arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
-                arrow.setDamage(execution.expression(damageExpression));
+                arrow.setDamage(damage.result(execution, entity, target));
             }
             if (spawnedEntity instanceof Projectile projectile) {
                 projectile.setShooter(livingEntity);
             }
-            spawnedEntity.setFireTicks((int) Math.round(execution.expression(fireTicksExpression)));
+            spawnedEntity.setFireTicks((int) Math.round(fireTicks.result(execution, entity, target)));
             startPoint = startPoint.add(vector.clone().normalize());
             spawnedEntity.teleport(startPoint);
             spawnedEntity.setVelocity(vector);

@@ -1,7 +1,9 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
+import me.xemor.skillslibrary2.execution.ExpressiveMessage;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -15,19 +17,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class MessageEffect extends Effect implements EntityEffect, TargetEffect {
 
-    private final String message;
-
-    public MessageEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        this.message = configurationSection.getString("message");
-
-        try {
-            MiniMessage.miniMessage().deserialize(message, Placeholder.unparsed("player", ""));
-        } catch (ParsingException e) {
-            SkillsLibrary.getInstance().getLogger().severe("There is likely a legacy colour code at this location " + configurationSection.getCurrentPath() + ".message");
-            e.printStackTrace();
-        }
-    }
+    @JsonPropertyWithDefault
+    private ExpressiveMessage message = new ExpressiveMessage();
 
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
@@ -43,27 +34,18 @@ public class MessageEffect extends Effect implements EntityEffect, TargetEffect 
         if (entity instanceof Player player) {
             Audience audience = null;
             Component component = null;
-            String currentMessage = message;
-            if (target != null) {
-                currentMessage = execution.message(currentMessage, entity, target);
-            }
-            else {
-                currentMessage = execution.message(currentMessage, entity);
-            }
             try {
                 if (target instanceof Player targetPlayer) {
                     audience = SkillsLibrary.getBukkitAudiences().player(targetPlayer);
-                    component = MiniMessage.miniMessage().deserialize(currentMessage, Placeholder.unparsed("player", target.getName()), Placeholder.unparsed("self", entity.getName()), Placeholder.unparsed("target", target.getName()));
+                    component = message.component(execution, entity, targetPlayer);
                 }
                 else if (target == null) {
                     audience = SkillsLibrary.getBukkitAudiences().player(player);
-                    component = MiniMessage.miniMessage().deserialize(currentMessage, Placeholder.unparsed("player", entity.getName()), Placeholder.unparsed("self", entity.getName()));
+                    component = message.component(execution, entity);
                 }
-                else {
-                    return;
-                }
+                else return;
             } catch (ParsingException e) {
-                SkillsLibrary.getInstance().getLogger().severe("There is likely a legacy colour code in this message " + currentMessage);
+                SkillsLibrary.getInstance().getLogger().severe("There is likely a legacy colour code in this message " + message.result(execution, entity, target));
                 e.printStackTrace();
             }
             audience.sendMessage(component);

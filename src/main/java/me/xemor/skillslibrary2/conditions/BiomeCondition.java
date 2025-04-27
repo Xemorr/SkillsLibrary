@@ -1,25 +1,19 @@
 package me.xemor.skillslibrary2.conditions;
 
-import me.xemor.configurationdata.comparison.RegistrySetData;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.comparison.SetData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
-import org.bukkit.Registry;
 import org.bukkit.block.Biome;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.util.concurrent.CompletableFuture;
 
 public class BiomeCondition extends Condition implements EntityCondition, LocationCondition, TargetCondition {
 
-    private final RegistrySetData<Biome> biomes;
-
-    public BiomeCondition(int condition, ConfigurationSection configurationSection) {
-        super(condition, configurationSection);
-        biomes = new RegistrySetData<>(Registry.BIOME::match, "biomes", configurationSection);
-    }
+    @JsonPropertyWithDefault
+    private SetData<Biome> biomes = new SetData<>();
 
     private boolean calculate(Entity entity, Location location) {
         return biomes.inSet(getBiome(location));

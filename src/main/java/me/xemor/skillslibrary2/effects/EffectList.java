@@ -1,45 +1,30 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.xemor.skillslibrary2.Mode;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class EffectList implements Iterable<Effect> {
 
-    private List<Effect> effects = new ArrayList<>(1);
-    private static EffectList effectList = new EffectList();
+    private static final EffectList emptyList = new EffectList();
 
-    public EffectList(ConfigurationSection effectsSection) {
-        loadEffects(effectsSection);
-    }
+    @JsonIgnore
+    private final List<Effect> effects = new ArrayList<>(1);
 
     public EffectList() {}
 
-    private void loadEffect(ConfigurationSection effectSection) {
-        String effectTypeStr = effectSection.getString("type", "FLING");
-        int effectType = Effects.getEffect(effectTypeStr);
-        if (effectType == -1) {
-            Bukkit.getLogger().warning("Invalid Effect Specified: " + effectTypeStr + " at " + effectSection.getCurrentPath() + ".type");
-            return;
-        }
-        effects.add(Effect.create(effectType, effectSection));
-    }
-
-    public void loadEffects(ConfigurationSection effectsSection) {
-        Collection<Object> values = effectsSection.getValues(false).values();
-        effects = new ArrayList<>(values.size());
-        for (Object item : values) {
-            if (item instanceof ConfigurationSection effectSection) {
-                loadEffect(effectSection);
-            }
-        }
+    @JsonAnySetter
+    public void loadEffect(String name, Effect effect) {
+        effects.add(effect);
     }
 
     public boolean handleEffects(Execution execution, Entity entity, Object... objects) {
@@ -82,8 +67,8 @@ public class EffectList implements Iterable<Effect> {
         return result;
     }
 
-    public static EffectList effectList() {
-        return effectList;
+    public static EffectList emptyEffectsList() {
+        return emptyList;
     }
 
     @NotNull

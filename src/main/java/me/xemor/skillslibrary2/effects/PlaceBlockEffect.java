@@ -1,51 +1,36 @@
 package me.xemor.skillslibrary2.effects;
 
-import me.xemor.configurationdata.BlockDataData;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.CompulsoryJsonProperty;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.conditions.ConditionList;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.Bukkit;
+import me.xemor.skillslibrary2.execution.Expression;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class PlaceBlockEffect extends Effect implements ComplexLocationEffect {
 
-    private BlockData blockData;
-    private final boolean updatePhysics;
-    private final boolean isPacket;
-    private final ConditionList revertConditions;
-    private final String revertsAfterExpr;
-
-    public PlaceBlockEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        String typeStr = configurationSection.getString("material");
-        if (typeStr == null) {
-            BlockDataData blockDataData = new BlockDataData(configurationSection.getConfigurationSection("block"));
-            blockData = blockDataData.getBlockData();
-        }
-        else {
-            try {
-                blockData = Bukkit.createBlockData(Material.valueOf(typeStr));
-            } catch (IllegalArgumentException e) {
-                SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid material! " + configurationSection.getCurrentPath() + ".material");
-            }
-        }
-        updatePhysics = configurationSection.getBoolean("updatePhysics", true);
-        isPacket = configurationSection.getBoolean("isPacket", false);
-        revertConditions = new ConditionList(configurationSection.getConfigurationSection("revertConditions"));
-        revertsAfterExpr = configurationSection.getString("revertsAfter", "-1");
-    }
+    @CompulsoryJsonProperty
+    @JsonAlias("block")
+    private BlockData blockData = null;
+    @JsonPropertyWithDefault
+    private boolean updatePhysics = true;
+    @JsonPropertyWithDefault
+    private boolean isPacket = false;
+    @JsonPropertyWithDefault
+    private ConditionList revertConditions = new ConditionList();
+    @JsonPropertyWithDefault
+    private Expression revertsAfter = new Expression(-1);
 
     private int getRevertsAfter(Execution execution, Entity entity) {
-        return (int) Math.round(execution.expression(revertsAfterExpr, entity) * 20);
+        return (int) Math.round(revertsAfter.result(execution, entity) * 20);
     }
 
     @Override

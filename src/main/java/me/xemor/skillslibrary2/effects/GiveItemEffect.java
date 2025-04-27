@@ -1,10 +1,10 @@
 package me.xemor.skillslibrary2.effects;
 
-import me.xemor.configurationdata.ItemStackData;
+import me.xemor.configurationdata.CompulsoryJsonProperty;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -14,15 +14,10 @@ import java.util.HashMap;
 
 public class GiveItemEffect extends Effect implements EntityEffect, TargetEffect {
 
-    private final ItemStack item;
-    private final boolean dropIfFull;
-
-    public GiveItemEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        ConfigurationSection item = configurationSection.getConfigurationSection("item");
-        this.item = new ItemStackData(item).getItem();
-        dropIfFull = configurationSection.getBoolean("dropIfFull", true);
-    }
+    @CompulsoryJsonProperty
+    private ItemStack item;
+    @JsonPropertyWithDefault
+    private boolean dropIfFull = true;
 
     @Override
     public void useEffect(Execution execution, Entity entity) {

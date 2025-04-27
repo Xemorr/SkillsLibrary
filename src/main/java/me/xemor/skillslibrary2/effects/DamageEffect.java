@@ -1,43 +1,37 @@
 package me.xemor.skillslibrary2.effects;
 
-import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.configuration.ConfigurationSection;
+import me.xemor.skillslibrary2.execution.Expression;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 public class DamageEffect extends Effect implements TargetEffect, EntityEffect {
 
-    private final String damageExpression;
-    private EntityDamageEvent.DamageCause damageCause;
-    private final boolean shouldTriggerEvents;
-
-    public DamageEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        damageExpression = configurationSection.getString("damage", "5");
-        shouldTriggerEvents = configurationSection.getBoolean("shouldTriggerEvents", false);
-        try {
-            damageCause = EntityDamageEvent.DamageCause.valueOf(configurationSection.getString("cause", "CUSTOM"));
-        } catch (IllegalArgumentException e) {
-            SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid damage cause at " + configurationSection.getCurrentPath() + ".cause");
-        }
-    }
+    @JsonPropertyWithDefault
+    private Expression damage = new Expression(5);
+    @JsonPropertyWithDefault
+    private EntityDamageEvent.DamageCause damageCause = EntityDamageEvent.DamageCause.CUSTOM;
+    @JsonPropertyWithDefault
+    private boolean shouldTriggerEvents = false;
 
     @Override
     public void useEffect(Execution exe, Entity entity, Entity target) {
+        double calculatedDamage = damage.result(exe, entity, target);
         if (target instanceof LivingEntity livingTarget) {
-            if (shouldTriggerEvents) livingTarget.damage(exe.expression(damageExpression, entity, target), entity);
-            else livingTarget.damage(exe.expression(damageExpression, entity, target));
-            livingTarget.setLastDamageCause(new EntityDamageEvent(entity, damageCause, exe.expression(damageExpression, entity, target)));
+            if (shouldTriggerEvents) livingTarget.damage(calculatedDamage, entity);
+            else livingTarget.damage(calculatedDamage);
+            livingTarget.setLastDamageCause(new EntityDamageEvent(entity, damageCause, calculatedDamage));
         }
     }
 
     @Override
     public void useEffect(Execution exe, Entity entity) {
+        double calculatedDamage = damage.result(exe, entity);
         if (entity instanceof LivingEntity livingEntity) {
-            livingEntity.damage(exe.expression(damageExpression, entity));
-            livingEntity.setLastDamageCause(new EntityDamageEvent(livingEntity, damageCause, exe.expression(damageExpression)));
+            livingEntity.damage(calculatedDamage);
+            livingEntity.setLastDamageCause(new EntityDamageEvent(livingEntity, damageCause, calculatedDamage));
         }
     }
 }

@@ -1,5 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.PotionEffectData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
@@ -11,28 +13,13 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Potion extends Effect implements EntityEffect, TargetEffect {
 
-    private final PotionEffect potionEffect;
-
-    public Potion(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        ConfigurationSection potionSection = configurationSection.getConfigurationSection("potion");
-        if (potionSection != null) {
-            PotionEffectData potionEffectData = new PotionEffectData(potionSection);
-            if (potionEffectData.getPotionEffect().isPresent()) {
-                potionEffect = potionEffectData.getPotionEffect().get();
-            } else {
-                SkillsLibrary.getInstance().getLogger().severe("Falling back to default regeneration potion effect as " + configurationSection.getCurrentPath() + ".potion is invalid.");
-                potionEffect = PotionEffectType.getByName("REGENERATION").createEffect(10, 1);
-            }
-        } else {
-            SkillsLibrary.getInstance().getLogger().severe("Falling back to default regeneration potion effect as " + configurationSection.getCurrentPath() + ".potion is null.");
-            potionEffect = PotionEffectType.getByName("REGENERATION").createEffect(10, 1);
-        }
-    }
+    @JsonPropertyWithDefault
+    @JsonAlias("potion")
+    private PotionEffectData potionEffect;
 
     public void applyPotionEffect(Entity target) {
         if (target instanceof LivingEntity lTarget) {
-            lTarget.addPotionEffect(potionEffect);
+            potionEffect.createPotion().ifPresent(lTarget::addPotionEffect);
         }
     }
 

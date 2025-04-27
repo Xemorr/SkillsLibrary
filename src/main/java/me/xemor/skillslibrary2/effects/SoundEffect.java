@@ -1,20 +1,15 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.SoundData;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 public class SoundEffect extends Effect implements EntityEffect, TargetEffect, ComplexLocationEffect {
 
-    private final SoundData soundData;
-
-    public SoundEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        ConfigurationSection soundSection = configurationSection.getConfigurationSection("sound");
-        soundData = new SoundData(soundSection);
-    }
+    @JsonPropertyWithDefault
+    private SoundData sound;
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
@@ -32,6 +27,6 @@ public class SoundEffect extends Effect implements EntityEffect, TargetEffect, C
     }
 
     private void playSound(Location location) {
-        location.getWorld().playSound(location, soundData.getSound(), soundData.getVolume(), soundData.getPitch());
+        location.getWorld().playSound(location, sound.sound(), sound.volume(), sound.pitch());
     }
 }
