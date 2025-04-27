@@ -2,7 +2,6 @@ package me.xemor.skillslibrary2.execution;
 
 import me.xemor.skillslibrary2.SkillsLibrary;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
@@ -10,8 +9,6 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Execution {
@@ -98,8 +95,8 @@ public class Execution {
     private double getValue(String variable, Map<String, PersistentDataContainer> containers) throws IllegalArgumentException {
         Double newValue = null;
         for (Map.Entry<String, PersistentDataContainer> entry : containers.entrySet()) {
-            String prefix = entry.getKey() + "_";
-            if (variable.startsWith(prefix)) {
+            String prefix = entry.getKey().toLowerCase() + "_";
+            if (variable.toLowerCase().startsWith(prefix)) {
                 variable = variable.replaceFirst(prefix, "");
                 newValue = entry.getValue().get(new NamespacedKey(SkillsLibrary.getInstance(), variable), PersistentDataType.DOUBLE);
             }

@@ -4,11 +4,8 @@ import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
-
-import me.xemor.configurationdata.VectorData;
 
 public class LocationOffsetEffect extends WrapperEffect implements EntityEffect, ComplexLocationEffect, TargetEffect {
 

@@ -1,5 +1,8 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.FluidCollisionMode;
@@ -13,25 +16,17 @@ import org.bukkit.util.Vector;
 
 public class RaytraceEffect extends WrapperEffect implements EntityEffect, TargetEffect {
 
-    private double maxDistance;
-    private FluidCollisionMode collisionMode;
-    private boolean ignorePassables;
-    private boolean alwaysHit;
-    private double raySize;
-
-    public RaytraceEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        maxDistance = configurationSection.getDouble("maxDistance", 10);
-        alwaysHit = configurationSection.getBoolean("alwaysHit", true);
-        ignorePassables = configurationSection.getBoolean("ignorePassables", true);
-        raySize = configurationSection.getDouble("raySize", 1.0);
-        String collisionModeStr = configurationSection.getString("collisionMode", "NEVER");
-        try {
-            collisionMode = FluidCollisionMode.valueOf(collisionModeStr);
-        } catch (IllegalArgumentException e) {
-            SkillsLibrary.getInstance().getLogger().severe("You have entered an invalid collsion mode! " + configurationSection.getCurrentPath() + ".collisionMode");
-        }
-    }
+    @JsonPropertyWithDefault
+    private double maxDistance = 10;
+    @JsonPropertyWithDefault
+    private FluidCollisionMode collisionMode = FluidCollisionMode.NEVER;
+    @JsonPropertyWithDefault
+    private boolean ignorePassables = true;
+    @JsonPropertyWithDefault
+    private boolean alwaysHit = true;
+    @JsonPropertyWithDefault
+    @JsonAlias("raysize")
+    private double raySize = 1.0;
 
     @Override
     public void useEffect(Execution execution, Entity entity) {

@@ -1,8 +1,8 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -10,12 +10,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class SneakCondition extends Condition implements EntityCondition, TargetCondition {
 
-    private final boolean sneak;
-
-    public SneakCondition(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        sneak = configurationSection.getBoolean("sneak", true);
-    }
+    @JsonPropertyWithDefault
+    private boolean sneak = true;
 
     @Override
     public boolean isTrue(Execution execution, Entity entity) {

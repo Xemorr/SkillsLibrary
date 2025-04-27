@@ -6,11 +6,11 @@ plugins {
 }
 
 group = "me.xemor"
-version = "3.0.0"
+version = "4.1.1"
 
 repositories {
-    mavenCentral()
     mavenLocal()
+    mavenCentral()
     maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
     maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
     maven { url = uri("https://jitpack.io/")}
@@ -24,15 +24,15 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
+    compileOnly("com.fasterxml.jackson.core:jackson-core:2.18.3")
+    compileOnly("com.fasterxml.jackson.core:jackson-databind:2.18.3")
+    compileOnly("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.7.0")
     shadow("net.kyori:adventure-platform-bukkit:4.3.3-SNAPSHOT")
     shadow("net.kyori:adventure-text-minimessage:4.17.0")
-    shadow("me.xemor:configurationdata:4.0.4")
-    shadow("me.creeves:ParticlesLibrary:1.1-SNAPSHOT")
+    shadow("me.xemor:configurationdata:4.3.9")
     shadow("space.arim.morepaperlib:morepaperlib:0.4.3")
     shadow("me.xemor:foliahacks:1.7.4")
     shadow("io.papermc:paperlib:1.0.7")
-    shadow("com.fasterxml.jackson.core:jackson-core:2.18.3")
-    shadow("com.fasterxml.jackson.core:jackson-databind:2.18.3")
 }
 
 java {
@@ -80,7 +80,6 @@ tasks.shadowJar {
     relocate("space.arim.morepaperlib", "me.xemor.skillslibrary2.morepaperlib")
     relocate("me.xemor.foliahacks", "me.xemor.skillslibrary2.foliahacks")
     relocate("io.papermc.paperlib", "me.xemor.skillslibrary2.paperlib")
-    relocate("com.fasterxml.jackson", "me.xemor.skillslibrary2.com.fasterxml.jackson")
     configurations = listOf(project.configurations.shadow.get())
     val folder = System.getenv("pluginFolder")
     destinationDirectory.set(file(folder))

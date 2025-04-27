@@ -4,13 +4,12 @@ import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 public class LightningEffect extends Effect implements EntityEffect, TargetEffect {
 
     @JsonPropertyWithDefault
-    private final boolean fake = false;
+    private boolean fake = false;
 
     @Override
     public void useEffect(Execution execution, Entity entity) {

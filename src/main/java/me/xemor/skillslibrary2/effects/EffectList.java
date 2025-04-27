@@ -4,18 +4,18 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.xemor.skillslibrary2.Mode;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class EffectList implements Iterable<Effect> {
 
-    private static final EffectList effectList = new EffectList();
+    private static final EffectList emptyList = new EffectList();
 
     @JsonIgnore
     private final List<Effect> effects = new ArrayList<>(1);
@@ -68,7 +68,7 @@ public class EffectList implements Iterable<Effect> {
     }
 
     public static EffectList emptyEffectsList() {
-        return effectList;
+        return emptyList;
     }
 
     @NotNull

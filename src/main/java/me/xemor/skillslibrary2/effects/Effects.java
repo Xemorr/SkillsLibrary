@@ -32,7 +32,6 @@ public class Effects {
         registerEffect("RESIZE", ResizeEffect.class);
         registerEffect("SMITE", LightningEffect.class);
         registerEffect("LIGHTNING", LightningEffect.class);
-        registerEffect("VELOCITY", VelocityEffect.class);
         registerEffect("FLING", VelocityEffect.class);
         registerEffect("METADATA", MetadataEffect.class);
         registerEffect("GIVEITEM", GiveItemEffect.class);

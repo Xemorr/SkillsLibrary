@@ -1,5 +1,8 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.Duration;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.comparison.SetData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
@@ -14,27 +17,21 @@ import java.util.EnumSet;
 
 public class VeinMinerEffect extends Effect implements ComplexLocationEffect {
 
-    private final SetData<Material> materials;
-    private final long delay;
-    private final int limit; // The maximum number of iterations outwards from the centre NOT the number of blocks broken
-    private final boolean allowMultiTypeVein;
+    @JsonPropertyWithDefault
+    @JsonAlias("types")
+    private SetData<Material> materials = new SetData<>();
+    @JsonPropertyWithDefault
+    private Duration delay = new Duration(0.05D);
+    @JsonPropertyWithDefault
+    private int limit = 10; // The maximum number of iterations outwards from the centre NOT the number of blocks broken
+    @JsonPropertyWithDefault
+    private boolean allowMultiTypeVein = false;
 
     private final static EnumSet<BlockFace> faces = EnumSet.complementOf(
             EnumSet.of(BlockFace.EAST_NORTH_EAST, BlockFace.EAST_SOUTH_EAST,
             BlockFace.NORTH_NORTH_EAST, BlockFace.NORTH_NORTH_WEST,
             BlockFace.SOUTH_SOUTH_EAST, BlockFace.SOUTH_SOUTH_WEST,
             BlockFace.WEST_NORTH_WEST, BlockFace.WEST_SOUTH_WEST));
-
-    public VeinMinerEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        materials = new SetData<>(Material.class, "types", configurationSection);
-        if (materials.getSet().isEmpty()){
-            throw new IllegalStateException("Materials property has not been specified.");
-        }
-        delay = Math.round(20 * configurationSection.getDouble("delay", 0.05D));
-        allowMultiTypeVein = configurationSection.getBoolean("allowMultiTypeVein",false);
-        limit = configurationSection.getInt("limit", 10);
-    }
 
     @Override
     public void useEffect(Execution execution, Entity entity, Location location) {
@@ -54,7 +51,7 @@ public class VeinMinerEffect extends Effect implements ComplexLocationEffect {
                             }
                         }
                         block.breakNaturally();
-                    }, delay
+                    }, delay.getDurationInTicks().orElse(1L)
             );
         }
     }

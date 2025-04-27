@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -11,14 +12,10 @@ import org.bukkit.util.Vector;
 
 public class RandomTeleportEffect extends Effect implements EntityEffect, TargetEffect {
 
-    private final double maxDistance;
-    private final double minDistance;
-
-    public RandomTeleportEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        maxDistance = configurationSection.getDouble("maxDistance", 10);
-        minDistance = configurationSection.getDouble("minDistance", 5);
-    }
+    @JsonPropertyWithDefault
+    private double maxDistance = 10;
+    @JsonPropertyWithDefault
+    private double minDistance = 5;
 
     @Override
     public void useEffect(Execution execution, Entity entity) {

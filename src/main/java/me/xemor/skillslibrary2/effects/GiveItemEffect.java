@@ -1,12 +1,10 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.configurationdata.CompulsoryJsonProperty;
-import me.xemor.configurationdata.ItemStackData;
 import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;

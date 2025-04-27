@@ -1,10 +1,8 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.configurationdata.JsonPropertyWithDefault;
-import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import me.xemor.skillslibrary2.execution.Expression;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent;

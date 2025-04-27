@@ -1,9 +1,10 @@
 package me.xemor.skillslibrary2.conditions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -14,11 +15,10 @@ public class MetadataCondition extends ComparisonCondition implements EntityCond
 
     private NamespacedKey variable;
 
-    public MetadataCondition(int condition, ConfigurationSection configurationSection) {
-        super(condition, configurationSection);
-        String variableStr = configurationSection.getString("variable");
+    @JsonCreator
+    public MetadataCondition(@JsonProperty("variable") String variableStr) {
         if (variableStr == null) {
-            SkillsLibrary.getInstance().getLogger().severe("You need to specify a variable name! " + configurationSection.getCurrentPath() + ".variable is null!");
+            SkillsLibrary.getInstance().getLogger().severe("You need to specify a variable name! .variable is null!");
         }
         else {
             variable = new NamespacedKey(SkillsLibrary.getInstance(), variableStr);

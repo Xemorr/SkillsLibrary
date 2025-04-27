@@ -1,14 +1,11 @@
 package me.xemor.skillslibrary2.conditions;
 
 import me.xemor.configurationdata.JsonPropertyWithDefault;
-import me.xemor.configurationdata.comparison.RegistrySetData;
 import me.xemor.configurationdata.comparison.SetData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
-import org.bukkit.Registry;
 import org.bukkit.block.Biome;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.util.concurrent.CompletableFuture;

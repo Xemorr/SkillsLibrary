@@ -1,8 +1,9 @@
 package me.xemor.skillslibrary2.conditions;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
@@ -10,12 +11,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class GlidingCondition extends Condition implements EntityCondition, TargetCondition {
 
-    private final boolean shouldGlide;
-
-    public GlidingCondition(int condition, ConfigurationSection configurationSection) {
-        super(condition, configurationSection);
-        shouldGlide = configurationSection.getBoolean("shouldGlide", true) && configurationSection.getBoolean("glide", true);
-    }
+    @JsonPropertyWithDefault
+    @JsonAlias("glide")
+    private boolean shouldGlide = true;
 
     @Override
     public boolean isTrue(Execution execution, Entity entity) {

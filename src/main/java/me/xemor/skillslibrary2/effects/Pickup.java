@@ -12,10 +12,6 @@ import org.bukkit.entity.Entity;
  */
 public class Pickup extends Effect implements TargetEffect {
 
-    public Pickup(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-    }
-
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
         SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {

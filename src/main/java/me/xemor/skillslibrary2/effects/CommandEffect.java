@@ -1,17 +1,14 @@
 package me.xemor.skillslibrary2.effects;
 
 import me.xemor.configurationdata.JsonPropertyWithDefault;
-import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import me.xemor.skillslibrary2.execution.ExpressiveMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class CommandEffect extends Effect implements EntityEffect, TargetEffect {
 

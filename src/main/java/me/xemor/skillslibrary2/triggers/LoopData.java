@@ -1,18 +1,15 @@
 package me.xemor.skillslibrary2.triggers;
 
-import org.bukkit.configuration.ConfigurationSection;
+import me.xemor.configurationdata.Duration;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 
 public class LoopData extends TriggerData {
 
-    private final int period;
+    @JsonPropertyWithDefault
+    private Duration period = new Duration(1D);
 
-    public LoopData(int trigger, ConfigurationSection configurationSection) {
-        super(trigger, configurationSection);
-        period = Math.max((int) Math.round(configurationSection.getDouble("period", 1) * 20), 1);
-    }
-
-    public int getPeriod() {
-        return period;
+    public long getPeriod() {
+        return period.getDurationInTicks().orElse(20L);
     }
 
 }

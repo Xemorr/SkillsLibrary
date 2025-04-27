@@ -1,29 +1,26 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.Mode;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
+import me.xemor.skillslibrary2.execution.Expression;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.security.Signature;
 import java.util.Map;
 
 public class LungeEffect extends Effect implements EntityEffect, TargetEffect {
 
-    private final String horizontalVelocityExpr;
-    private final String verticalVelocityExpr;
-    private final boolean overwrite;
-
-    public LungeEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        horizontalVelocityExpr = configurationSection.getString("horizontalVelocity");
-        verticalVelocityExpr = configurationSection.getString("verticalVelocity");
-        overwrite = configurationSection.getBoolean("overwrite", true);
-    }
+    @JsonPropertyWithDefault
+    private Expression horizontalVelocity = new Expression(0);
+    @JsonPropertyWithDefault
+    private Expression verticalVelocity = new Expression(0);
+    @JsonPropertyWithDefault
+    private boolean overwrite = true;
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
@@ -51,11 +48,11 @@ public class LungeEffect extends Effect implements EntityEffect, TargetEffect {
             direction = entity.getLocation().getDirection();
         }
         String entityMode = getMode() == Mode.SELF ? "self" : "other";
-        double horizontalVelocity = execution.expression(horizontalVelocityExpr, Map.of(entityMode, entity.getPersistentDataContainer()));
-        double velocityVelocity = execution.expression(verticalVelocityExpr, Map.of(entityMode, entity.getPersistentDataContainer()));
-        double x = direction.getX() * horizontalVelocity;
-        double z = direction.getZ() * horizontalVelocity;
-        double y = direction.getY() * velocityVelocity;
+        double resultHorizontalVelocity = horizontalVelocity.result(execution, Map.of(entityMode, entity));
+        double resultVerticalVelocity = verticalVelocity.result(execution, Map.of(entityMode, entity));
+        double x = direction.getX() * resultHorizontalVelocity;
+        double z = direction.getZ() * resultHorizontalVelocity;
+        double y = direction.getY() * resultVerticalVelocity;
         if (overwrite) entity.setVelocity(new Vector(x, y, z));
         else entity.setVelocity(entity.getVelocity().add(new Vector(x, y, z)));
     }

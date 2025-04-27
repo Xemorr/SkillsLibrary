@@ -1,8 +1,9 @@
 package me.xemor.skillslibrary2.conditions;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import me.xemor.configurationdata.deserializers.text.TextDeserializer;
-import me.xemor.skillslibrary2.effects.Effects;
 
 @JsonDeserialize(using = ConditionId.IdDeserializer.class)
 public class ConditionId {
@@ -19,7 +20,7 @@ public class ConditionId {
 
     public class IdDeserializer extends TextDeserializer<ConditionId> {
         @Override
-        public ConditionId deserialize(String text) {
+        public ConditionId deserialize(String text, JsonParser jsonParser, DeserializationContext deserializationContext) {
             return Conditions.getCondition(text);
         }
     }

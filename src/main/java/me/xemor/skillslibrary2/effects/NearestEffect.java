@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
@@ -9,19 +10,17 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 public class NearestEffect extends WrapperEffect implements EntityEffect, TargetEffect, ComplexLocationEffect {
 
-    private final double radius;
-
-    public NearestEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        radius = configurationSection.getDouble("radius", 5);
-    }
+    @JsonPropertyWithDefault
+    private double radius = 5;
 
     @Override
     public void useEffect(Execution execution, Entity entity, Location location) {

@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2;
 
+import me.xemor.skillslibrary2.triggers.TriggerId;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
@@ -23,7 +24,7 @@ public class SkillsManager {
         map.remove(plugin.getName());
     }
 
-    public Collection<Skill> getSkills(int triggerID) {
+    public Collection<Skill> getSkills(TriggerId triggerID) {
         return map.values().stream().flatMap(registeredSkills -> registeredSkills.getSkills(triggerID).stream()).collect(Collectors.toList());
     }
 

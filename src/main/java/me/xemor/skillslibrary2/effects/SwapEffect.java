@@ -7,10 +7,6 @@ import org.bukkit.entity.Entity;
 
 public class SwapEffect extends Effect implements TargetEffect {
 
-    public SwapEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-    }
-
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
         Location location1 = entity.getLocation();

@@ -9,11 +9,11 @@ import org.bukkit.util.Vector;
 public class LocationCubeEffect extends WrapperEffect implements EntityEffect, ComplexLocationEffect, TargetEffect {
 
     @JsonPropertyWithDefault
-    private final int verticalRadius = 0;
+    private int verticalRadius = 0;
     @JsonPropertyWithDefault
-    private final int horizontalRadius = 0;
+    private int horizontalRadius = 0;
     @JsonPropertyWithDefault
-    private final Vector offset = new Vector(0, 0, 0);
+    private Vector offset = new Vector(0, 0, 0);
 
     @Override
     public void useEffect(Execution execution, Entity entity, Location location) {

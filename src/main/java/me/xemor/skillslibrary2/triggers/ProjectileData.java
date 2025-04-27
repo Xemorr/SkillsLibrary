@@ -1,15 +1,11 @@
 package me.xemor.skillslibrary2.triggers;
 
-import org.bukkit.configuration.ConfigurationSection;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 
 public class ProjectileData extends TriggerData {
 
-    private boolean onlyProjectiles;
-
-    public ProjectileData(int trigger, ConfigurationSection configurationSection) {
-        super(trigger, configurationSection);
-        onlyProjectiles = configurationSection.getBoolean("onlyProjectiles", false);
-    }
+    @JsonPropertyWithDefault
+    private boolean onlyProjectiles = false;
 
     public boolean onlyProjectiles() {
         return onlyProjectiles;

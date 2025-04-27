@@ -1,19 +1,18 @@
 package me.xemor.skillslibrary2.conditions;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.util.concurrent.CompletableFuture;
 
 public class NPCCondition extends Condition implements EntityCondition, TargetCondition {
-    private final boolean npc;
 
-    public NPCCondition(int condition, ConfigurationSection configurationSection) {
-        super(condition, configurationSection);
-        npc = configurationSection.getBoolean("isNPC", false);
-    }
+    @JsonPropertyWithDefault
+    @JsonAlias("isNPC")
+    private boolean npc = true;
 
     @Override
     public boolean isTrue(Execution execution, Entity boss) {

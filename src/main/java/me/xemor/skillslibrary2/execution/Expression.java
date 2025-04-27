@@ -1,27 +1,40 @@
 package me.xemor.skillslibrary2.execution;
 
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import me.xemor.configurationdata.deserializers.text.TextDeserializer;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.gradle.internal.impldep.com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
+@JsonDeserialize(using = Expression.ExpressionDeserializer.class)
 public class Expression {
 
     private Double cachedResult = null;
     private List<String> postfix = Collections.emptyList();
     List<Function<Double, Double>> postprocessors = new ArrayList<>(1);
 
-    @JsonCreator
     public Expression(String message) {
         try {
             cachedResult = new Execution().evaluatePostfix(Execution.infixToPostfix(message), Map.of());
         } catch (IllegalArgumentException e) {
             this.postfix = Execution.infixToPostfix(message);
         }
+    }
+
+    public Expression(double result) {
+        this.cachedResult = result;
     }
 
     public Expression apply(Function<Double, Double> postProcess) {
@@ -35,10 +48,6 @@ public class Expression {
             executionCalculation = postprocessor.apply(executionCalculation);
         }
         return executionCalculation;
-    }
-
-    public Expression(double result) {
-        this.cachedResult = result;
     }
 
     public double result(Execution execution) {
@@ -58,10 +67,12 @@ public class Expression {
         else return executePostProcessors(execution.evaluatePostfix(postfix, modeToHolder));
     }
 
-    public class ExpressionDeserializer extends TextDeserializer<Expression> {
+    public static class ExpressionDeserializer extends JsonDeserializer<Expression> {
         @Override
-        public Expression deserialize(String text) {
-            return new Expression(text);
+        public Expression deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+            JsonToken token = p.getCurrentToken();
+            if (token.isNumeric()) return new Expression(p.getDoubleValue());
+            else return new Expression(p.getText());
         }
     }
 

@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.entity.EntityData;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
@@ -12,14 +13,10 @@ import org.bukkit.util.Vector;
 
 public class ProjectileEffect extends Effect implements EntityEffect, TargetEffect, ComplexLocationEffect {
 
-    private final EntityData projectile;
-    private final double velocity;
-
-    public ProjectileEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        projectile = EntityData.create(configurationSection, "entity", EntityType.SNOWBALL);
-        velocity = configurationSection.getDouble("velocity", 1.0);
-    }
+    @JsonPropertyWithDefault
+    private EntityData projectile = new EntityData().setType(EntityType.SNOWBALL);
+    @JsonPropertyWithDefault
+    private double velocity = 1.0;
 
     @Override
     public void useEffect(Execution execution, Entity entity) {

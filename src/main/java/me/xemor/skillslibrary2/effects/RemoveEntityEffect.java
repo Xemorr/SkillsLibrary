@@ -6,10 +6,6 @@ import org.bukkit.entity.Entity;
 
 public class RemoveEntityEffect extends Effect implements EntityEffect, TargetEffect {
 
-    public RemoveEntityEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-    }
-
     @Override
     public void useEffect(Execution execution, Entity entity) {
         entity.remove();

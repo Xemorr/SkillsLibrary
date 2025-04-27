@@ -1,9 +1,7 @@
 package me.xemor.skillslibrary2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.xemor.configurationdata.ConfigurationData;
 import me.xemor.foliahacks.FoliaHacks;
-import me.creeves.particleslibrary.ParticlesLibrary;
 import me.xemor.skillslibrary2.conditions.Conditions;
 import me.xemor.skillslibrary2.effects.Effects;
 import me.xemor.skillslibrary2.triggers.Trigger;
@@ -25,7 +23,6 @@ public final class SkillsLibrary extends JavaPlugin {
         bukkitAudiences = BukkitAudiences.create(this);
         skillsManager = new SkillsManager();
         foliaHacks = new FoliaHacks(this);
-        ParticlesLibrary.registerParticlesLibrary(this);
         this.getServer().getPluginManager().registerEvents(new Triggers(), this);
     }
 
@@ -33,9 +30,7 @@ public final class SkillsLibrary extends JavaPlugin {
         return foliaHacks;
     }
 
-    public ObjectMapper setupObjectMapper(ObjectMapper objectMapper) {
-        ObjectMapper mapper = ConfigurationData
-                .setupObjectMapperForConfigurationData(objectMapper);
+    public ObjectMapper setupObjectMapper(ObjectMapper mapper) {
         mapper.registerSubtypes(Trigger.getNamedSubTypes());
         mapper.registerSubtypes(Effects.getNamedSubTypes());
         mapper.registerSubtypes(Conditions.getNamedSubTypes());

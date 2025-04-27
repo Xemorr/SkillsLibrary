@@ -1,5 +1,8 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.Duration;
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
@@ -14,16 +17,14 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEffect, ComplexLocationEffect, ItemStackEffect {
 
-    private final long ticksDelay;
-    private final long period;
-    private final int repeats;
-
-    public TimerEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        ticksDelay = Math.round(configurationSection.getDouble("delay", 1) * 20);
-        period = Math.round(configurationSection.getDouble("period", 1) * 20);
-        repeats = configurationSection.getInt("numberOfRepeats", 1);
-    }
+    @JsonPropertyWithDefault
+    @JsonAlias("delay")
+    private Duration ticksDelay = new Duration(1.0);
+    @JsonPropertyWithDefault
+    private Duration period = new Duration(1.0);
+    @JsonPropertyWithDefault
+    @JsonAlias("numberOfRepeats")
+    private int repeats = 1;
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
@@ -36,7 +37,7 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
+        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L), period.getDurationInTicks().orElse(1L));
     }
 
     @Override
@@ -50,7 +51,7 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
+        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L), period.getDurationInTicks().orElse(1L));
     }
 
     @Override
@@ -64,7 +65,7 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
+        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L), period.getDurationInTicks().orElse(1L));
     }
 
     @Override
@@ -78,6 +79,6 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay, period);
+        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L), period.getDurationInTicks().orElse(1L));
     }
 }

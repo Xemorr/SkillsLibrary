@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.effects;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -8,12 +9,8 @@ import org.bukkit.projectiles.ProjectileSource;
 
 public class ShooterEffect extends WrapperEffect implements TargetEffect {
 
-    private final boolean onlyProjectiles;
-
-    public ShooterEffect(int effect, ConfigurationSection configurationSection) {
-        super(effect, configurationSection);
-        onlyProjectiles = configurationSection.getBoolean("onlyProjectiles", true);
-    }
+    @JsonPropertyWithDefault
+    private boolean onlyProjectiles = true;
 
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {

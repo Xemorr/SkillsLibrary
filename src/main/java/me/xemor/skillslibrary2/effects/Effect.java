@@ -4,21 +4,17 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.Mode;
 import me.xemor.skillslibrary2.SkillsLibrary;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.Nullable;
-
-import java.lang.reflect.InvocationTargetException;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public abstract class Effect {
 
-    @JsonPropertyWithDefault
     private Mode mode = Mode.ALL;
 
     public Effect() {}
 
     public Effect setMode(Mode mode) {
+        if (mode == null) mode = Mode.ALL;
         if (!supports(mode)) {
             SkillsLibrary.getInstance().getLogger().severe(this.getClass().getSimpleName() + " does not support " + mode.name() + ". Please change the mode");
         }

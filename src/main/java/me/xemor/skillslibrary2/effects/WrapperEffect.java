@@ -3,7 +3,6 @@ package me.xemor.skillslibrary2.effects;
 import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.conditions.ConditionList;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 public abstract class WrapperEffect extends Effect {

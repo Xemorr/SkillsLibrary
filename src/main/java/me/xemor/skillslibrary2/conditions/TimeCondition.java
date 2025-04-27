@@ -1,32 +1,18 @@
 package me.xemor.skillslibrary2.conditions;
 
+import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.comparison.RangeData;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 public class TimeCondition extends Condition implements EntityCondition {
 
-    private final long minimumTime;
-    private final long maximumTime;
-    private final RangeData time;
-
-    public TimeCondition(int condition, ConfigurationSection configurationSection) {
-        super(condition, configurationSection);
-        minimumTime = configurationSection.getLong("minimumTime", 0);
-        maximumTime = configurationSection.getLong("maximumTime", 24000);
-        time = new RangeData(configurationSection.getString("time"));
-    }
-
+    @JsonPropertyWithDefault
+    private RangeData time = new RangeData();
 
     @Override
     public boolean isTrue(Execution execution, Entity entity) {
         long time = entity.getWorld().getTime();
-        if (minimumTime != 0 || maximumTime != 24000) {
-            return time >= minimumTime && time <= maximumTime;
-        }
-        else {
-            return this.time.isInRange(time);
-        }
+        return this.time.isInRange(time);
     }
 }
