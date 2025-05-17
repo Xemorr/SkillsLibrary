@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.xemor"
-version = "4.1.1"
+version = "4.1.3"
 
 repositories {
     mavenLocal()
@@ -34,7 +34,7 @@ dependencies {
     shadow("me.xemor:foliahacks:1.7.4")
     shadow("io.papermc:paperlib:1.0.7")
 }
-
+g
 java {
     configurations.shadow.get().dependencies.remove(dependencies.gradleApi())
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))

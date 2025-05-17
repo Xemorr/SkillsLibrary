@@ -6,10 +6,10 @@ import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /*
@@ -28,57 +28,68 @@ public class TimerEffect extends WrapperEffect implements EntityEffect, TargetEf
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
-        new BukkitRunnable() {
-            int count = 0;
-            @Override
-            public void run() {
-                handleEffects(execution, entity);
-                if (++count >= repeats) {
-                    this.cancel();
-                }
-            }
-        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L), period.getDurationInTicks().orElse(1L));
+        AtomicInteger count = new AtomicInteger();
+        SkillsLibrary.getFoliaHacks().getScheduling().entitySpecificScheduler(entity)
+                .runAtFixedRate(
+                        (task) -> {
+                            handleEffects(execution, entity);
+                            if (count.addAndGet(1) >= repeats) {
+                                task.cancel();
+                            }
+                        },
+                        () -> {},
+                        ticksDelay.getDurationInTicks().orElse(1L),
+                        period.getDurationInTicks().orElse(1L)
+                );
     }
 
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
-        new BukkitRunnable() {
-            int count = 0;
-            @Override
-            public void run() {
-                handleEffects(execution, entity, target);
-                if (++count >= repeats) {
-                    this.cancel();
-                }
-            }
-        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L), period.getDurationInTicks().orElse(1L));
+        AtomicInteger count = new AtomicInteger();
+        SkillsLibrary.getFoliaHacks().getScheduling().entitySpecificScheduler(target)
+                .runAtFixedRate(
+                        (task) -> {
+                            handleEffects(execution, entity, target);
+                            if (count.addAndGet(1) >= repeats) {
+                                task.cancel();
+                            }
+                        },
+                        () -> {},
+                        ticksDelay.getDurationInTicks().orElse(1L),
+                        period.getDurationInTicks().orElse(1L)
+                );
     }
 
     @Override
     public void useEffect(Execution execution, Entity entity, Location location) {
-        new BukkitRunnable() {
-            int count = 0;
-            @Override
-            public void run() {
-                handleEffects(execution, entity, location);
-                if (++count >= repeats) {
-                    this.cancel();
-                }
-            }
-        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L), period.getDurationInTicks().orElse(1L));
+        AtomicInteger count = new AtomicInteger();
+        SkillsLibrary.getFoliaHacks().getScheduling().regionSpecificScheduler(location)
+                .runAtFixedRate(
+                        (task) -> {
+                            handleEffects(execution, entity, location);
+                            if (count.addAndGet(1) >= repeats) {
+                                task.cancel();
+                            }
+                        },
+                        ticksDelay.getDurationInTicks().orElse(1L),
+                        period.getDurationInTicks().orElse(1L)
+                );
     }
 
     @Override
     public void useEffect(Execution execution, Entity entity, ItemStack item) {
-        new BukkitRunnable() {
-            int count = 0;
-            @Override
-            public void run() {
-                handleEffects(execution, entity, item);
-                if (++count >= repeats) {
-                    this.cancel();
-                }
-            }
-        }.runTaskTimer(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L), period.getDurationInTicks().orElse(1L));
+        AtomicInteger count = new AtomicInteger();
+        SkillsLibrary.getFoliaHacks().getScheduling().entitySpecificScheduler(entity)
+                .runAtFixedRate(
+                        (task) -> {
+                            handleEffects(execution, entity, item);
+                            if (count.addAndGet(1) >= repeats) {
+                                task.cancel();
+                            }
+                        },
+                        () -> {},
+                        ticksDelay.getDurationInTicks().orElse(1L),
+                        period.getDurationInTicks().orElse(1L)
+                );
     }
 }

@@ -1,5 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.InventorySlot;
 import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
@@ -12,9 +14,8 @@ import org.bukkit.inventory.ItemStack;
 public class ItemStackWrapperEffect extends WrapperEffect implements EntityEffect, TargetEffect {
 
     @JsonPropertyWithDefault
-    private EquipmentSlot equipmentSlot = EquipmentSlot.HAND;
-    @JsonPropertyWithDefault
-    private int slot;
+    @JsonAlias("equipmentSlot")
+    private InventorySlot slot = new InventorySlot(EquipmentSlot.HAND);
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
@@ -30,14 +31,14 @@ public class ItemStackWrapperEffect extends WrapperEffect implements EntityEffec
         SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
             if (entity instanceof LivingEntity livingEntity) {
                 ItemStack item = null;
-                if (equipmentSlot != null) {
-                    item = livingEntity.getEquipment().getItem(equipmentSlot);
+                if (slot.getEquipmentSlot() != null) {
+                    item = livingEntity.getEquipment().getItem(slot.getEquipmentSlot());
                 }
-                else if (slot == -1) {
+                else if (slot.getSlot() == -1) {
                     item = livingEntity.getEquipment().getItemInMainHand();
                 }
                 else if (entity instanceof Player player) {
-                    item = player.getInventory().getItem(slot);
+                    item = player.getInventory().getItem(slot.getSlot());
                 }
                 if (item != null) {
                     handleEffects(execution, entity, item);
