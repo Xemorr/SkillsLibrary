@@ -32,9 +32,8 @@ dependencies {
     shadow("me.xemor:configurationdata:4.4.0")
     shadow("space.arim.morepaperlib:morepaperlib:0.4.3")
     shadow("me.xemor:foliahacks:1.7.4")
-    shadow("io.papermc:paperlib:1.0.7")
 }
--m
+
 java {
     configurations.shadow.get().dependencies.remove(dependencies.gradleApi())
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))

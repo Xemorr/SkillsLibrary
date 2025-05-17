@@ -1,10 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
-import io.papermc.lib.PaperLib;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 /**
@@ -15,19 +12,8 @@ public class Pickup extends Effect implements TargetEffect {
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
         SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-            Location location = entity.getLocation();
             if (!entity.getPassengers().contains(target)) {
-                SkillsLibrary.getFoliaHacks().runASAP(target, () -> {
-                    PaperLib.teleportAsync(target, location).thenAccept(
-                            (success) -> {
-                                if (success) {
-                                    SkillsLibrary.getFoliaHacks().runASAP(entity, () -> {
-                                        entity.addPassenger(target);
-                                    });
-                                }
-                            }
-                    );
-                });
+                entity.addPassenger(target);
             }
         });
     }

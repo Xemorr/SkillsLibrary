@@ -8,6 +8,7 @@ import me.xemor.skillslibrary2.triggers.Trigger;
 import me.xemor.skillslibrary2.triggers.Triggers;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
+import space.arim.morepaperlib.MorePaperLib;
 import space.arim.morepaperlib.scheduling.GracefulScheduling;
 
 public final class SkillsLibrary extends JavaPlugin {
