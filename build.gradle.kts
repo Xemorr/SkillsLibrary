@@ -34,10 +34,10 @@ dependencies {
     shadow("me.xemor:foliahacks:1.7.4")
     shadow("io.papermc:paperlib:1.0.7")
 }
-g
+-m
 java {
     configurations.shadow.get().dependencies.remove(dependencies.gradleApi())
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 publishing {
