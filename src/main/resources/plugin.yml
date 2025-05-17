@@ -4,6 +4,7 @@ main: me.xemor.skillslibrary2.SkillsLibrary
 api-version: 1.16
 authors: [ Xemor_ ]
 description: The skills library required for many of Xemor's plugins to function
+folia-supported: true
 libraries:
   - "com.fasterxml.jackson.core:jackson-core:2.18.0"
   - "com.fasterxml.jackson.core:jackson-databind:2.18.2"

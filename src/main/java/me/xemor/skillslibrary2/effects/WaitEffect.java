@@ -6,10 +6,8 @@ import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.skillslibrary2.SkillsLibrary;
 import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEffect, ComplexLocationEffect, ItemStackEffect {
 
@@ -19,41 +17,36 @@ public class WaitEffect extends WrapperEffect implements EntityEffect, TargetEff
 
     @Override
     public void useEffect(Execution execution, Entity entity) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                handleEffects(execution, entity);
-            }
-        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L));
+        SkillsLibrary.getFoliaHacks().getScheduling().entitySpecificScheduler(entity).runDelayed(
+                () -> handleEffects(execution, entity),
+                () -> {},
+                ticksDelay.getDurationInTicks().orElse(1L)
+        );
     }
 
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                handleEffects(execution, entity, target);
-            }
-        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L));
+        SkillsLibrary.getFoliaHacks().getScheduling().entitySpecificScheduler(target).runDelayed(
+                () -> handleEffects(execution, entity, target),
+                () -> {},
+                ticksDelay.getDurationInTicks().orElse(1L)
+        );
     }
 
     @Override
     public void useEffect(Execution execution, Entity entity, Location location) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                handleEffects(execution, entity, location);
-            }
-        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L));
+        SkillsLibrary.getFoliaHacks().getScheduling().regionSpecificScheduler(location).runDelayed(
+                () -> handleEffects(execution, entity, location),
+                ticksDelay.getDurationInTicks().orElse(1L)
+        );
     }
 
     @Override
     public void useEffect(Execution execution, Entity entity, ItemStack item) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                handleEffects(execution, entity, item);
-            }
-        }.runTaskLater(SkillsLibrary.getInstance(), ticksDelay.getDurationInTicks().orElse(1L));
+        SkillsLibrary.getFoliaHacks().getScheduling().entitySpecificScheduler(entity).runDelayed(
+                () -> handleEffects(execution, entity, item),
+                () -> {},
+                ticksDelay.getDurationInTicks().orElse(1L)
+        );
     }
 }
