@@ -1,6 +1,7 @@
 package me.xemor.skillslibrary2.effects;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import me.xemor.configurationdata.CompulsoryJsonProperty;
 import me.xemor.configurationdata.JsonPropertyWithDefault;
 import me.xemor.configurationdata.PotionEffectData;
 import me.xemor.skillslibrary2.SkillsLibrary;
@@ -13,7 +14,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Potion extends Effect implements EntityEffect, TargetEffect {
 
-    @JsonPropertyWithDefault
+    @CompulsoryJsonProperty
     @JsonAlias("potion")
     private PotionEffectData potionEffect;
 

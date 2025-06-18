@@ -29,7 +29,7 @@ dependencies {
     compileOnly("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.7.0")
     shadow("net.kyori:adventure-platform-bukkit:4.3.3-SNAPSHOT")
     shadow("net.kyori:adventure-text-minimessage:4.17.0")
-    shadow("me.xemor:configurationdata:4.4.0")
+    shadow("me.xemor:configurationdata:4.4.6")
     shadow("space.arim.morepaperlib:morepaperlib:0.4.3")
     shadow("me.xemor:foliahacks:1.7.4")
 }

@@ -135,8 +135,7 @@ public class Triggers implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onGlide(EntityToggleGlideEvent e) {
-        if (e.getEntity() instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) e.getEntity();
+        if (e.getEntity() instanceof LivingEntity livingEntity) {
             boolean result = handleSkills(Trigger.getTrigger("TOGGLEGLIDE"), livingEntity);
             if (result) e.setCancelled(true);
         }
