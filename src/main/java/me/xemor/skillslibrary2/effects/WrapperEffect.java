@@ -14,7 +14,7 @@ public abstract class WrapperEffect extends Effect {
 
     public void handleEffects(Execution execution, Entity entity, Object... objects) {
         conditions.ANDConditions(execution, entity, false, objects).thenApply((b) -> {
-            if (b) effects.handleExactEffects(execution, entity, objects);
+            if (b) effects.handleEffects(execution, entity, objects);
             return b;
         });
     }

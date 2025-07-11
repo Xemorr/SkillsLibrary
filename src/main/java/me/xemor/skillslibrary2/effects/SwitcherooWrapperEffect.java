@@ -9,7 +9,6 @@ public class SwitcherooWrapperEffect extends WrapperEffect implements TargetEffe
     @Override
     public void useEffect(Execution execution, Entity entity, Entity target) {
         handleEffects(execution, target, entity);
-        handleEffects(execution, target);
     }
 
 }
