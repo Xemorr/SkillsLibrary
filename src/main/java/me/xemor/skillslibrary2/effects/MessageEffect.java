@@ -32,15 +32,15 @@ public class MessageEffect extends Effect implements EntityEffect, TargetEffect 
 
     public void sendMessage(Execution execution, @NotNull Entity entity, @Nullable Entity target) {
         if (entity instanceof Player player) {
-            Audience audience = null;
+            Player playerToSendMessage = null;
             Component component = null;
             try {
                 if (target instanceof Player targetPlayer) {
-                    audience = SkillsLibrary.getBukkitAudiences().player(targetPlayer);
+                    playerToSendMessage = targetPlayer;
                     component = message.component(execution, entity, targetPlayer);
                 }
                 else if (target == null) {
-                    audience = SkillsLibrary.getBukkitAudiences().player(player);
+                    playerToSendMessage = player;
                     component = message.component(execution, entity);
                 }
                 else return;
@@ -48,7 +48,7 @@ public class MessageEffect extends Effect implements EntityEffect, TargetEffect 
                 SkillsLibrary.getInstance().getLogger().severe("There is likely a legacy colour code in this message " + message.result(execution, entity, target));
                 e.printStackTrace();
             }
-            audience.sendMessage(component);
+            playerToSendMessage.sendMessage(component);
         }
     }
 }

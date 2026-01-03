@@ -29,10 +29,9 @@ public class ActionBarEffect extends Effect implements EntityEffect, TargetEffec
 
     public void sendMessage(Execution execution, Entity entity) {
         if (entity instanceof Player player) {
-            Audience audience = SkillsLibrary.getBukkitAudiences().player(player);
             try {
                 Component renderedMessage = message.component(execution, Map.of("self", player, "player", player));
-                audience.sendActionBar(renderedMessage);
+                player.sendActionBar(renderedMessage);
             } catch (ParsingException e) {
                 SkillsLibrary.getInstance().getLogger().severe("There is likely a legacy colour code in this message " + message);
                 e.printStackTrace();

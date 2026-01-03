@@ -2,16 +2,19 @@ plugins {
     java
     `kotlin-dsl`
     `maven-publish`
-    id("com.gradleup.shadow") version("8.3.6")
+    id("com.gradleup.shadow") version("8.3.7")
 }
 
 group = "me.xemor"
-version = "4.2.0"
+version = "5.0.0"
 
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
+    maven {
+        name = "papermc"
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
     maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
     maven { url = uri("https://jitpack.io/")}
     maven { url = uri("https://mvn-repo.arim.space/lesser-gpl3")}
@@ -22,13 +25,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
     compileOnly("com.fasterxml.jackson.core:jackson-core:2.18.3")
     compileOnly("com.fasterxml.jackson.core:jackson-databind:2.18.3")
     compileOnly("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.7.0")
-    shadow("net.kyori:adventure-platform-bukkit:4.3.3-SNAPSHOT")
-    shadow("net.kyori:adventure-text-minimessage:4.17.0")
     shadow("me.xemor:configurationdata:4.4.6")
     shadow("space.arim.morepaperlib:morepaperlib:0.4.3")
     shadow("me.xemor:foliahacks:1.7.4")
@@ -74,7 +75,6 @@ publishing {
 
 tasks.shadowJar {
     minimize()
-    relocate("net.kyori", "me.xemor.skillslibrary2.kyori")
     relocate("me.xemor.configurationdata", "me.xemor.skillslibrary2.configurationdata")
     relocate("space.arim.morepaperlib", "me.xemor.skillslibrary2.morepaperlib")
     relocate("me.xemor.foliahacks", "me.xemor.skillslibrary2.foliahacks")
@@ -86,7 +86,7 @@ tasks.shadowJar {
 
 tasks.processResources {
     inputs.property("version", rootProject.version)
-    filesMatching("plugin.yml") {
+    filesMatching("paper-plugin.yml") {
         expand("version" to rootProject.version)
     }
 }
