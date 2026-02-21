@@ -27,8 +27,7 @@ public class Skill {
         this.effects = effects;
     }
 
-    public boolean handleEffects(Entity entity, Object... objects) {
-        Execution execution = new Execution();
+    public boolean handleEffects(Execution execution, Entity entity, Object... objects) {
         trigger.getConditions().ANDConditions(execution, entity, false, objects).thenAccept((b) -> {
             if (b) effects.handleEffects(execution, entity, objects);
         });

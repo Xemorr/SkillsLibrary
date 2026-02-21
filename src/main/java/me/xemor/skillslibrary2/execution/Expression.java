@@ -27,6 +27,7 @@ public class Expression {
 
     public Expression(String message) {
         try {
+            // If it doesn't reference any variables, this will succeed.
             cachedResult = new Execution().evaluatePostfix(Execution.infixToPostfix(message), Map.of());
         } catch (IllegalArgumentException e) {
             this.postfix = Execution.infixToPostfix(message);

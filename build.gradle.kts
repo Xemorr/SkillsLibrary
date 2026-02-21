@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.xemor"
-version = "5.0.0"
+version = "5.1.0"
 
 repositories {
     mavenLocal()
@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
     compileOnly("com.fasterxml.jackson.core:jackson-core:2.18.3")
     compileOnly("com.fasterxml.jackson.core:jackson-databind:2.18.3")

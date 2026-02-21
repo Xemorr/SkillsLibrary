@@ -3,6 +3,7 @@ package me.xemor.skillslibrary2.triggers;
 import com.google.common.collect.Iterators;
 import me.xemor.skillslibrary2.Skill;
 import me.xemor.skillslibrary2.SkillsLibrary;
+import me.xemor.skillslibrary2.execution.Execution;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -50,11 +51,11 @@ public class Triggers implements Listener {
                         if (tick.get() % loopData.getPeriod() == 0) {
                             for (UUID uuid : SkillsLibrary.getSkillsManager().getLoopEntities()) {
                                 Entity entity = Bukkit.getEntity(uuid);
-                                SkillsLibrary.getScheduling().entitySpecificScheduler(entity).run(() -> {
-                                    if (entity instanceof LivingEntity livingEntity) {
-                                        skill.handleEffects(livingEntity);
-                                    }
-                                }, () -> {});
+                                if (entity instanceof LivingEntity livingEntity) {
+                                    SkillsLibrary.getScheduling().entitySpecificScheduler(entity).run(() -> {
+                                        skill.handleEffects(new Execution(), livingEntity);
+                                    }, () -> {});
+                                }
                             }
                         }
                     }
@@ -84,7 +85,12 @@ public class Triggers implements Listener {
             TriggerData triggerData = skill.getTriggerData();
             if (triggerData instanceof PotionEffectTriggerData potionEffectTriggerData) {
                 if (potionEffectTriggerData.actionInSet(e.getAction()) && potionEffectTriggerData.causeInSet(e.getCause())) {
-                    if (potionEffectTriggerData.potionInSet(e.getModifiedType())) cancel |= skill.handleEffects(entity);
+                    Execution execution = new Execution();
+                    if (e.getNewEffect() != null) {
+                        execution.setValue("amplifier", e.getNewEffect().getAmplifier());
+                        execution.setValue("duration", e.getNewEffect().getDuration());
+                    }
+                    if (potionEffectTriggerData.potionInSet(e.getModifiedType())) cancel |= skill.handleEffects(execution, entity);
                 }
             }
         }
@@ -104,7 +110,7 @@ public class Triggers implements Listener {
         for (Skill skill : skills) {
             InteractData interactData = (InteractData) skill.getTriggerData();
             if (interactData.hasAction(e.getAction())) {
-                boolean cancelled = skill.handleEffects(player);
+                boolean cancelled = skill.handleEffects(new Execution(), player);
                 if (cancelled) cancel = true;
             }
         }
@@ -164,18 +170,11 @@ public class Triggers implements Listener {
         while (skills.hasNext()) {
             Skill skill = skills.next();
             ProjectileData projectileData = (ProjectileData) skill.getTriggerData();
-            Entity damager = null;
-            if (e.getDamager() instanceof Projectile) {
-                ProjectileSource source = ((Projectile) e.getDamager()).getShooter();
-                if (source instanceof Entity) {
-                    damager = (Entity) source;
-                }
-            }
-            else if (!projectileData.onlyProjectiles()) {
-                damager = e.getDamager();
-            }
+            Entity damager = getValidDamagerIfExists(e, projectileData);
             if (damager == null) continue;
-            cancel |= skill.handleEffects(e.getEntity(), damager);
+            Execution execution = new Execution();
+            execution.setValue("damage", e.getDamage());
+            cancel |= skill.handleEffects(execution, e.getEntity(), damager);
         }
         e.setCancelled(cancel);
     }
@@ -189,20 +188,27 @@ public class Triggers implements Listener {
         while (skills.hasNext()) {
             Skill skill = skills.next();
             ProjectileData projectileData = (ProjectileData) skill.getTriggerData();
-            Entity damager = null;
-            if (e.getDamager() instanceof Projectile) {
-                ProjectileSource source = ((Projectile) e.getDamager()).getShooter();
-                if (source instanceof Entity) {
-                    damager = (Entity) source;
-                }
-            }
-            else if (!projectileData.onlyProjectiles()) {
-                damager = e.getDamager();
-            }
+            Entity damager = getValidDamagerIfExists(e, projectileData);
             if (damager == null) continue;
-            cancel |= skill.handleEffects(damager, e.getEntity());
+            Execution execution = new Execution();
+            execution.setValue("damage", e.getDamage());
+            cancel |= skill.handleEffects(execution, damager, e.getEntity());
         }
         e.setCancelled(cancel);
+    }
+
+    private static Entity getValidDamagerIfExists(EntityDamageByEntityEvent e, ProjectileData projectileData) {
+        Entity damager = null;
+        if (e.getDamager() instanceof Projectile) {
+            ProjectileSource source = ((Projectile) e.getDamager()).getShooter();
+            if (source instanceof Entity) {
+                damager = (Entity) source;
+            }
+        }
+        else if (!projectileData.onlyProjectiles()) {
+            damager = e.getDamager();
+        }
+        return damager;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -213,7 +219,9 @@ public class Triggers implements Listener {
             for (Skill skill : skills) {
                 DamageData damageData = (DamageData) skill.getTriggerData();
                 if (damageData.getDamageCauses().inSet(e.getCause())) {
-                    if (skill.handleEffects(livingEntity)) cancel = true;
+                    Execution execution = new Execution();
+                    execution.setValue("damage", e.getDamage());
+                    if (skill.handleEffects(execution, livingEntity)) cancel = true;
                 }
             }
         }
@@ -356,7 +364,7 @@ public class Triggers implements Listener {
         Collection<Skill> skills = SkillsLibrary.getSkillsManager().getSkills(triggerId);
         boolean cancel = false;
         for (Skill skill : skills) {
-            cancel |= skill.handleEffects(entity, objects);
+            cancel |= skill.handleEffects(new Execution(), entity, objects);
         }
         return cancel;
     }
