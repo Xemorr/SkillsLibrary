@@ -50,6 +50,7 @@ public class Conditions {
         register("SPRINTING", SprintingCondition.class);
         register("POTIONEFFECT", PotionEffectCondition.class);
         register("PERMISSION", PermissionCondition.class);
+        register("HUNGER", HungerCondition.class);
     }
 
     public static void register(String name, Class<? extends Condition> triggerDataClass) {

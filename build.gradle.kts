@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.xemor"
-version = "5.1.1"
+version = "5.2.0"
 
 repositories {
     mavenLocal()
