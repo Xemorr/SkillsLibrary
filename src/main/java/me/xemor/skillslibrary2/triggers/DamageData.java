@@ -10,7 +10,7 @@ public class DamageData extends TriggerData {
 
     @JsonPropertyWithDefault
     @JsonAlias("causes")
-    private SetData<EntityDamageEvent.DamageCause> damageCauses;
+    private SetData<EntityDamageEvent.DamageCause> damageCauses = new SetData<>();
 
     public SetData<EntityDamageEvent.DamageCause> getDamageCauses() {
         return damageCauses;

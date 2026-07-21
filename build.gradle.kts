@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.xemor"
-version = "5.1.0"
+version = "5.1.1"
 
 repositories {
     mavenLocal()
@@ -30,7 +30,7 @@ dependencies {
     compileOnly("com.fasterxml.jackson.core:jackson-core:2.18.3")
     compileOnly("com.fasterxml.jackson.core:jackson-databind:2.18.3")
     compileOnly("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.7.0")
-    shadow("me.xemor:configurationdata:4.4.6")
+    shadow("me.xemor:configurationdata:4.4.11")
     shadow("space.arim.morepaperlib:morepaperlib:0.4.3")
     shadow("me.xemor:foliahacks:1.7.4")
 }

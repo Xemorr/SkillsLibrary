@@ -14,9 +14,9 @@ public class PotionEffectTriggerData extends TriggerData {
     @JsonPropertyWithDefault
     private SetData<PotionEffectType> types = new SetData<>();
     @JsonPropertyWithDefault
-    private SetData<EntityPotionEffectEvent.Cause> causes;
+    private SetData<EntityPotionEffectEvent.Cause> causes = new SetData<>();
     @JsonPropertyWithDefault
-    private SetData<EntityPotionEffectEvent.Action> actions;
+    private SetData<EntityPotionEffectEvent.Action> actions = new SetData<>();
 
     public boolean potionInSet(PotionEffectType effectType) {
         return types.inSet(effectType);

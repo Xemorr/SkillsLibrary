@@ -7,6 +7,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
+import java.util.Locale;
+
 public class VelocityEffect extends ModifyEffect implements EntityEffect, TargetEffect {
 
     @JsonPropertyWithDefault
@@ -17,7 +19,7 @@ public class VelocityEffect extends ModifyEffect implements EntityEffect, Target
         if ("ALL".equalsIgnoreCase(component)) {
             component = "XYZ";
         }
-        component = component.toUpperCase();
+        component = component.toUpperCase(Locale.ROOT);
         Vector velocity = livingEntity.getVelocity();
         if (component.contains("X")) {
             velocity = velocity.setX(changeValue(execution, velocity.getX()));

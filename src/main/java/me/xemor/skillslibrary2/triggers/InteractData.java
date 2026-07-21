@@ -8,7 +8,7 @@ import org.bukkit.event.block.Action;
 public class InteractData extends TriggerData {
 
     @JsonPropertyWithDefault
-    private SetData<Action> actions;
+    private SetData<Action> actions = new SetData<>();
 
     public boolean hasAction(Action action) {
         return actions.inSet(action);

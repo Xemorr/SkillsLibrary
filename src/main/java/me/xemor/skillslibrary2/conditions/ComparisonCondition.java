@@ -9,6 +9,8 @@ import me.xemor.configurationdata.deserializers.text.TextDeserializer;
 import me.xemor.skillslibrary2.execution.Execution;
 import me.xemor.skillslibrary2.execution.Expression;
 
+import java.util.Locale;
+
 public abstract class ComparisonCondition extends Condition {
 
     @JsonPropertyWithDefault
@@ -34,7 +36,7 @@ public abstract class ComparisonCondition extends Condition {
         public static class ComparisonDeserializer extends TextDeserializer<Comparison> {
             @Override
             public Comparison deserialize(String text, JsonParser jsonParser, DeserializationContext ctxt) {
-                text = text.toUpperCase();
+                text = text.toUpperCase(Locale.ROOT);
                 return switch (text) {
                     case "=", "==", "EQUAL" -> EQUAL;
                     case "<", "LESS" -> LESS;
