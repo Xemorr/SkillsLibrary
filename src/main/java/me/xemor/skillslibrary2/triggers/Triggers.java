@@ -1,5 +1,6 @@
 package me.xemor.skillslibrary2.triggers;
 
+import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import com.google.common.collect.Iterators;
 import me.xemor.skillslibrary2.Skill;
 import me.xemor.skillslibrary2.SkillsLibrary;
@@ -125,12 +126,8 @@ public class Triggers implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onJump(PlayerMoveEvent e) {
-        if (e.getTo() == null) return;
-        double difference = e.getTo().clone().subtract(e.getFrom()).getY();
-        if (difference >= 0.33319999363422426 && difference <= 0.3332) { //the second condition must be there to support geyser bedrock players
-             handleSkills(Trigger.getTrigger("PLAYERJUMP"), e.getPlayer());
-        }
+    public void onJump(PlayerJumpEvent e) {
+        handleSkills(Trigger.getTrigger("PLAYERJUMP"), e.getPlayer());
     }
 
     @EventHandler

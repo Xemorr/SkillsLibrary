@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.xemor"
-version = "5.2.1"
+version = "5.2.2"
 
 repositories {
     mavenLocal()
@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.1.+")
     compileOnly("org.jetbrains:annotations:23.0.0")
     compileOnly("com.fasterxml.jackson.core:jackson-core:2.18.3")
     compileOnly("com.fasterxml.jackson.core:jackson-databind:2.18.3")
@@ -37,7 +37,7 @@ dependencies {
 
 java {
     configurations.shadow.get().dependencies.remove(dependencies.gradleApi())
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 publishing {
